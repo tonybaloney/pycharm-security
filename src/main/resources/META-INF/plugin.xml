@@ -16,7 +16,9 @@
         <projectService serviceImplementation="bandit.ProjectService" />
         <projectConfigurable groupId="tools" instance="bandit.BanditConfigurationPanel"/>
     </extensions>
-
+    <extensions defaultExtensionNs="Pythonid">
+        <pyAnnotator implementation="bandit.ExamplePyAnnotator"/>
+    </extensions>
     <actions>
         <!-- Add your actions here -->
     </actions>

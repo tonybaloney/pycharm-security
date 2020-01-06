@@ -1,3 +1,1 @@
 rootProject.name = 'pycharm-bandit'
-include 'org.tonybaloney.bandit'
-

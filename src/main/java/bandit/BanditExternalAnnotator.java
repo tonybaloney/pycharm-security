@@ -8,7 +8,6 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-
 public class BanditExternalAnnotator extends ExternalAnnotator {
     private static final Logger LOGGER = Logger.getInstance(BanditExternalAnnotator.class);
 
