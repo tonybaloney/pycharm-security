@@ -13,9 +13,6 @@ import org.jetbrains.annotations.Nullable;
 public class ProjectService implements PersistentStateComponent<ProjectService> {
     private static final Logger LOGGER = Logger.getInstance(ProjectService.class.getPackage().getName());
 
-    public String executable = "";
-    public String config = "";
-
     public ProjectService() {
         LOGGER.debug("Bandit ProjectService instantiated.");
     }
