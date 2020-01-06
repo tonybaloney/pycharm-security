@@ -9,10 +9,10 @@
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
-    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.python</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <externalAnnotator language="PYTHON" id="pycharm-bandit" implementationClass="bandit.BanditExternalAnnotator" />
+        <externalAnnotator language="Python" id="pycharm-bandit" implementationClass="bandit.BanditExternalAnnotator" />
         <projectService serviceImplementation="bandit.ProjectService" />
         <projectConfigurable groupId="tools" instance="bandit.BanditConfigurationPanel"/>
     </extensions>

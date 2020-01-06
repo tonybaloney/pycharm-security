@@ -19,7 +19,10 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2019.3.1'
+    alternativeIdePath '/Users/anthonyshaw/Library/Application Support/JetBrains/Toolbox/apps/PyCharm-P/ch-0/193.6015.10/PyCharm 2019.3 EAP.app'
+    type 'PC'
 }
+
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>

@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+
 public class BanditExternalAnnotator extends ExternalAnnotator {
     private static final Logger LOGGER = Logger.getInstance(BanditExternalAnnotator.class);
 
@@ -34,12 +35,6 @@ public class BanditExternalAnnotator extends ExternalAnnotator {
     public Object collectInformation(@NotNull PsiFile file, @NotNull Editor editor, boolean hasErrors) {
         LOGGER.debug("Bandit.collectInformation");
         return super.collectInformation(file, editor, hasErrors);
-    }
-
-    @Override
-    public String getPairedBatchInspectionShortName() {
-        LOGGER.debug("Bandit.getPairedBatchInspectionShortName");
-        return super.getPairedBatchInspectionShortName();
     }
 
     @Override
