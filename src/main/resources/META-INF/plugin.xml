@@ -1,10 +1,10 @@
 <idea-plugin>
     <id>org.tonybaloney.bandit.pycharm-bandit</id>
-    <name>Bandit</name>
+    <name>Python Security</name>
     <vendor email="anthonyshaw@apache.org" url="http://tonybaloney.github.io">Anthony Shaw</vendor>
 
     <description><![CDATA[
-    Runs Bandit in your Python editor. Bandit is a tool designed to find common security issues in Python code.<br>
+    Runs Bandit rules in your Python editor. Designed to find common security issues in Python code.<br>
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -12,7 +12,6 @@
     <depends>com.intellij.modules.python</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <externalAnnotator language="Python" id="pycharm-bandit" implementationClass="bandit.BanditExternalAnnotator" />
         <projectService serviceImplementation="bandit.ProjectService" />
         <projectConfigurable groupId="tools" instance="bandit.BanditConfigurationPanel"/>
     </extensions>
