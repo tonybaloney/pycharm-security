@@ -85,7 +85,9 @@
         <children>
           <component id="155ae" class="com.intellij.ui.components.JBList" binding="ruleList">
             <constraints/>
-            <properties/>
+            <properties>
+              <model />
+            </properties>
           </component>
         </children>
       </scrollpane>
