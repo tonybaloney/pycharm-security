@@ -39,12 +39,12 @@ public class PyyamlSafeLoadFixer implements LocalQuickFix, IntentionAction, High
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         @Nullable PyCallExpression call = PsiTreeUtil.getParentOfType(file.findElementAt(editor.getCaretModel().getOffset()), PyCallExpression.class);
         PyElementGenerator elementGenerator = PyElementGenerator.getInstance(project);
-        if (call != null){
-            PyCallExpression new_el = (PyCallExpression)elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), call.getText().replace("load", "safe_load"));
-            ApplicationManager.getApplication().runWriteAction(() -> {
-                call.replace(new_el);
-            });
-        }
+        if (call == null)
+            return;
+        PyCallExpression new_el = (PyCallExpression)elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), call.getText().replace("load", "safe_load"));
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            call.replace(new_el);
+        });
     }
 
     @Override

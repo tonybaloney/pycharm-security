@@ -1,5 +1,6 @@
 package security.validators;
 
+import security.Checks;
 import security.fixes.PyyamlSafeLoadFixer;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.lang.annotation.Annotation;
@@ -16,14 +17,18 @@ public class PyyamlLoadPyAnnotator extends PyAnnotator {
     public void visitPyCallExpression(PyCallExpression node) {
         PyResolveContext resolveContext = PyResolveContext.defaultContext();
 
-        if (node.getCallee() != null){
-            List<PyCallExpression.PyMarkedCallee> markedCallees = node.multiResolveCallee(resolveContext);
-            if (node.getCallee().getName().equals("load") && markedCallees != null && !markedCallees.isEmpty()){
-                if (Objects.requireNonNull(markedCallees.get(0).getElement()).getQualifiedName().equals("yaml.load")) {
-                    Annotation annotation = getHolder().createWarningAnnotation(node, "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().");
-                    annotation.registerFix((IntentionAction)new PyyamlSafeLoadFixer(), node.getTextRange());
-                }
-            }
-        }
+        if (node.getCallee() == null)
+            return;
+
+        List<PyCallExpression.PyMarkedCallee> markedCallees = node.multiResolveCallee(resolveContext);
+        if (!node.getCallee().getName().equals("load"))
+            return;
+        if (markedCallees == null || markedCallees.isEmpty())
+            return;
+        if (!Objects.requireNonNull(markedCallees.get(0).getElement()).getQualifiedName().equals("yaml.load"))
+            return;
+
+        Annotation annotation = getHolder().createWarningAnnotation(node, String.valueOf(Checks.PyyamlUnsafeLoadCheck));
+        annotation.registerFix((IntentionAction)new PyyamlSafeLoadFixer(), node.getTextRange());
     }
 }

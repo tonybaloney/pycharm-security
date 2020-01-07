@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 
@@ -25,6 +25,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      Initial release"""
+}
+
+publishPlugin {
+    token intellijPublishToken
+    channels 'beta'
 }
