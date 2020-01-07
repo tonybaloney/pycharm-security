@@ -25,7 +25,12 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Initial release"""
+      Initial release
+      <ul>
+        <li>Added logo</li>
+        <li>Added flask app.run(debug=true) check</li>
+        <li>Added yaml.load() check</li>
+      </ul>"""
 }
 
 publishPlugin {
