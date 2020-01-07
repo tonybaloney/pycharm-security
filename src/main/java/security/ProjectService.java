@@ -1,4 +1,4 @@
-package bandit;
+package security;
 
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
@@ -14,7 +14,7 @@ public class ProjectService implements PersistentStateComponent<ProjectService> 
     private static final Logger LOGGER = Logger.getInstance(ProjectService.class.getPackage().getName());
 
     public ProjectService() {
-        LOGGER.debug("Bandit ProjectService instantiated.");
+        LOGGER.debug("Python Security ProjectService instantiated.");
     }
 
     static ProjectService getInstance(Project project) {

@@ -1,6 +1,6 @@
-package bandit.validators;
+package security.validators;
 
-import bandit.fixes.PyyamlSafeLoadFixer;
+import security.fixes.PyyamlSafeLoadFixer;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.lang.annotation.Annotation;
 import com.jetbrains.python.psi.PyCallExpression;
@@ -18,7 +18,7 @@ public class PyyamlLoadPyAnnotator extends PyAnnotator {
 
         if (node.getCallee() != null){
             List<PyCallExpression.PyMarkedCallee> markedCallees = node.multiResolveCallee(resolveContext);
-            if (node.getCallee().getName().equals("load") && markedCallees != null){
+            if (node.getCallee().getName().equals("load") && markedCallees != null && !markedCallees.isEmpty()){
                 if (Objects.requireNonNull(markedCallees.get(0).getElement()).getQualifiedName().equals("yaml.load")) {
                     Annotation annotation = getHolder().createWarningAnnotation(node, "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().");
                     annotation.registerFix((IntentionAction)new PyyamlSafeLoadFixer(), node.getTextRange());

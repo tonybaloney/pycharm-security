@@ -1,4 +1,4 @@
-package bandit;
+package security;
 
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -27,7 +26,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BanditConfigurationPanel implements SearchableConfigurable {
+public class ConfigurationPanel implements SearchableConfigurable {
     private final ProjectService state;
     private final Project project;
 
@@ -41,7 +40,7 @@ public class BanditConfigurationPanel implements SearchableConfigurable {
     private List<String> baseRules;
 
 
-    public BanditConfigurationPanel(@NotNull Project project) {
+    public ConfigurationPanel(@NotNull Project project) {
         this.state = ProjectService.getInstance(project).getState();
         this.project = project;
         this.ruleListModel = new CollectionListModel<>();
@@ -50,7 +49,7 @@ public class BanditConfigurationPanel implements SearchableConfigurable {
     @NotNull
     @Override
     public String getId() {
-        return "bandit";
+        return "security";
     }
 
     @Nls(capitalization = Nls.Capitalization.Title)

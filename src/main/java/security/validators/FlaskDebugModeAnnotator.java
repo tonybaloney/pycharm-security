@@ -1,0 +1,32 @@
+package security.validators;
+
+import com.intellij.psi.util.PsiTreeUtil;
+import com.jetbrains.python.psi.PyBoolLiteralExpression;
+import com.jetbrains.python.psi.PyCallExpression;
+import com.jetbrains.python.psi.PyImportStatement;
+import com.jetbrains.python.psi.PyReferenceExpression;
+import com.jetbrains.python.validation.PyAnnotator;
+
+import java.util.Collection;
+
+public class FlaskDebugModeAnnotator extends PyAnnotator {
+    @Override
+    public void visitPyCallExpression(PyCallExpression node) {
+        Collection<PyImportStatement> imports = PsiTreeUtil.findChildrenOfType(node.getContainingFile(), PyImportStatement.class);
+
+        for (PyImportStatement statement: imports){
+           /// TODO : Check that flask has been imported.
+        }
+
+        if (node.getCallee() != null){
+            if (node.getCallee().getName().equals("run")){
+                if (((PyReferenceExpression)node.getFirstChild()).asQualifiedName().toString().equals("app.run")) {
+                    if (node.getKeywordArgument("debug") != null) {
+                        if (((PyBoolLiteralExpression)node.getKeywordArgument("debug")).getValue() == true)
+                            getHolder().createWarningAnnotation(node, " Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.");
+                    }
+                }
+            }
+        }
+    }
+}

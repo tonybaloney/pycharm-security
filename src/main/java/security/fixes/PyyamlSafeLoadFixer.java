@@ -1,4 +1,4 @@
-package bandit.fixes;
+package security.fixes;
 
 
 import com.intellij.codeInsight.intention.HighPriorityAction;
@@ -15,7 +15,6 @@ import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.python.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.openapi.application.Application;
 
 public class PyyamlSafeLoadFixer implements LocalQuickFix, IntentionAction, HighPriorityAction {
 
