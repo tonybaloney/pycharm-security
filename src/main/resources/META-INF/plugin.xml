@@ -10,6 +10,7 @@
     <ul>
      <li>Use of <pre>yaml.load()</pre> can cause execution of arbitrary code</li>
      <li>Use of <pre>debug=True</pre> when instantiating flask applications</li>
+     <li>Use of <pre>verify=False</pre> when making HTTP requests</li>
     </ul>
     ]]></description>
 
@@ -24,6 +25,8 @@
     <extensions defaultExtensionNs="Pythonid">
         <pyAnnotator implementation="security.validators.PyyamlLoadPyAnnotator"/>
         <pyAnnotator implementation="security.validators.FlaskDebugModeAnnotator"/>
+        <pyAnnotator implementation="security.validators.RequestsNoVerifyValidator"/>
+
     </extensions>
     <actions>
         <!-- Add your actions here -->

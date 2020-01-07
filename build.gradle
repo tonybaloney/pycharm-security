@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.0'
+version '1.0.2'
 
 sourceCompatibility = 1.8
 
@@ -30,6 +30,7 @@ patchPluginXml {
         <li>Added logo</li>
         <li>Added flask app.run(debug=true) check</li>
         <li>Added yaml.load() check</li>
+        <li>Added <pre>verify=False</pre> check</li>
       </ul>"""
 }
 
