@@ -8,9 +8,9 @@
 
     <h2>Current checks and fixes</h2>
     <ul>
-     <li>Use of <pre>yaml.load()</pre> can cause execution of arbitrary code</li>
-     <li>Use of <pre>debug=True</pre> when instantiating flask applications</li>
-     <li>Use of <pre>verify=False</pre> when making HTTP requests</li>
+     <li>Use of unsafe loading of YAML files</li>
+     <li>Use of remote code execution when instantiating flask applications</li>
+     <li>Use of MITM exposure when making HTTP requests with requests or httpx</li>
     </ul>
     ]]></description>
 
@@ -25,6 +25,8 @@
         <pyAnnotator implementation="security.validators.PyyamlLoadPyAnnotator"/>
         <pyAnnotator implementation="security.validators.FlaskDebugModeAnnotator"/>
         <pyAnnotator implementation="security.validators.RequestsNoVerifyValidator"/>
+        <pyAnnotator implementation="security.validators.HttpxNoVerifyValidator"/>
+        <pyAnnotator implementation="security.validators.SubprocessCallShellModeValidator"/>
 
     </extensions>
     <actions>
