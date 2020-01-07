@@ -20,6 +20,8 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 
 ### master
 
+### 1.0.3
+
 * Added django debug mode check
 * Added `tempfile.mktemp` check with fixer to replace `tempfile.mkstemp` with existing arguments
 * Added subprocess.call(shell=true) check
