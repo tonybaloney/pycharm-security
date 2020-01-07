@@ -11,6 +11,8 @@
      <li>Use of unsafe loading of YAML files</li>
      <li>Use of remote code execution when instantiating flask applications</li>
      <li>Use of MITM exposure when making HTTP requests with requests or httpx</li>
+     <li>Bypassing of temporary file creation to inject content</li>
+     <li>Shell injection</li>
     </ul>
     ]]></description>
 
@@ -22,12 +24,12 @@
         <projectService serviceImplementation="security.ProjectService" />
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
-        <pyAnnotator implementation="security.validators.PyyamlLoadPyAnnotator"/>
+        <pyAnnotator implementation="security.validators.PyyamlLoadValidator"/>
         <pyAnnotator implementation="security.validators.FlaskDebugModeAnnotator"/>
         <pyAnnotator implementation="security.validators.RequestsNoVerifyValidator"/>
         <pyAnnotator implementation="security.validators.HttpxNoVerifyValidator"/>
         <pyAnnotator implementation="security.validators.SubprocessCallShellModeValidator"/>
-
+        <pyAnnotator implementation="security.validators.TempfileMktempValidator"/>
     </extensions>
     <actions>
         <!-- Add your actions here -->

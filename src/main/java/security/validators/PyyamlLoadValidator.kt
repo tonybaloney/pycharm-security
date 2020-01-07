@@ -7,7 +7,7 @@ import security.Checks
 import security.fixes.PyyamlSafeLoadFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
-class PyyamlLoadPyAnnotator : PyAnnotator() {
+class PyyamlLoadValidator : PyAnnotator() {
     override fun visitPyCallExpression(node: PyCallExpression) {
         if (node.callee == null) return
         if (node.callee!!.name != "load") return
