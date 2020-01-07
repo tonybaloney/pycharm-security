@@ -8,10 +8,14 @@ import security.helpers.QualifiedNames.getQualifiedName
 
 class SubprocessCallShellModeValidator : PyAnnotator() {
     override fun visitPyCallExpression(node: PyCallExpression) {
-        if (node.callee == null) return
-        if (getQualifiedName(node) != "subprocess.call") return
-        if (node.getKeywordArgument("shell") == null) return
-        if ((node.getKeywordArgument("shell") as PyBoolLiteralExpression?)!!.value.not()) return
+        if (node.callee == null)
+            return
+        if (getQualifiedName(node) != "subprocess.call")
+            return
+        if (node.getKeywordArgument("shell") == null)
+            return
+        if ((node.getKeywordArgument("shell") as PyBoolLiteralExpression?)!!.value.not())
+            return
         holder.createWarningAnnotation(node, Checks.SubprocessCallShellCheck.toString())
     }
 }

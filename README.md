@@ -14,11 +14,13 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 * Use of `verify=False` when making HTTP requests using the `httpx` package
 * Use of `shell=True` when running `subprocess.call` from the standard library
 * Use of `tempfile.mktemp`
+* Setting `DEBUG = True` in a `settings.py` file (assumed Django project settings)
 
 ## Release History
 
 ### master
 
+* Added django debug mode check
 * Added `tempfile.mktemp` check with fixer to replace `tempfile.mkstemp` with existing arguments
 * Added subprocess.call(shell=true) check
 * Added httpx no-verify check
