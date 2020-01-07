@@ -1,34 +1,30 @@
-package security;
+package security
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.components.State
+import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
+import com.intellij.util.xmlb.XmlSerializerUtil
 
-@State(name="BanditService")
-public class ProjectService implements PersistentStateComponent<ProjectService> {
-    private static final Logger LOGGER = Logger.getInstance(ProjectService.class.getPackage().getName());
-
-    public ProjectService() {
-        LOGGER.debug("Python Security ProjectService instantiated.");
+@State(name = "BanditService")
+class ProjectService : PersistentStateComponent<ProjectService?> {
+    override fun getState(): ProjectService? {
+        return this
     }
 
-    static ProjectService getInstance(Project project) {
-        return ServiceManager.getService(project, ProjectService.class);
+    override fun loadState(state: ProjectService) {
+        XmlSerializerUtil.copyBean(state, this)
     }
 
-    @Nullable
-    @Override
-    public ProjectService getState() {
-        return this;
+    companion object {
+        private val LOGGER = Logger.getInstance(ProjectService::class.java.getPackage().name)
+        fun getInstance(project: Project?): ProjectService {
+            return ServiceManager.getService(project!!, ProjectService::class.java)
+        }
     }
 
-    @Override
-    public void loadState(@NotNull ProjectService state) {
-        XmlSerializerUtil.copyBean(state, this);
+    init {
+        LOGGER.debug("Python Security ProjectService instantiated.")
     }
 }

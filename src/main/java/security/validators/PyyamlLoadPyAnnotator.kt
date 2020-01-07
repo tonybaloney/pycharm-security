@@ -1,34 +1,18 @@
-package security.validators;
+package security.validators
 
-import security.Checks;
-import security.fixes.PyyamlSafeLoadFixer;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.lang.annotation.Annotation;
-import com.jetbrains.python.psi.PyCallExpression;
-import com.jetbrains.python.psi.resolve.PyResolveContext;
-import com.jetbrains.python.validation.PyAnnotator;
+import com.intellij.codeInsight.intention.IntentionAction
+import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.validation.PyAnnotator
+import security.Checks
+import security.fixes.PyyamlSafeLoadFixer
+import security.helpers.QualifiedNames.getQualifiedName
 
-import java.util.List;
-import java.util.Objects;
-
-
-public class PyyamlLoadPyAnnotator extends PyAnnotator {
-    @Override
-    public void visitPyCallExpression(PyCallExpression node) {
-        PyResolveContext resolveContext = PyResolveContext.defaultContext();
-
-        if (node.getCallee() == null)
-            return;
-
-        List<PyCallExpression.PyMarkedCallee> markedCallees = node.multiResolveCallee(resolveContext);
-        if (!node.getCallee().getName().equals("load"))
-            return;
-        if (markedCallees == null || markedCallees.isEmpty())
-            return;
-        if (!Objects.requireNonNull(markedCallees.get(0).getElement()).getQualifiedName().equals("yaml.load"))
-            return;
-
-        Annotation annotation = getHolder().createWarningAnnotation(node, String.valueOf(Checks.PyyamlUnsafeLoadCheck));
-        annotation.registerFix((IntentionAction)new PyyamlSafeLoadFixer(), node.getTextRange());
+class PyyamlLoadPyAnnotator : PyAnnotator() {
+    override fun visitPyCallExpression(node: PyCallExpression) {
+        if (node.callee == null) return
+        if (node.callee!!.name != "load") return
+        if (getQualifiedName(node) != "yaml.load") return
+        val annotation = holder.createWarningAnnotation(node, Checks.PyyamlUnsafeLoadCheck.toString())
+        annotation.registerFix((PyyamlSafeLoadFixer() as IntentionAction), node.textRange)
     }
 }

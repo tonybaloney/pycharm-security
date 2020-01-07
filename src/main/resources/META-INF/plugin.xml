@@ -20,7 +20,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="security.ProjectService" />
-<!--        <projectConfigurable groupId="tools" instance="security.ConfigurationPanel"/>-->
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
         <pyAnnotator implementation="security.validators.PyyamlLoadPyAnnotator"/>

@@ -1,62 +1,48 @@
-package security.fixes;
+package security.fixes
 
+import com.intellij.codeInsight.intention.HighPriorityAction
+import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInspection.LocalQuickFix
+import com.intellij.codeInspection.ProblemDescriptor
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiFile
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.util.IncorrectOperationException
+import com.jetbrains.python.psi.LanguageLevel
+import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyElementGenerator
 
-import com.intellij.codeInsight.intention.HighPriorityAction;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
-import com.jetbrains.python.psi.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-public class PyyamlSafeLoadFixer implements LocalQuickFix, IntentionAction, HighPriorityAction {
-
-    @NotNull
-    @Override
-    public String getText() {
-        return getName();
+class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
+    override fun getText(): String {
+        return name
     }
 
-    @Override
-    @NotNull
-    public String getFamilyName() {
-        return "Use safe_load()";
+    override fun getFamilyName(): String {
+        return "Use safe_load()"
     }
 
-    @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
-        return true;
+    override fun isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean {
+        return true
     }
 
-    @Override
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        @Nullable PyCallExpression call = PsiTreeUtil.getParentOfType(file.findElementAt(editor.getCaretModel().getOffset()), PyCallExpression.class);
-        PyElementGenerator elementGenerator = PyElementGenerator.getInstance(project);
-        if (call == null)
-            return;
-        PyCallExpression new_el = (PyCallExpression)elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), call.getText().replace("load", "safe_load"));
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            call.replace(new_el);
-        });
+    @Throws(IncorrectOperationException::class)
+    override fun invoke(project: Project, editor: Editor, file: PsiFile) {
+        val call = PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java)
+        val elementGenerator = PyElementGenerator.getInstance(project)
+        if (call == null) return
+        val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), call.text.replace("load", "safe_load")) as PyCallExpression
+        ApplicationManager.getApplication().runWriteAction { call.replace(newEl) }
     }
 
-    @Override
-    public boolean startInWriteAction() {
-        return false;
+    override fun startInWriteAction(): Boolean {
+        return false
     }
 
-    @Override
-    public void applyFix(@NotNull final Project project, @NotNull ProblemDescriptor descriptor) {
-        PsiElement element = descriptor.getPsiElement();
-        if (element == null) {  // stale PSI
-            return;
-        }
+    override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+        val element = descriptor.psiElement
+                ?: // stale PSI
+                return
     }
 }
