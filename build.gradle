@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.2'
+version '1.0.3'
 
 sourceCompatibility = 1.8
 
@@ -27,12 +27,13 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      Initial release
+      <h2>1.0.3</h2>
       <ul>
-        <li>Added logo</li>
-        <li>Added flask app.run(debug=true) check</li>
-        <li>Added yaml.load() check</li>
-        <li>Added <pre>verify=False</pre> check</li>
+        <li>Added httpx check</li>
+        <li>Added tempfile.mktemp check</li>
+        <li>Added Django DEBUG check</li>
+        <li>Added requests no verify check</li>
+        <li>Added subprocess.call check</li>
       </ul>"""
 }
 
