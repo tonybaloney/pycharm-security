@@ -4,7 +4,7 @@
 
 A plugin to run security checks for common flaws in Python code and suggest quick fixes.
 
-![](src/main/resources/META-INF/screenshot.svg)
+![](src/main/resources/META-INF/screenshot.png)
 
 ## Current checks
 
