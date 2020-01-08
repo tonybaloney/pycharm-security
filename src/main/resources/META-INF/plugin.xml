@@ -22,6 +22,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="security.ProjectService" />
+        <backgroundPostStartupActivity implementation="security.packaging.PythonPackageVulnerabilityStartupTask"/>
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
         <pyAnnotator implementation="security.validators.PyyamlLoadValidator"/>
