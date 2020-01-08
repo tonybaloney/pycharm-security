@@ -6,6 +6,12 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 
 ![](src/main/resources/META-INF/screenshot.png)
 
+## SafetyDB
+
+This plugin will check the installed packages in your Python projects against the SafetyDB and raise a warning for any vulnerabilities.
+
+![](src/main/resources/META-INF/safetydb-screenshot.png)
+
 ## Current checks
 
 * [YML100](doc/checks/YML100.md) Use of `yaml.load()` can cause arbitrary code execution. Suggests and has a "Quick Fix" to replace with `safe_load()` using existing arguments
@@ -18,7 +24,9 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 
 ## Release History
 
-### master
+### 1.0.4
+
+* Checks installed packages against safetydb and alerts for any known vulnerabilities
 
 ### 1.0.3
 

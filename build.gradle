@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.3'
+version '1.0.4'
 
 sourceCompatibility = 1.8
 
@@ -27,13 +27,9 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.3</h2>
+      <h2>1.0.4</h2>
       <ul>
-        <li>Added httpx check</li>
-        <li>Added tempfile.mktemp check</li>
-        <li>Added Django DEBUG check</li>
-        <li>Added requests no verify check</li>
-        <li>Added subprocess.call check</li>
+        <li>Checks installed packages against safetydb and alerts for any known vulnerabilities</li>
       </ul>"""
 }
 
