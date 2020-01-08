@@ -1,5 +1,7 @@
 # PyCharm Python Security plugin
 
+<a href="https://github.com/tonybaloney/pycharm-security"><img alt="GitHub Actions status" src="https://github.com/tonybaloney/pycharm-security/workflows/CI/badge.svg"></a>
+
 ![](src/main/resources/META-INF/pluginIcon.svg)
 
 A plugin to run security checks for common flaws in Python code and suggest quick fixes.
