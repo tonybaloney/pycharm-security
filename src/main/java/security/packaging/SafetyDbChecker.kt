@@ -7,11 +7,11 @@ import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.pyRequirementVersionSpec
 import com.jetbrains.python.packaging.requirement.PyRequirementRelation
 import com.jetbrains.python.packaging.requirement.PyRequirementVersionSpec
-import java.io.InputStream
+import java.io.Reader
 
 class SafetyDbChecker {
-    private val database: Map<String?, List<SafetyDbRecord>>
-    private val lookup: Map<String?, List<String>>
+    private lateinit var database: Map<String?, List<SafetyDbRecord>>
+    private lateinit var lookup: Map<String?, List<String>>
 
     data class SafetyDbRecord(
         val advisory: String,
@@ -20,14 +20,19 @@ class SafetyDbChecker {
         val specs: List<String>,
         val v: String
     )
-    init {
-        val insecure_in: InputStream = this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json")
-        val recordLookupType = object : TypeToken<Map<String?, List<String>>>() {}.type
-        lookup = Gson().fromJson<Map<String?, List<String>>>(insecure_in.reader(), recordLookupType)
 
-        val insecure_full_in: InputStream = this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json")
+    constructor(){
+        SafetyDbChecker(
+                this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json").reader(),
+                this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json").reader())
+    }
+
+    constructor (databaseReader: Reader, lookupReader: Reader ) {
+        val recordLookupType = object : TypeToken<Map<String?, List<String>>>() {}.type
+        lookup = Gson().fromJson<Map<String?, List<String>>>(lookupReader, recordLookupType)
+
         val recordDatabaseType = object : TypeToken<Map<String?, List<SafetyDbRecord>>>() {}.type
-        database = Gson().fromJson<Map<String?, List<SafetyDbRecord>>>(insecure_full_in.reader(), recordDatabaseType)
+        database = Gson().fromJson<Map<String?, List<SafetyDbRecord>>>(databaseReader, recordDatabaseType)
     }
 
     fun hasMatch(pythonPackage: PyPackage): Boolean{
