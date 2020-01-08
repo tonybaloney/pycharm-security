@@ -17,5 +17,5 @@ jobs:
       with:
         arguments: build -PintellijPublishToken=FAKE_TOKEN
     - uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: test -PintellijPublishToken=FAKE_TOKEN
+      with:
+        arguments: test -PintellijPublishToken=FAKE_TOKEN
