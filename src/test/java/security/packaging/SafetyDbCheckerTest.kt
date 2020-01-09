@@ -18,7 +18,10 @@ internal class SafetyDbCheckerTest {
              "test_package": [],
              "aiocouchdb": [
                 "<0.6.0"
-                ]
+                ],
+             "bananas": [
+                "<1.0.0,>=0.5.0"
+             ]
             }
         """.trimIndent()
         val testData = """
@@ -48,6 +51,24 @@ internal class SafetyDbCheckerTest {
             on { version } doReturn "0.1.0"
         }
         assertTrue(instance.hasMatch(testPackage))
+    }
+
+    @Test
+    fun testVulnPackageWithComplexRangeHasMatch() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "bananas"
+            on { version } doReturn "0.6.0"
+        }
+        assertTrue(instance.hasMatch(testPackage))
+    }
+
+    @Test
+    fun testVulnPackageWithComplexRangeDoesNotHaveMatch() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "bananas"
+            on { version } doReturn "0.4.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
     }
 
     @Test

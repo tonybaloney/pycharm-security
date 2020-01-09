@@ -8,6 +8,9 @@ import com.jetbrains.python.packaging.pyRequirementVersionSpec
 import com.jetbrains.python.packaging.requirement.PyRequirementRelation
 import com.jetbrains.python.packaging.requirement.PyRequirementVersionSpec
 import java.io.Reader
+import java.util.stream.Collectors
+import java.util.stream.StreamSupport
+
 
 class SafetyDbChecker {
     private lateinit var database: Map<String?, List<SafetyDbRecord>>
@@ -37,22 +40,33 @@ class SafetyDbChecker {
 
     fun hasMatch(pythonPackage: PyPackage): Boolean{
         for (record in lookup[pythonPackage.name] ?: return false){
-            val spec = parseVersionSpec(record) ?: continue
-            if (spec.matches(pythonPackage.version))
+            val specs = parseVersionSpecs(record) ?: continue
+            if (specs.all { it != null && it.matches(pythonPackage.version) })
                 return true
         }
         return false
     }
 
     fun getMatches (pythonPackage: PyPackage): List<SafetyDbRecord> {
-        var records: ArrayList<SafetyDbRecord> = ArrayList<SafetyDbRecord>()
+        /// Kotlin rewrite of PyRequirementParser.getMatches taking advantage of predicates
+        val records: ArrayList<SafetyDbRecord> = ArrayList()
         for (record in database[pythonPackage.name] ?: error("Package not in database")){
-            val spec = parseVersionSpec(record.v) ?: continue
-            if (spec.matches(pythonPackage.version))
+            val specs = parseVersionSpecs(record.v) ?: continue
+            if (specs.all { it != null && it.matches(pythonPackage.version) })
                 records.add(record)
         }
         return records.toList()
     }
+
+    private fun parseVersionSpecs(versionSpecs: String): List<PyRequirementVersionSpec?>? {
+        /// Taken from PyRequirementParser, but that function is Private :-(
+        return StreamSupport
+                .stream(StringUtil.tokenize(versionSpecs, ",").spliterator(), false)
+                .map { obj: String -> obj.trim { it <= ' ' } }
+                .map { versionSpec: String? -> parseVersionSpec(versionSpec!!) }
+                .collect(Collectors.toList())
+    }
+
     private fun parseVersionSpec(versionSpec: String): PyRequirementVersionSpec? {
         /// Taken from PyRequirementParser, but that function is Private :-(
         var relation: PyRequirementRelation? = null
