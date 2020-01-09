@@ -26,6 +26,10 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Release History
 
+### 1.0.5
+
+* Package checker works with specific (PEP440) version ranges.
+
 ### 1.0.4
 
 * Checks installed packages against safetydb and alerts for any known vulnerabilities
