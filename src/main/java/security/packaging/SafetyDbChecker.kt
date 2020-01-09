@@ -70,22 +70,31 @@ class SafetyDbChecker {
     private fun parseVersionSpec(versionSpec: String): PyRequirementVersionSpec? {
         /// Taken from PyRequirementParser, but that function is Private :-(
         var relation: PyRequirementRelation? = null
-        if (versionSpec.startsWith("===")) {
-            relation = PyRequirementRelation.STR_EQ
-        } else if (versionSpec.startsWith("==")) {
-            relation = PyRequirementRelation.EQ
-        } else if (versionSpec.startsWith("<=")) {
-            relation = PyRequirementRelation.LTE
-        } else if (versionSpec.startsWith(">=")) {
-            relation = PyRequirementRelation.GTE
-        } else if (versionSpec.startsWith("<")) {
-            relation = PyRequirementRelation.LT
-        } else if (versionSpec.startsWith(">")) {
-            relation = PyRequirementRelation.GT
-        } else if (versionSpec.startsWith("~=")) {
-            relation = PyRequirementRelation.COMPATIBLE
-        } else if (versionSpec.startsWith("!=")) {
-            relation = PyRequirementRelation.NE
+        when {
+            versionSpec.startsWith("===") -> {
+                relation = PyRequirementRelation.STR_EQ
+            }
+            versionSpec.startsWith("==") -> {
+                relation = PyRequirementRelation.EQ
+            }
+            versionSpec.startsWith("<=") -> {
+                relation = PyRequirementRelation.LTE
+            }
+            versionSpec.startsWith(">=") -> {
+                relation = PyRequirementRelation.GTE
+            }
+            versionSpec.startsWith("<") -> {
+                relation = PyRequirementRelation.LT
+            }
+            versionSpec.startsWith(">") -> {
+                relation = PyRequirementRelation.GT
+            }
+            versionSpec.startsWith("~=") -> {
+                relation = PyRequirementRelation.COMPATIBLE
+            }
+            versionSpec.startsWith("!=") -> {
+                relation = PyRequirementRelation.NE
+            }
         }
         if (relation != null) {
             val versionIndex = findFirstNotWhiteSpaceAfter(versionSpec, relation.presentableText.length)

@@ -82,5 +82,20 @@ internal class SafetyDbCheckerTest {
 
     @Test
     fun getMatches() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "aiocouchdb"
+            on { version } doReturn "0.1.0"
+        }
+        assertTrue(instance.hasMatch(testPackage))
+
+        val matches = instance.getMatches(testPackage)
+
+        assertEquals(matches.size, 1)
+        assertEquals(matches[0].v, "<0.6.0")
+        assertEquals(matches[0].advisory, "aiocouchdb 0.6.0 now correctly set members for database security.")
+        assertNull(matches[0].cve)
+        assertEquals(matches[0].id, "pyup.io-25612")
+        assertEquals(matches[0].specs.size, 1)
+        assertEquals(matches[0].specs[0], "<0.6.0")
     }
 }
