@@ -7,8 +7,6 @@ plugins {
 group 'org.tonybaloney.security'
 version '1.0.4'
 
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
 }
@@ -22,20 +20,21 @@ dependencies {
 test {
     useJUnitPlatform()
     dependsOn 'cleanTest'
+    systemProperty "idea.home.path", ideaPath
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2019.3.1'
     type 'PY'
-    plugins 'python'
+    plugins 'python', 'yaml'
 }
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.4</h2>
+      <h2>1.0.5</h2>
       <ul>
-        <li>Checks installed packages against safetydb and alerts for any known vulnerabilities</li>
+        <li>Package checker works with version ranges</li>
       </ul>"""
 }
 
