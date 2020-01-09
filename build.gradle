@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.4'
+version '1.0.5'
 
 repositories {
     mavenCentral()
@@ -34,7 +34,7 @@ patchPluginXml {
     changeNotes """
       <h2>1.0.5</h2>
       <ul>
-        <li>Package checker works with version ranges</li>
+        <li>Package checker works with PEP440 version ranges</li>
       </ul>"""
 }
 
