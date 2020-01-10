@@ -18,4 +18,4 @@ jobs:
         arguments: build -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info
     - uses: eskatos/gradle-command-action@v1
       with:
-        arguments: test -PintellijPublishToken=FAKE_TOKEN -PideaPath=null --info
+        arguments: test -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info

@@ -20,7 +20,7 @@ dependencies {
 test {
     useJUnitPlatform()
     dependsOn 'cleanTest'
-    if (ideaPath != null) {
+    if (ideaPath != "") {
         systemProperty "idea.home.path", ideaPath
     }
 }
