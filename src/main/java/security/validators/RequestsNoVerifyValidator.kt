@@ -8,10 +8,11 @@ import security.helpers.QualifiedNames.getQualifiedName
 
 class RequestsNoVerifyValidator : PyAnnotator() {
     override fun visitPyCallExpression(node: PyCallExpression) {
-        if (node.callee == null) return
         val requestsMethodNames = arrayOf("get", "post", "options", "delete", "put", "patch", "head")
-        if (!listOf(*requestsMethodNames).contains(node.callee!!.name)) return
-        if (!getQualifiedName(node)!!.startsWith("requests.")) return
+        val calleeName = node.callee?.name ?: return
+        if (!listOf(*requestsMethodNames).contains(calleeName)) return
+        val qualifiedName = getQualifiedName(node) ?: return
+        if (!qualifiedName.startsWith("requests.")) return
         if (node.getKeywordArgument("verify") == null) return
         if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
         holder.createWarningAnnotation(node, Checks.RequestsNoVerifyCheck.toString())

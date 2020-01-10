@@ -9,9 +9,10 @@ import security.helpers.QualifiedNames.getQualifiedName
 
 class PyyamlLoadValidator : PyAnnotator() {
     override fun visitPyCallExpression(node: PyCallExpression) {
-        if (node.callee == null) return
-        if (node.callee!!.name != "load") return
-        if (getQualifiedName(node) != "yaml.load") return
+        val calleeName = node.callee?.name ?: return
+        if (calleeName != "load") return
+        val qualifiedName = getQualifiedName(node) ?: return
+        if (!qualifiedName.equals("yaml.load")) return
         val annotation = holder.createWarningAnnotation(node, Checks.PyyamlUnsafeLoadCheck.toString())
         annotation.registerFix((PyyamlSafeLoadFixer() as IntentionAction), node.textRange)
     }
