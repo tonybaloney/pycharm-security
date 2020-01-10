@@ -20,7 +20,9 @@ dependencies {
 test {
     useJUnitPlatform()
     dependsOn 'cleanTest'
-    systemProperty "idea.home.path", ideaPath
+    if (ideaPath != null) {
+        systemProperty "idea.home.path", ideaPath
+    }
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
