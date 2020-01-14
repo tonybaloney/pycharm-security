@@ -26,9 +26,13 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Release History
 
+### 1.0.7
+
+* Fixed a bug when instantiating the vulnerability database at startup. Raised by @m-aciek [#3](https://github.com/tonybaloney/pycharm-security/issues/3)
+
 ### 1.0.6 
 
-* Fixed error when checking incomplete statements
+* Fixed error when checking incomplete statements. Raised by @jugmac00 [#1](https://github.com/tonybaloney/pycharm-security/issues/1)
 
 ### 1.0.5
 

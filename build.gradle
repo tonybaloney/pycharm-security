@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.6'
+version '1.0.7'
 
 repositories {
     mavenCentral()
@@ -31,9 +31,9 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.6</h2>
+      <h2>1.0.7</h2>
       <ul>
-        <li>Fixed error when checking incomplete statements</li>
+        <li>Fixed a bug when instantiating the vulnerability database at startup.</li>
       </ul>"""
 }
 
