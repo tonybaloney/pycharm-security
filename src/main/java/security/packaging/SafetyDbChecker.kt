@@ -24,13 +24,16 @@ class SafetyDbChecker {
         val v: String
     )
 
-    constructor(){
-        SafetyDbChecker(
-                this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json").reader(),
-                this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json").reader())
+    constructor() {
+        load(
+            this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json").reader(),
+            this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json").reader())
+    }
+    constructor (databaseReader: Reader, lookupReader: Reader ) {
+        load(databaseReader, lookupReader);
     }
 
-    constructor (databaseReader: Reader, lookupReader: Reader ) {
+    private fun load(databaseReader: Reader, lookupReader: Reader) {
         val recordLookupType = object : TypeToken<Map<String?, List<String>>>() {}.type
         lookup = Gson().fromJson<Map<String?, List<String>>>(lookupReader, recordLookupType)
 
