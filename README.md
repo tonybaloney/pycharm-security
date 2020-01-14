@@ -26,6 +26,10 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Release History
 
+### 1.0.6 
+
+* Fixed error when checking incomplete statements
+
 ### 1.0.5
 
 * Package checker works with specific (PEP440) version ranges.

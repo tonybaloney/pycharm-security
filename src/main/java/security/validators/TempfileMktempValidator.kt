@@ -9,9 +9,10 @@ import security.helpers.QualifiedNames.getQualifiedName
 
 class TempfileMktempValidator : PyAnnotator() {
     override fun visitPyCallExpression(node: PyCallExpression) {
-        if (node.callee == null) return
-        if (node.callee!!.name != "mktemp") return
-        if (getQualifiedName(node) != "tempfile.mktemp") return
+        val calleeName = node.callee?.name ?: return
+        if (calleeName != "mktemp") return
+        val qualifiedName = getQualifiedName(node) ?: return
+        if (qualifiedName != "tempfile.mktemp") return
         val annotation = holder.createWarningAnnotation(node, Checks.TempfileMktempCheck.toString())
         annotation.registerFix((TempfileMksFixer() as IntentionAction), node.textRange)
     }
