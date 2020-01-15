@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.7'
+version '1.0.8'
 
 repositories {
     mavenCentral()
@@ -33,9 +33,11 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.7</h2>
+      <h2>1.0.8</h2>
       <ul>
-        <li>Fixed a bug when instantiating the vulnerability database at startup.</li>
+        <li>Notification summarising package scan, even when no issues are found</li>
+        <li>Issues warning notification when no Python SDK is configured</li>
+        <li>Various minor bug fixes</li>
       </ul>"""
 }
 

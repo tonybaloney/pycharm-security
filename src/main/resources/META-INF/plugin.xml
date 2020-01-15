@@ -25,12 +25,11 @@
     <depends>com.intellij.modules.python</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="security.ProjectService" />
         <backgroundPostStartupActivity implementation="security.packaging.PythonPackageVulnerabilityStartupTask"/>
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
         <pyAnnotator implementation="security.validators.PyyamlLoadValidator"/>
-        <pyAnnotator implementation="security.validators.FlaskDebugModeAnnotator"/>
+        <pyAnnotator implementation="security.validators.FlaskDebugModeValidator"/>
         <pyAnnotator implementation="security.validators.RequestsNoVerifyValidator"/>
         <pyAnnotator implementation="security.validators.HttpxNoVerifyValidator"/>
         <pyAnnotator implementation="security.validators.SubprocessCallShellModeValidator"/>
