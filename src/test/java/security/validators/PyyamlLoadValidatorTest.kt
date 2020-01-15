@@ -18,7 +18,7 @@ import security.Checks
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DjangoDebugModeSettingsValidatorTest: SecurityTestTask() {
+class PyyamlLoadValidatorTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -33,47 +33,41 @@ class DjangoDebugModeSettingsValidatorTest: SecurityTestTask() {
     }
 
     @Test
-    fun `test django settings file with debug mode on`(){
+    fun `test yaml load`(){
         var code = """
-            DEBUG = True
+            import yaml
+            yaml.load()
         """.trimIndent()
         testCodeString(code, 1)
     }
 
     @Test
-    fun `test django settings file with debug mode off`(){
+    fun `test yaml safe_load`(){
         var code = """
-            DEBUG = False
-        """.trimIndent()
-        testCodeString(code, 0)
-    }
-
-    @Test
-    fun `test django settings with no debug mode`(){
-        var code = """
-            X = 1
+            import yaml
+            yaml.safe_load()
         """.trimIndent()
         testCodeString(code, 0)
     }
 
     private fun testCodeString(code: String, times: Int = 1){
         val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(Checks.DjangoDebugModeCheck.toString())) } doReturn(dummyAnnotation);
+            on { createWarningAnnotation(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString())) } doReturn(dummyAnnotation);
         }
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("settings.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val testValidator = DjangoDebugModeSettingsValidator()
+            val testValidator = PyyamlLoadValidator()
             testValidator.holder = mockHolder
 
-            val expr: @NotNull MutableCollection<PyAssignmentStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssignmentStatement::class.java)
+            val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             for (e in expr) {
                 if (expr != null) {
-                    testValidator.visitPyAssignmentStatement(e)
+                    testValidator.visitPyCallExpression(e)
                 }
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.DjangoDebugModeCheck.toString()))
+            Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString()))
         }
     }
 }
