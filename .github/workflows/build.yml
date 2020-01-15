@@ -19,3 +19,8 @@ jobs:
     - uses: eskatos/gradle-command-action@v1
       with:
         arguments: test -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info
+    - uses: eskatos/gradle-command-action@v1
+      with:
+        arguments: jacocoTestReport -PintellijPublishToken=FAKE_TOKEN
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.5
