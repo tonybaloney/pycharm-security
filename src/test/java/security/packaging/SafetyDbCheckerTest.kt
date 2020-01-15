@@ -3,10 +3,12 @@ package security.packaging
 import com.jetbrains.python.packaging.PyPackage
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.After
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.times
 import org.mockito.Mockito.validateMockitoUsage
 import java.io.StringReader
 
@@ -59,6 +61,8 @@ internal class SafetyDbCheckerTest {
             on { version } doReturn "0.1.0"
         }
         assertTrue(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
     }
 
     @Test
@@ -68,6 +72,8 @@ internal class SafetyDbCheckerTest {
             on { version } doReturn "0.6.0"
         }
         assertTrue(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(2)).version
     }
 
     @Test
@@ -77,6 +83,8 @@ internal class SafetyDbCheckerTest {
             on { version } doReturn "0.4.0"
         }
         assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(2)).version
     }
 
     @Test
@@ -86,6 +94,7 @@ internal class SafetyDbCheckerTest {
             on { version } doReturn "0.1.0"
         }
         assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
     }
 
     @Test
@@ -97,6 +106,8 @@ internal class SafetyDbCheckerTest {
         assertTrue(instance.hasMatch(testPackage))
 
         val matches = instance.getMatches(testPackage)
+        verify(testPackage, times(2)).name
+        verify(testPackage, times(2)).version
 
         assertEquals(matches.size, 1)
         assertEquals(matches[0].v, "<0.6.0")

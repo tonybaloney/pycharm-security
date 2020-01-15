@@ -1,6 +1,7 @@
 package security
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -10,6 +11,11 @@ class SimpleTest: BasePlatformTestCase() {
     @BeforeEach
     override fun setUp() {
         super.setUp()
+    }
+
+    @AfterEach
+    override fun tearDown(){
+        super.tearDown()
     }
 
     @Test
