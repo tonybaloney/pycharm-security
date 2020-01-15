@@ -24,3 +24,5 @@ jobs:
         arguments: jacocoTestReport -PintellijPublishToken=FAKE_TOKEN
     - name: Codecov
       uses: codecov/codecov-action@v1.0.5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
