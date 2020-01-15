@@ -142,9 +142,7 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
 
             val testValidator = RequestsNoVerifyValidator()
             testValidator.holder = mockHolder
-            if (expr != null) {
-                testValidator.visitPyCallExpression(expr as PyCallExpression)
-            }
+            testValidator.visitPyCallExpression(expr as PyCallExpression)
             verify(mockHolder, times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.RequestsNoVerifyCheck.toString()))
         }
     }

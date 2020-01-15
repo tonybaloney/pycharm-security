@@ -68,10 +68,8 @@ class DjangoDebugModeSettingsValidatorTest: SecurityTestTask() {
 
             val expr: @NotNull MutableCollection<PyAssignmentStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssignmentStatement::class.java)
             assertNotNull(expr)
-            for (e in expr) {
-                if (expr != null) {
-                    testValidator.visitPyAssignmentStatement(e)
-                }
+            expr.forEach { e ->
+                testValidator.visitPyAssignmentStatement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.DjangoDebugModeCheck.toString()))
         }
