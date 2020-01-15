@@ -3,6 +3,7 @@
 <a href="https://github.com/tonybaloney/pycharm-security"><img alt="GitHub Actions status" src="https://github.com/tonybaloney/pycharm-security/workflows/CI/badge.svg"></a>
 [![Downloads](https://img.shields.io/jetbrains/plugin/v/13609-python-security.svg)](https://plugins.jetbrains.com/plugin/13609-python-security)
 [![Version](https://img.shields.io/jetbrains/plugin/d/13609-python-security.svg)](https://plugins.jetbrains.com/plugin/13609-python-security)
+[![codecov](https://codecov.io/gh/tonybaloney/pycharm-security/branch/master/graph/badge.svg)](https://codecov.io/gh/tonybaloney/pycharm-security)
 
 ![](src/main/resources/META-INF/pluginIcon.svg)
 
