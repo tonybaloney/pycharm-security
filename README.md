@@ -31,6 +31,12 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Release History
 
+### 1.0.8 
+
+* Notification summarising package scan, even when no issues are found
+* Issues warning notification when no Python SDK is configured
+* Various minor bug fixes
+
 ### 1.0.7
 
 * Fixed a bug when instantiating the vulnerability database at startup. Raised by @m-aciek [#3](https://github.com/tonybaloney/pycharm-security/issues/3)
