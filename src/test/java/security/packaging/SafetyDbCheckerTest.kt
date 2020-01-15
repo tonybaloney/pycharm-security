@@ -26,7 +26,25 @@ internal class SafetyDbCheckerTest {
                 ],
              "bananas": [
                 "<1.0.0,>=0.5.0"
-             ]
+             ],
+             "eee": [
+                 "===0.5.0"
+              ],
+              "ee": [
+                  "==0.5.0"
+               ],
+               "lte": [
+                   "<=0.5.0"
+              ],
+              "ne": [
+                   "!=0.5.0"
+              ],
+              "gt": [
+                     ">0.5.0"
+                ],
+              "co": [
+                   "~=0.5.0"
+              ]
             }
         """.trimIndent()
         val testData = """
@@ -77,7 +95,7 @@ internal class SafetyDbCheckerTest {
     }
 
     @Test
-    fun testVulnPackageWithComplexRangeDoesNotHaveMatch() {
+    fun `test vulnerable package with complex range does not have match 1`() {
         val testPackage = mock<PyPackage> {
             on { name } doReturn "bananas"
             on { version } doReturn "0.4.0"
@@ -85,6 +103,72 @@ internal class SafetyDbCheckerTest {
         assertFalse(instance.hasMatch(testPackage))
         verify(testPackage, times(1)).name
         verify(testPackage, times(2)).version
+    }
+
+    @Test
+    fun `test vulnerable package with complex range does not have match 2`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "eee"
+            on { version } doReturn "0.4.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
+    }
+
+    @Test
+    fun `test vulnerable package with complex range does not have match 3`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "ee"
+            on { version } doReturn "0.4.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
+    }
+
+    @Test
+    fun `test vulnerable package with complex range does not have match 4`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "lte"
+            on { version } doReturn "0.6.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
+    }
+
+    @Test
+    fun `test vulnerable package with complex range does not have match 5`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "ne"
+            on { version } doReturn "0.5.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
+    }
+
+    @Test
+    fun `test vulnerable package with complex range does not have match 6`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "gt"
+            on { version } doReturn "0.5.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
+    }
+
+    @Test
+    fun `test vulnerable package with complex range does not have match 7`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "co"
+            on { version } doReturn "0.5.1"
+        }
+        assertTrue(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+        verify(testPackage, times(1)).version
     }
 
     @Test

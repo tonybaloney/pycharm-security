@@ -8,11 +8,8 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
-import com.jetbrains.python.psi.LanguageLevel
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyElementGenerator
 
 class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     override fun getText(): String {
@@ -29,20 +26,20 @@ class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        val call = PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java)
-        val elementGenerator = PyElementGenerator.getInstance(project)
-        if (call == null) return
-        val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), call.text.replace("load", "safe_load")) as PyCallExpression
-        ApplicationManager.getApplication().runWriteAction { call.replace(newEl) }
+        val callElement = getCallElementAtCaret(file, editor) ?: return
+        val newElement = getNewExpressionAtCaret(file, editor, project) ?: return
+        ApplicationManager.getApplication().runWriteAction { callElement.replace(newElement) }
+    }
+
+    fun getNewExpressionAtCaret(file: PsiFile, editor: Editor, project: Project): PyCallExpression? {
+        return getNewCallExpressiontAtCaret(file, editor, project, "load", "safe_load")
     }
 
     override fun startInWriteAction(): Boolean {
-        return false
+        return true
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        val element = descriptor.psiElement
-                ?: // stale PSI
-                return
+        return
     }
 }

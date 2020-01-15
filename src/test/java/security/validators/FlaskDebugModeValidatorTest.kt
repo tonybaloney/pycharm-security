@@ -76,10 +76,8 @@ class FlaskDebugModeValidatorTest: SecurityTestTask() {
 
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
-            for (e in expr) {
-                if (expr != null) {
-                    testValidator.visitPyCallExpression(e)
-                }
+            expr.forEach { e ->
+                testValidator.visitPyCallExpression(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.FlaskDebugModeCheck.toString()))
         }

@@ -9,7 +9,7 @@ class DjangoDebugModeSettingsValidator: PyAnnotator() {
         if (node?.containingFile?.name != "settings.py") return;
         val leftExpression = node.leftHandSideExpression?.text ?: return
         if (leftExpression  != "DEBUG") return;
-        val assignedValue = node?.assignedValue ?: return
+        val assignedValue = node.assignedValue ?: return
         if (assignedValue.textMatches("True").not()) return;
         holder.createWarningAnnotation(node, Checks.DjangoDebugModeCheck.toString())
     }

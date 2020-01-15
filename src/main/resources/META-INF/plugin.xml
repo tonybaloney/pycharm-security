@@ -6,6 +6,9 @@
     <description><![CDATA[
     Analyzes potential security flaws in your Python code and suggests fixes. Designed to find common security issues in Python code.<br>
 
+    <h2>Package Scanner</h2>
+    The Python-Security plugin will scan your installed Python packages against SafetyDB on startup or via a menu item. Any known security vulnerabilities are raised as warnings.
+
     <h2>Current checks and fixes</h2>
     <ul>
      <li>Use of unsafe loading of YAML files</li>
@@ -13,6 +16,7 @@
      <li>Use of MITM exposure when making HTTP requests with requests or httpx</li>
      <li>Bypassing of temporary file creation to inject content</li>
      <li>Insecure configuration of Django debug mode</li>
+     <li>Insecure configuration of Flask debug mode</li>
     </ul>
     ]]></description>
 

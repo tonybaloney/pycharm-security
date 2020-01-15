@@ -146,9 +146,7 @@ class HttpxNoVerifyValidatorTest: SecurityTestTask() {
 
             val testValidator = HttpxNoVerifyValidator()
             testValidator.holder = mockHolder
-            if (expr != null) {
-                testValidator.visitPyCallExpression(expr as PyCallExpression)
-            }
+            testValidator.visitPyCallExpression(expr as PyCallExpression)
             verify(mockHolder, times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.toString()))
         }
     }

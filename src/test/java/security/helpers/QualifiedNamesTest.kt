@@ -1,28 +1,22 @@
-package security.validators
+package security.helpers
 
 import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
+import com.jetbrains.python.psi.resolve.PyResolveContext
 import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito
-import security.Checks
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PyyamlLoadValidatorTest: SecurityTestTask() {
+class QualifiedNamesTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -37,39 +31,34 @@ class PyyamlLoadValidatorTest: SecurityTestTask() {
     }
 
     @Test
-    fun `test yaml load`(){
+    fun `test direct reference`(){
         var code = """
-            import yaml
-            yaml.load()
+            import math
+            math.floor(1.9)
         """.trimIndent()
-        testCodeString(code, 1)
+        assertEquals(getQualifiedName(code), "math.floor")
     }
 
     @Test
-    fun `test yaml safe_load`(){
+    fun `test direct reference no arguments`(){
         var code = """
-            import yaml
-            yaml.safe_load()
+            import math
+            math.floor()
         """.trimIndent()
-        testCodeString(code, 0)
+        assertEquals(getQualifiedName(code), "math.floor")
     }
 
-    private fun testCodeString(code: String, times: Int = 1){
-        val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString())) } doReturn(dummyAnnotation);
-        }
+    private fun getQualifiedName(code: String): String?{
+        var name: String? = null
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val testValidator = PyyamlLoadValidator()
-            testValidator.holder = mockHolder
-
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
-                testValidator.visitPyCallExpression(e)
+                name = QualifiedNames.getQualifiedName(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString()))
         }
+        return name
     }
 }
