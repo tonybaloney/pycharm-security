@@ -2,43 +2,77 @@ package security.packaging
 
 import com.google.common.collect.Sets
 import com.intellij.notification.NotificationGroup
+import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
-import com.jetbrains.python.PyBundle
 import com.jetbrains.python.packaging.PyPackageManager
 import com.jetbrains.python.sdk.PythonSdkType
-import com.jetbrains.python.sdk.PythonSdkUpdater
 import com.jetbrains.python.sdk.PythonSdkUtil
 
 object PyPackageSecurityScan {
-    private val LOG = Logger.getInstance(PyPackageSecurityScan::class.java)
-    private val NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
+    private var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
 
     fun checkPackages(project: Project){
-        for (sdk in getPythonSdks(project)) {
+        var pythonSdks = getPythonSdks(project)
+        if (pythonSdks.isEmpty()){
+            NOTIFICATION_GROUP
+                    .createNotification("Could not check Python packages", null,
+                            "Could not verify security of Python packages, unable to locate configured Python Interpreter. Please configure your interpreter.",
+                            NotificationType.INFORMATION)
+                    .notify(project)
+            return;
+        }
+        for (sdk in pythonSdks) {
             val packageManager = PyPackageManager.getInstance(sdk)
             packageManager.refreshAndGetPackages(true)
             if (packageManager.packages == null)
             {
-                LOG.error("Could not locate package cache to check for security exceptions.")
+                NOTIFICATION_GROUP
+                        .createNotification("Cannot check package security", null,
+                                "Could not locate the package manager.",
+                                NotificationType.INFORMATION)
+                        .notify(project)
                 return;
             }
             var packageChecker = SafetyDbChecker()
-
+            var matches = 0;
             for (pack in packageManager.packages!!){
-                if (packageChecker.hasMatch(pack)){
+                if (packageChecker.hasMatch(pack)) {
                     for (issue in packageChecker.getMatches(pack)) {
+                        matches++;
                         NOTIFICATION_GROUP
                                 .createNotification("Found Security Vulnerability in $pack package", null,
-                                        issue.advisory,
-                                        NotificationType.WARNING)
-                                .notify(project)
+                                        renderMessage(issue),
+                                        NotificationType.WARNING,
+                                        NotificationListener.URL_OPENING_LISTENER
+                                        ).notify(project)
                     }
                 }
             }
+            if (matches == 0){
+                NOTIFICATION_GROUP
+                        .createNotification("Completed checking packages", null,
+                                "Found no known security issues with your installed packages.",
+                                NotificationType.INFORMATION)
+                        .notify(project)
+            } else {
+                NOTIFICATION_GROUP
+                        .createNotification("Completed checking packages", null,
+                                "Found $matches potential security issues with your installed packages.",
+                                NotificationType.WARNING)
+                        .notify(project)
+            }
+
+        }
+    }
+
+    private fun renderMessage(issue: SafetyDbChecker.SafetyDbRecord) : String{
+        return if (issue.cve.isNullOrEmpty()){
+            "${issue.advisory}"
+        } else {
+            "${issue.advisory}<br>See <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=${issue.cve}'>${issue.cve}</a>"
         }
     }
 
