@@ -36,7 +36,8 @@ This plugin will check the installed packages in your Python projects against th
 
 ### 1.0.10
 
-* HLPW100", "Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use compare_digest() instead.
+* PW100 uses `secrets.compare_digest` if the Python version is 3.7+
+* Fixed bug in test suite (doesn't affect plugin)
 
 ### 1.0.9
 
