@@ -10,8 +10,8 @@ Pycharm-security is a plugin for PyCharm, or JetBrains IDEs with the Python plug
 
 The plugin looks at your Python code for common security vulnerabilities and suggests fixes.
 
-.. image:: https://readthedocs.org/projects/wily/badge/?version=latest
-    :target: https://wily.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/pycharm-security/badge/?version=latest
+    :target: https://pycharm-security.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 .. image:: https://github.com/tonybaloney/pycharm-security/workflows/CI/badge.svg
     :target: https://github.com/tonybaloney/pycharm-security/actions
