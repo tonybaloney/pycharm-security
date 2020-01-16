@@ -5,7 +5,7 @@
 [![Version](https://img.shields.io/jetbrains/plugin/d/13609-python-security.svg)](https://plugins.jetbrains.com/plugin/13609-python-security)
 [![codecov](https://codecov.io/gh/tonybaloney/pycharm-security/branch/master/graph/badge.svg)](https://codecov.io/gh/tonybaloney/pycharm-security)
 
-![](src/main/resources/META-INF/pluginIcon.svg)
+<img src="src/main/resources/META-INF/pluginIcon.svg" width="25%"/>
 
 A plugin to run security checks for common flaws in Python code and suggest quick fixes.
 
