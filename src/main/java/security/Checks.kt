@@ -53,7 +53,7 @@ object Checks {
         }
 
         override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
-            BrowserUtil.browse("https://github.com/tonybaloney/pycharm-security/blob/master/doc/checks/${check.Code}.md")
+            BrowserUtil.browse("https://pycharm-security.readthedocs.io/en/latest/checks/${check.Code}.html")
         }
     }
 }

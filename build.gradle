@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.10'
+version '1.0.11'
 
 repositories {
     mavenCentral()
@@ -33,9 +33,9 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.10</h2>
+      <h2>1.0.11</h2>
       <ul>
-        <li>Made the compare_digest module use secrets if available</li>
+        <li>Links to the new documentation website</li>
       </ul>"""
 }
 
