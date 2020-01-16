@@ -21,7 +21,7 @@ class InsecureHashValidator : PyAnnotator() {
         val calleeName = node.callee?.name ?: return
         if (calleeName != "new") return
         val qualifiedName = getQualifiedName(node) ?: return
-        if (qualifiedName != "hashlib.new") return
+        if (qualifiedName.startsWith("hashlib.").not()) return
         if (node.arguments.isEmpty()) return
         var nameKwArg = node.getKeywordArgument("name")
         var firstArg = node.arguments[0]
