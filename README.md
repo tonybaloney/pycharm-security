@@ -21,7 +21,8 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Current checks
 
-* [HL100](doc/checks/HL100.md) md4, md5, sha, and sha1 hashing algorithms should not be used for obfuscating or protecting data
+* [PW100](doc/checks/PW100.md) Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use compare_digest() instead.
+* [HL100](doc/checks/HL100.md) MD4, MD5, SHA, and SHA1 hashing algorithms should not be used for obfuscating or protecting data
 * [HL101](doc/checks/HL101.md) MD5, SHA-1, RIPEMD-160, Whirlpool and the SHA-256 / SHA-512 hash algorithms all vulnerable to length-extension attacks and should not be used for obfuscating or protecting data
 * [YML100](doc/checks/YML100.md) Use of `yaml.load()` can cause arbitrary code execution. Suggests and has a "Quick Fix" to replace with `safe_load()` using existing arguments
 * [FLK100](doc/checks/FLK100.md) Use of `debug=True` when instantiating flask applications
@@ -32,6 +33,10 @@ This plugin will check the installed packages in your Python projects against th
 * [DJG100](doc/checks/DJG100.md) Setting `DEBUG = True` in a `settings.py` file (assumed Django project settings)
 
 ## Release History
+
+### 1.0.10
+
+* HLPW100", "Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use compare_digest() instead.
 
 ### 1.0.9
 
