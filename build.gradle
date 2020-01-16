@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.8'
+version '1.0.9'
 
 repositories {
     mavenCentral()
@@ -33,11 +33,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.8</h2>
+      <h2>1.0.9</h2>
       <ul>
-        <li>Notification summarising package scan, even when no issues are found</li>
-        <li>Issues warning notification when no Python SDK is configured</li>
-        <li>Various minor bug fixes</li>
+        <li>Added hashlib test for cryptographically weak algorithm usage</li>
+        <li>Added hashlib check for algorithms vulnerable to length-attacks</li>
       </ul>"""
 }
 
