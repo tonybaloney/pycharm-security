@@ -26,11 +26,11 @@ class InsecureHashValidator : PyAnnotator() {
         var nameKwArg = node.getKeywordArgument("name")
         var firstArg = node.arguments[0]
         if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
-            if (listOf(*algorithms).contains((nameKwArg).stringValue).not()) return
-            holder.createWarningAnnotation(node, check.toString())
+            if (listOf(*algorithms).contains((nameKwArg).stringValue))
+                holder.createWarningAnnotation(node, check.toString())
         } else if (firstArg is PyStringLiteralExpression){
-            if (listOf(*algorithms).contains((firstArg).stringValue).not()) return
-            holder.createWarningAnnotation(node, check.toString())
+            if (listOf(*algorithms).contains((firstArg).stringValue))
+                holder.createWarningAnnotation(node, check.toString())
         }
     }
 
@@ -38,7 +38,7 @@ class InsecureHashValidator : PyAnnotator() {
         val calleeName = node.callee?.name ?: return
         if (listOf(*algorithms).contains(calleeName).not()) return
         val qualifiedName = getQualifiedName(node) ?: return
-        if (qualifiedName.startsWith("hashlib.").not()) return
-        holder.createWarningAnnotation(node, check.toString())
+        if (qualifiedName.startsWith("hashlib."))
+            holder.createWarningAnnotation(node, check.toString())
     }
 }

@@ -1,9 +1,11 @@
 package security.validators
 
+import com.intellij.codeInsight.intention.IntentionAction
 import com.jetbrains.python.psi.PyBinaryExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.fixes.UseHmacCompareDigestFixer
 
 class TimingAttackValidator: PyAnnotator() {
     val passwordVariableNames = arrayOf("password", "PASSWORD", "passwd", "secret", "token")
@@ -15,17 +17,17 @@ class TimingAttackValidator: PyAnnotator() {
         if (rightExpression is PyReferenceExpression)
         {
             if (looksLikeAPassword(rightExpression))
-                holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
+                holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString()).registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
 
         }
         if (leftExpression is PyReferenceExpression)
         {
             if (looksLikeAPassword(leftExpression))
-                holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
+                holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString()).registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
         }
     }
 
     private fun looksLikeAPassword(expression: PyReferenceExpression): Boolean {
-        return listOf<String>(*passwordVariableNames).contains(expression.name)
+        return listOf(*passwordVariableNames).contains(expression.name)
     }
 }
