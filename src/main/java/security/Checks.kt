@@ -1,5 +1,11 @@
 package security
 
+import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.ide.BrowserUtil
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiFile
+
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -16,6 +22,38 @@ object Checks {
     class CheckType(var Code: String, var Message: String) {
         override fun toString(): String {
             return "$Code: $Message"
+        }
+
+        fun getIntentionAction(): IntentionAction {
+            return CheckTypeIntentionAction(this)
+        }
+    }
+
+    class CheckTypeIntentionAction : IntentionAction {
+        val check: CheckType
+
+        constructor(check: CheckType) {
+            this.check = check
+        }
+
+        override fun startInWriteAction(): Boolean {
+            return false
+        }
+
+        override fun getFamilyName(): String {
+            return "security"
+        }
+
+        override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean {
+            return true
+        }
+
+        override fun getText(): String {
+            return "Read Documentation"
+        }
+
+        override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
+            BrowserUtil.browse("https://github.com/tonybaloney/pycharm-security/blob/master/doc/checks/${check.Code}.md")
         }
     }
 }

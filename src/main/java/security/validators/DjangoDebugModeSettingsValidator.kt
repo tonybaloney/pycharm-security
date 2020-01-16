@@ -11,6 +11,6 @@ class DjangoDebugModeSettingsValidator: PyAnnotator() {
         if (leftExpression  != "DEBUG") return;
         val assignedValue = node.assignedValue ?: return
         if (assignedValue.textMatches("True").not()) return;
-        holder.createWarningAnnotation(node, Checks.DjangoDebugModeCheck.toString())
+        holder.createWarningAnnotation(node, Checks.DjangoDebugModeCheck.toString()).registerFix(Checks.DjangoDebugModeCheck.getIntentionAction())
     }
 }

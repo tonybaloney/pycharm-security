@@ -15,5 +15,6 @@ class TempfileMktempValidator : PyAnnotator() {
         if (qualifiedName != "tempfile.mktemp") return
         val annotation = holder.createWarningAnnotation(node, Checks.TempfileMktempCheck.toString())
         annotation.registerFix((TempfileMksFixer() as IntentionAction), node.textRange)
+        annotation.registerFix(Checks.TempfileMktempCheck.getIntentionAction())
     }
 }

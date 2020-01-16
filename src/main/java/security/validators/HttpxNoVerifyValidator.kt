@@ -15,6 +15,6 @@ class HttpxNoVerifyValidator : PyAnnotator() {
         if (!qualifiedName.startsWith("httpx.")) return
         if (node.getKeywordArgument("verify") == null) return
         if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
-        holder.createWarningAnnotation(node, Checks.HttpxNoVerifyCheck.toString())
+        holder.createWarningAnnotation(node, Checks.HttpxNoVerifyCheck.toString()).registerFix(Checks.HttpxNoVerifyCheck.getIntentionAction())
     }
 }

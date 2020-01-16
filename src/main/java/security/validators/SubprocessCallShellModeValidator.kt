@@ -12,6 +12,6 @@ class SubprocessCallShellModeValidator : PyAnnotator() {
         if (qualifiedName != "subprocess.call") return
         val shellArgument = node.getKeywordArgument("shell") ?: return
         if ((shellArgument as PyBoolLiteralExpression?)!!.value.not()) return
-        holder.createWarningAnnotation(node, Checks.SubprocessCallShellCheck.toString())
+        holder.createWarningAnnotation(node, Checks.SubprocessCallShellCheck.toString()).registerFix(Checks.SubprocessCallShellCheck.getIntentionAction())
     }
 }

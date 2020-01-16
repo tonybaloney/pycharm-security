@@ -11,19 +11,24 @@ class TimingAttackValidator: PyAnnotator() {
     val passwordVariableNames = arrayOf("password", "PASSWORD", "passwd", "secret", "token")
 
     override fun visitPyBinaryExpression(node: PyBinaryExpression?) {
-        var a = 1
-        val rightExpression = node?.rightExpression ?: return
-        val leftExpression = node?.leftExpression ?: return
+        if (node == null) return
+        val rightExpression = node.rightExpression ?: return
+        val leftExpression = node.leftExpression ?: return
         if (rightExpression is PyReferenceExpression)
         {
-            if (looksLikeAPassword(rightExpression))
-                holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString()).registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
-
+            if (looksLikeAPassword(rightExpression)) {
+                var an = holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
+                an.registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
+                an.registerFix(Checks.TimingAttackCheck.getIntentionAction())
+            }
         }
         if (leftExpression is PyReferenceExpression)
         {
-            if (looksLikeAPassword(leftExpression))
-                holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString()).registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
+            if (looksLikeAPassword(leftExpression)) {
+                var an = holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
+                an.registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
+                an.registerFix(Checks.TimingAttackCheck.getIntentionAction())
+            }
         }
     }
 

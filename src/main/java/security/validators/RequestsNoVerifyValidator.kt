@@ -15,6 +15,6 @@ class RequestsNoVerifyValidator : PyAnnotator() {
         if (!qualifiedName.startsWith("requests.")) return
         if (node.getKeywordArgument("verify") == null) return
         if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
-        holder.createWarningAnnotation(node, Checks.RequestsNoVerifyCheck.toString())
+        holder.createWarningAnnotation(node, Checks.RequestsNoVerifyCheck.toString()).registerFix(Checks.RequestsNoVerifyCheck.getIntentionAction())
     }
 }

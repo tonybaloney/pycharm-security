@@ -13,6 +13,6 @@ class FlaskDebugModeValidator : PyAnnotator() {
         if ((node.firstChild as PyReferenceExpression).asQualifiedName().toString() != "app.run") return
         if (node.getKeywordArgument("debug") == null) return
         if (!(node.getKeywordArgument("debug") as PyBoolLiteralExpression?)!!.value) return
-        holder.createWarningAnnotation(node, Checks.FlaskDebugModeCheck.toString())
+        holder.createWarningAnnotation(node, Checks.FlaskDebugModeCheck.toString()).registerFix(Checks.FlaskDebugModeCheck.getIntentionAction())
     }
 }
