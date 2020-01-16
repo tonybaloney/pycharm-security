@@ -21,6 +21,8 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Current checks
 
+* [HL100](doc/checks/HL100.md) md4, md5, sha, and sha1 hashing algorithms should not be used for obfuscating or protecting data
+* [HL101](doc/checks/HL101.md) MD5, SHA-1, RIPEMD-160, Whirlpool and the SHA-256 / SHA-512 hash algorithms all vulnerable to length-extension attacks and should not be used for obfuscating or protecting data
 * [YML100](doc/checks/YML100.md) Use of `yaml.load()` can cause arbitrary code execution. Suggests and has a "Quick Fix" to replace with `safe_load()` using existing arguments
 * [FLK100](doc/checks/FLK100.md) Use of `debug=True` when instantiating flask applications
 * [RQ100](doc/checks/RQ100.md) Use of `verify=False` when making HTTP requests using the `requests` package
