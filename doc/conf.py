@@ -52,8 +52,11 @@ html_theme_options = {
     'fixed_sidebar': True,
     'sidebar_width': '330px',
     'page_width': '70%',
-    'extra_nav_links': {'JetBrains Marketplace': "https://plugins.jetbrains.com/plugin/13609-python-security"}
+    'extra_nav_links': {'JetBrains Marketplace': "https://plugins.jetbrains.com/plugin/13609-python-security"},
+    'show_powered_by': False
 }
+html_show_copyright = False
+html_show_sphinx = False
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
