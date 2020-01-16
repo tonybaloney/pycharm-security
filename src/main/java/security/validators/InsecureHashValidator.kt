@@ -25,15 +25,12 @@ class InsecureHashValidator : PyAnnotator() {
         if (node.arguments.isEmpty()) return
         var nameKwArg = node.getKeywordArgument("name")
         var firstArg = node.arguments[0]
-        try {
-            if (nameKwArg != null) {
-                if (listOf(*algorithms).contains((nameKwArg as PyStringLiteralExpression).stringValue).not()) return
-            } else {
-                if (listOf(*algorithms).contains((firstArg as PyStringLiteralExpression).stringValue).not()) return
-            }
+        if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
+            if (listOf(*algorithms).contains((nameKwArg).stringValue).not()) return
             holder.createWarningAnnotation(node, check.toString())
-        } catch (c: ClassCastException){
-            return
+        } else if (firstArg is PyStringLiteralExpression){
+            if (listOf(*algorithms).contains((firstArg).stringValue).not()) return
+            holder.createWarningAnnotation(node, check.toString())
         }
     }
 
