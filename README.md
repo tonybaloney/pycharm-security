@@ -4,6 +4,7 @@
 [![Downloads](https://img.shields.io/jetbrains/plugin/v/13609-python-security.svg)](https://plugins.jetbrains.com/plugin/13609-python-security)
 [![Version](https://img.shields.io/jetbrains/plugin/d/13609-python-security.svg)](https://plugins.jetbrains.com/plugin/13609-python-security)
 [![codecov](https://codecov.io/gh/tonybaloney/pycharm-security/branch/master/graph/badge.svg)](https://codecov.io/gh/tonybaloney/pycharm-security)
+[![Documentation Status](https://readthedocs.org/projects/pycharm-security/badge/?version=latest)](https://pycharm-security.readthedocs.io/en/latest/?badge=latest)
 
 <img src="doc/_static/logo.png" width="25%"/>
 
@@ -12,6 +13,8 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 Available on the [Jetbrains plugin marketplace](https://plugins.jetbrains.com/plugin/13609-python-security)
 
 ![](doc/_static/screenshot.png)
+
+Documentation is available on [readthedocs](https://pycharm-security.readthedocs.io/en/latest/?badge=latest).
 
 ## SafetyDB
 
@@ -22,6 +25,10 @@ This plugin will check the installed packages in your Python projects against th
 ## Current checks
 
 See [Supported Checks](doc/checks.md) for a current list.
+
+## Current quick fixes
+
+See [Fixes](doc/fixes.md) for a current list.
 
 ## Release History
 
