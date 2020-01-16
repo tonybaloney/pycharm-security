@@ -33,6 +33,11 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Release History
 
+### 1.0.9
+
+* Added hashlib test for cryptographically weak algorithm usage
+* Added hashlib check for algorithms vulnerable to length-attacks
+
 ### 1.0.8 
 
 * Notification summarising package scan, even when no issues are found
