@@ -54,7 +54,7 @@ class InsecureHashValidatorTest: SecurityTestTask() {
     fun `test new hash with more-secure algorithm`(){
         var code = """
             import hashlib
-            hashlib.new('sha256')
+            hashlib.new('blake2')
         """.trimIndent()
         testCodeString(code, 0, Checks.InsecureHashAlgorithms)
     }
