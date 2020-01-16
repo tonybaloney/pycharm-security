@@ -5,7 +5,7 @@ import com.jetbrains.python.psi.PyBinaryExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
-import security.fixes.UseHmacCompareDigestFixer
+import security.fixes.UseCompareDigestFixer
 
 class TimingAttackValidator: PyAnnotator() {
     val passwordVariableNames = arrayOf("password", "PASSWORD", "passwd", "secret", "token")
@@ -18,7 +18,7 @@ class TimingAttackValidator: PyAnnotator() {
         {
             if (looksLikeAPassword(rightExpression)) {
                 var an = holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
-                an.registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
+                an.registerFix((UseCompareDigestFixer() as IntentionAction), node.textRange)
                 an.registerFix(Checks.TimingAttackCheck.getIntentionAction())
             }
         }
@@ -26,7 +26,7 @@ class TimingAttackValidator: PyAnnotator() {
         {
             if (looksLikeAPassword(leftExpression)) {
                 var an = holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
-                an.registerFix((UseHmacCompareDigestFixer() as IntentionAction), node.textRange)
+                an.registerFix((UseCompareDigestFixer() as IntentionAction), node.textRange)
                 an.registerFix(Checks.TimingAttackCheck.getIntentionAction())
             }
         }

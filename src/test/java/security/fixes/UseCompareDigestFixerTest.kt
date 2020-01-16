@@ -12,10 +12,9 @@ import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.*
 import org.mockito.Mockito
 import security.SecurityTestTask
-import security.validators.TimingAttackValidator
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UseHmacCompareDigestFixerTest: SecurityTestTask() {
+class UseCompareDigestFixerTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -31,7 +30,7 @@ class UseHmacCompareDigestFixerTest: SecurityTestTask() {
 
     @Test
     fun `verify fixer properties`(){
-        val fixer = UseHmacCompareDigestFixer()
+        val fixer = UseCompareDigestFixer()
         assertTrue(fixer.startInWriteAction())
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
@@ -54,7 +53,7 @@ class UseHmacCompareDigestFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = UseHmacCompareDigestFixer()
+            val fixer = UseCompareDigestFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
             var el = getBinaryExpressionElementAtCaret(testFile, mockEditor)
             assertNotNull(el)
@@ -83,7 +82,7 @@ class UseHmacCompareDigestFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = UseHmacCompareDigestFixer()
+            val fixer = UseCompareDigestFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
             var oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
             assertNotNull(oldEl)
@@ -113,7 +112,7 @@ class UseHmacCompareDigestFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = UseHmacCompareDigestFixer()
+            val fixer = UseCompareDigestFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
             var oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
             assertNotNull(oldEl)

@@ -16,7 +16,7 @@ object Checks {
     val DjangoDebugModeCheck = CheckType("DJG100", "Running Django in Debug mode is highly insecure and should only be used for local development purposes.")
     val InsecureHashAlgorithms = CheckType("HL100", "MD4, MD5, SHA, and SHA1 hashing algorithms have cryptographically weak algorithms and should not be used for obfuscating or protecting data.")
     val LengthAttackHashAlgorithms = CheckType("HL101", "MD5, SHA-1, RIPEMD-160, Whirlpool, and the SHA-256 / SHA-512 hash algorithms are all vulnerable to length-extension attacks and should not be used for obfuscating or protecting data. Use within a HMAC is not vulnerable.")
-    val TimingAttackCheck = CheckType("PW100", "Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use hmac.compare_digest() instead.")
+    val TimingAttackCheck = CheckType("PW100", "Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use compare_digest() instead.")
 
 
     class CheckType(var Code: String, var Message: String) {

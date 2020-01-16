@@ -11,13 +11,13 @@ import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
 import com.jetbrains.python.psi.*
 
-class UseHmacCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
+class UseCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     override fun getText(): String {
         return name
     }
 
     override fun getFamilyName(): String {
-        return "Use hmac.compare_digest()"
+        return "Use compare_digest()"
     }
 
     override fun isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean {
@@ -37,7 +37,10 @@ class UseHmacCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAc
         val elementGenerator = PyElementGenerator.getInstance(project)
         if (file !is PyFile) return null
         val languageLevel = file.languageLevel
-        val newImportFrom = elementGenerator.createFromImportStatement(languageLevel, "hmac", "compare_digest", "")
+        var compareDigestModule = "hmac"
+        if (languageLevel.isAtLeast(LanguageLevel.PYTHON37))
+            compareDigestModule = "secrets"
+        val newImportFrom = elementGenerator.createFromImportStatement(languageLevel, compareDigestModule, "compare_digest", "")
         if (file.importBlock.isNotEmpty()) {
             val lastImport = file.importBlock.last()
             if (file.fromImports.contains(newImportFrom).not())
