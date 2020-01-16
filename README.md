@@ -35,6 +35,9 @@ This plugin will check the installed packages in your Python projects against th
 
 ### 1.0.9
 
+* Added a documentation action to all recommendations
+* Added a timing attack fixer for using hmac.compare_digest
+* Added a timing attack test for comparing a password string
 * Added hashlib test for cryptographically weak algorithm usage
 * Added hashlib check for algorithms vulnerable to length-attacks
 
