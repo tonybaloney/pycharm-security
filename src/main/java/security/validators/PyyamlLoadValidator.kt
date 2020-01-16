@@ -15,5 +15,6 @@ class PyyamlLoadValidator : PyAnnotator() {
         if (!qualifiedName.equals("yaml.load")) return
         val annotation = holder.createWarningAnnotation(node, Checks.PyyamlUnsafeLoadCheck.toString())
         annotation.registerFix((PyyamlSafeLoadFixer() as IntentionAction), node.textRange)
+        annotation.registerFix(Checks.PyyamlUnsafeLoadCheck.getIntentionAction())
     }
 }

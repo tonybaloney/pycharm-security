@@ -25,15 +25,12 @@ class InsecureHashValidator : PyAnnotator() {
         if (node.arguments.isEmpty()) return
         var nameKwArg = node.getKeywordArgument("name")
         var firstArg = node.arguments[0]
-        try {
-            if (nameKwArg != null) {
-                if (listOf(*algorithms).contains((nameKwArg as PyStringLiteralExpression).stringValue).not()) return
-            } else {
-                if (listOf(*algorithms).contains((firstArg as PyStringLiteralExpression).stringValue).not()) return
-            }
-            holder.createWarningAnnotation(node, check.toString())
-        } catch (c: ClassCastException){
-            return
+        if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
+            if (listOf(*algorithms).contains((nameKwArg).stringValue))
+                holder.createWarningAnnotation(node, check.toString()).registerFix(check.getIntentionAction())
+        } else if (firstArg is PyStringLiteralExpression){
+            if (listOf(*algorithms).contains((firstArg).stringValue))
+                holder.createWarningAnnotation(node, check.toString()).registerFix(check.getIntentionAction())
         }
     }
 
@@ -41,7 +38,7 @@ class InsecureHashValidator : PyAnnotator() {
         val calleeName = node.callee?.name ?: return
         if (listOf(*algorithms).contains(calleeName).not()) return
         val qualifiedName = getQualifiedName(node) ?: return
-        if (qualifiedName.startsWith("hashlib.").not()) return
-        holder.createWarningAnnotation(node, check.toString())
+        if (qualifiedName.startsWith("hashlib."))
+            holder.createWarningAnnotation(node, check.toString()).registerFix(check.getIntentionAction())
     }
 }

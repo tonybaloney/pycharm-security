@@ -35,6 +35,9 @@ patchPluginXml {
     changeNotes """
       <h2>1.0.9</h2>
       <ul>
+        <li>Added a documentation action to all recommendations</li>
+        <li>Added a timing attack fixer for using hmac.compare_digest</li>
+        <li>Added a timing attack test for comparing a password string</li>
         <li>Added hashlib test for cryptographically weak algorithm usage</li>
         <li>Added hashlib check for algorithms vulnerable to length-attacks</li>
       </ul>"""
