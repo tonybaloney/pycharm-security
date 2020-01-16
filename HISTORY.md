@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.11
+
+* Annotations "Read Documentation" fix will go to the new documentation site instead of GitHub.
+
 ## 1.0.10
 
 * PW100 uses `secrets.compare_digest` if the Python version is 3.7+
