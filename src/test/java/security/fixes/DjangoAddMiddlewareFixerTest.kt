@@ -7,6 +7,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
 import com.jetbrains.python.PythonFileType
+import com.jetbrains.python.psi.PyListLiteralExpression
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -15,7 +16,8 @@ import org.mockito.Mockito
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UseCompareDigestFixerTest: SecurityTestTask() {
+class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
+
     @BeforeAll
     override fun setUp() {
         super.setUp()
@@ -28,7 +30,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
 
     @Test
     fun `verify fixer properties`(){
-        val fixer = UseCompareDigestFixer()
+        val fixer = DjangoAddMiddlewareFixer("test")
         assertTrue(fixer.startInWriteAction())
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
@@ -39,14 +41,16 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
     }
 
     @Test
-    fun `test get binary expression element at caret`(){
+    fun `test get list literal expression at caret`(){
         var code = """
-            if password == "SECRET":
-                pass
+            MIDDLEWARE = [
+                'test_banana',
+                'test_apple'
+            ]
         """.trimIndent()
 
         val mockCaretModel = mock<CaretModel> {
-            on { offset } doReturn 8
+            on { offset } doReturn 14
         }
         val mockEditor = mock<Editor> {
             on { caretModel } doReturn mockCaretModel
@@ -55,11 +59,12 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = UseCompareDigestFixer()
+            val fixer = DjangoAddMiddlewareFixer("test_banana")
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getBinaryExpressionElementAtCaret(testFile, mockEditor)
+            var el = getListLiteralExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
-            assertTrue(el!!.text.contains("password == "))
+            assertTrue(el is PyListLiteralExpression)
+            assertTrue(el!!.text.contains("'test_banana'"))
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel
@@ -69,13 +74,14 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
     @Test
     fun `test get new element at caret`(){
         var code = """
-            import hashlib
-            if password == "SECRET":
-                pass
+            MIDDLEWARE = [
+                'test_banana',
+                'test_apple'
+            ]
         """.trimIndent()
 
         val mockCaretModel = mock<CaretModel> {
-            on { offset } doReturn 20
+            on { offset } doReturn 14
         }
         val mockEditor = mock<Editor> {
             on { caretModel } doReturn mockCaretModel
@@ -84,46 +90,19 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = UseCompareDigestFixer()
+            val fixer = DjangoAddMiddlewareFixer("test_plum")
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
+            var oldEl = getListLiteralExpressionAtCaret(testFile, mockEditor)
             assertNotNull(oldEl)
-            var el = fixer.getNewExpressionAtCaret(testFile, project, oldEl!!)
+            var el = fixer.getNewExpression(project, oldEl!!)
             assertNotNull(el)
-            assertTrue(el!!.text.contains("compare_digest"))
+            assertTrue(el!!.text.contains("test_plum"))
+            assertTrue(el!!.text.contains("test_banana"))
+            assertTrue(el!!.text.contains("test_apple"))
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel
         verify(mockCaretModel, Mockito.times(1)).offset
     }
 
-    @Test
-    fun `test get new element at caret with no imports`(){
-        var code = """
-            if password == "SECRET":
-                pass
-        """.trimIndent()
-
-        val mockCaretModel = mock<CaretModel> {
-            on { offset } doReturn 8
-        }
-        val mockEditor = mock<Editor> {
-            on { caretModel } doReturn mockCaretModel
-        }
-
-        ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
-            assertNotNull(testFile)
-            val fixer = UseCompareDigestFixer()
-            assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
-            assertNotNull(oldEl)
-            var el = fixer.getNewExpressionAtCaret(testFile, project, oldEl!!)
-            assertNotNull(el)
-            assertTrue(el!!.text.contains("compare_digest"))
-        }
-
-        verify(mockEditor, Mockito.times(1)).caretModel
-        verify(mockCaretModel, Mockito.times(1)).offset
-    }
 }
