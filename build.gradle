@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.11'
+version '1.0.12'
 
 repositories {
     mavenCentral()
@@ -33,9 +33,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.11</h2>
+      <h2>1.0.12</h2>
       <ul>
-        <li>Links to the new documentation website</li>
+        <li>Added a quick-fix for escaping shell input</li>
+        <li>More scenarios for shell injection detection</li>
       </ul>"""
 }
 

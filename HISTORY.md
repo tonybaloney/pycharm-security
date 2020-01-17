@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.12
+
+* Added [Shell Escape Fixer](doc/fixes/shellescapefixer.md), recommended by [PR100](doc/checks/PR100.md)
+* Modified the shell injection validator to match subprocess.call, .run and .Popen
+* Modified the shell injection validator to ignore string literals or lists of literals
+
 ## 1.0.11
 
 * Annotations "Read Documentation" fix will go to the new documentation site instead of GitHub.

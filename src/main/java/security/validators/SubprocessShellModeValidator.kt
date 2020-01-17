@@ -42,6 +42,6 @@ class SubprocessShellModeValidator : PyAnnotator() {
             if (list.elements.any { el -> el is PyCallExpression && (el.callee?.name == "shlex_quote" || el.callee?.name == "quote") }) return
         }
 
-        holder.create(node, Checks.SubprocessShellCheck).registerFix((ShellEscapeFixer() as IntentionAction), node.arguments.first().textRange)
+        holder.create(node.arguments.first(), Checks.SubprocessShellCheck).registerFix((ShellEscapeFixer() as IntentionAction), node.arguments.first().textRange)
     }
 }
