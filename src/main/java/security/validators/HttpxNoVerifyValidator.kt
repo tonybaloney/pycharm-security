@@ -4,6 +4,7 @@ import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.helpers.QualifiedNames.getQualifiedName
 
 class HttpxNoVerifyValidator : PyAnnotator() {
@@ -15,6 +16,6 @@ class HttpxNoVerifyValidator : PyAnnotator() {
         if (!qualifiedName.startsWith("httpx.")) return
         if (node.getKeywordArgument("verify") == null) return
         if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
-        holder.createWarningAnnotation(node, Checks.HttpxNoVerifyCheck.toString()).registerFix(Checks.HttpxNoVerifyCheck.getIntentionAction())
+        holder.create(node, Checks.HttpxNoVerifyCheck)
     }
 }

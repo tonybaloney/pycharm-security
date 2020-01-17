@@ -4,6 +4,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.helpers.QualifiedNames.getQualifiedName
 
 class InsecureHashValidator : PyAnnotator() {
@@ -27,10 +28,10 @@ class InsecureHashValidator : PyAnnotator() {
         var firstArg = node.arguments[0]
         if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
             if (listOf(*algorithms).contains((nameKwArg).stringValue))
-                holder.createWarningAnnotation(node, check.toString()).registerFix(check.getIntentionAction())
+                holder.create(node, check)
         } else if (firstArg is PyStringLiteralExpression){
             if (listOf(*algorithms).contains((firstArg).stringValue))
-                holder.createWarningAnnotation(node, check.toString()).registerFix(check.getIntentionAction())
+                holder.create(node, check)
         }
     }
 
@@ -39,6 +40,6 @@ class InsecureHashValidator : PyAnnotator() {
         if (listOf(*algorithms).contains(calleeName).not()) return
         val qualifiedName = getQualifiedName(node) ?: return
         if (qualifiedName.startsWith("hashlib."))
-            holder.createWarningAnnotation(node, check.toString()).registerFix(check.getIntentionAction())
+            holder.create(node, check)
     }
 }

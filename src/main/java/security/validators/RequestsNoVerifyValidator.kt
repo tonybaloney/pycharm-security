@@ -4,6 +4,7 @@ import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.helpers.QualifiedNames.getQualifiedName
 
 class RequestsNoVerifyValidator : PyAnnotator() {
@@ -15,6 +16,6 @@ class RequestsNoVerifyValidator : PyAnnotator() {
         if (!qualifiedName.startsWith("requests.")) return
         if (node.getKeywordArgument("verify") == null) return
         if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
-        holder.createWarningAnnotation(node, Checks.RequestsNoVerifyCheck.toString()).registerFix(Checks.RequestsNoVerifyCheck.getIntentionAction())
+        holder.create(node, Checks.RequestsNoVerifyCheck)
     }
 }

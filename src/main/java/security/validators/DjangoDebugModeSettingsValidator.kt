@@ -3,6 +3,7 @@ package security.validators
 import com.jetbrains.python.psi.PyAssignmentStatement
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 
 class DjangoDebugModeSettingsValidator: PyAnnotator() {
     override fun visitPyAssignmentStatement(node: PyAssignmentStatement?) {
@@ -11,6 +12,6 @@ class DjangoDebugModeSettingsValidator: PyAnnotator() {
         if (leftExpression  != "DEBUG") return;
         val assignedValue = node.assignedValue ?: return
         if (assignedValue.textMatches("True").not()) return;
-        holder.createWarningAnnotation(node, Checks.DjangoDebugModeCheck.toString()).registerFix(Checks.DjangoDebugModeCheck.getIntentionAction())
+        holder.create(node, Checks.DjangoDebugModeCheck)
     }
 }

@@ -4,6 +4,7 @@ import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.helpers.QualifiedNames.getQualifiedName
 
 class SubprocessCallShellModeValidator : PyAnnotator() {
@@ -12,6 +13,6 @@ class SubprocessCallShellModeValidator : PyAnnotator() {
         if (qualifiedName != "subprocess.call") return
         val shellArgument = node.getKeywordArgument("shell") ?: return
         if ((shellArgument as PyBoolLiteralExpression?)!!.value.not()) return
-        holder.createWarningAnnotation(node, Checks.SubprocessCallShellCheck.toString()).registerFix(Checks.SubprocessCallShellCheck.getIntentionAction())
+        holder.create(node, Checks.SubprocessCallShellCheck)
     }
 }

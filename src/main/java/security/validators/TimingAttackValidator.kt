@@ -5,6 +5,7 @@ import com.jetbrains.python.psi.PyBinaryExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.fixes.UseCompareDigestFixer
 
 class TimingAttackValidator: PyAnnotator() {
@@ -17,17 +18,15 @@ class TimingAttackValidator: PyAnnotator() {
         if (rightExpression is PyReferenceExpression)
         {
             if (looksLikeAPassword(rightExpression)) {
-                var an = holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
+                var an = holder.create(node, Checks.TimingAttackCheck)
                 an.registerFix((UseCompareDigestFixer() as IntentionAction), node.textRange)
-                an.registerFix(Checks.TimingAttackCheck.getIntentionAction())
             }
         }
         if (leftExpression is PyReferenceExpression)
         {
             if (looksLikeAPassword(leftExpression)) {
-                var an = holder.createWarningAnnotation(node, Checks.TimingAttackCheck.toString())
+                var an = holder.create(node, Checks.TimingAttackCheck)
                 an.registerFix((UseCompareDigestFixer() as IntentionAction), node.textRange)
-                an.registerFix(Checks.TimingAttackCheck.getIntentionAction())
             }
         }
     }

@@ -4,6 +4,7 @@ import com.intellij.codeInsight.intention.IntentionAction
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.fixes.TempfileMksFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
@@ -13,8 +14,7 @@ class TempfileMktempValidator : PyAnnotator() {
         if (calleeName != "mktemp") return
         val qualifiedName = getQualifiedName(node) ?: return
         if (qualifiedName != "tempfile.mktemp") return
-        val annotation = holder.createWarningAnnotation(node, Checks.TempfileMktempCheck.toString())
+        val annotation = holder.create(node, Checks.TempfileMktempCheck)
         annotation.registerFix((TempfileMksFixer() as IntentionAction), node.textRange)
-        annotation.registerFix(Checks.TempfileMktempCheck.getIntentionAction())
     }
 }

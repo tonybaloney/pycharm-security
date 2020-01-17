@@ -15,12 +15,9 @@ import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TempfileMksFixerTest: SecurityTestTask() {
-    lateinit var dummyAnnotation: Annotation
-
     @BeforeAll
     override fun setUp() {
         super.setUp()
-        this.dummyAnnotation = Annotation(0, 0, HighlightSeverity.WARNING, "", "")
     }
 
     @AfterAll

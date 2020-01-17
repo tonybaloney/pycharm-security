@@ -5,6 +5,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 
 class FlaskDebugModeValidator : PyAnnotator() {
     override fun visitPyCallExpression(node: PyCallExpression) {
@@ -13,6 +14,6 @@ class FlaskDebugModeValidator : PyAnnotator() {
         if ((node.firstChild as PyReferenceExpression).asQualifiedName().toString() != "app.run") return
         if (node.getKeywordArgument("debug") == null) return
         if (!(node.getKeywordArgument("debug") as PyBoolLiteralExpression?)!!.value) return
-        holder.createWarningAnnotation(node, Checks.FlaskDebugModeCheck.toString()).registerFix(Checks.FlaskDebugModeCheck.getIntentionAction())
+        holder.create(node, Checks.FlaskDebugModeCheck)
     }
 }

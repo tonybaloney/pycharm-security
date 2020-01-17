@@ -2,8 +2,11 @@ package security
 
 import com.intellij.codeInsight.intention.IntentionAction
 import com.intellij.ide.BrowserUtil
+import com.intellij.lang.annotation.Annotation
+import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 
 object Checks {
@@ -56,4 +59,10 @@ object Checks {
             BrowserUtil.browse("https://pycharm-security.readthedocs.io/en/latest/checks/${check.Code}.html")
         }
     }
+}
+
+fun AnnotationHolder.create(node: PsiElement, check: Checks.CheckType): Annotation {
+    val annotation = this.createWarningAnnotation(node, check.toString())
+    annotation.registerFix(check.getIntentionAction())
+    return annotation
 }

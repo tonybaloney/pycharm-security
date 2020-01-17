@@ -4,6 +4,7 @@ import com.intellij.codeInsight.intention.IntentionAction
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.validation.PyAnnotator
 import security.Checks
+import security.create
 import security.fixes.PyyamlSafeLoadFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
@@ -13,8 +14,7 @@ class PyyamlLoadValidator : PyAnnotator() {
         if (calleeName != "load") return
         val qualifiedName = getQualifiedName(node) ?: return
         if (!qualifiedName.equals("yaml.load")) return
-        val annotation = holder.createWarningAnnotation(node, Checks.PyyamlUnsafeLoadCheck.toString())
+        val annotation = holder.create(node, Checks.PyyamlUnsafeLoadCheck)
         annotation.registerFix((PyyamlSafeLoadFixer() as IntentionAction), node.textRange)
-        annotation.registerFix(Checks.PyyamlUnsafeLoadCheck.getIntentionAction())
     }
 }

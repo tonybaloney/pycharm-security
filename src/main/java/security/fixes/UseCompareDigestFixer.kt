@@ -50,7 +50,7 @@ class UseCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction
         }
         val el = elementGenerator.createCallExpression(languageLevel, "compare_digest")
         el.argumentList?.addArgument(oldElement.leftExpression)
-        oldElement?.rightExpression?.let { el.argumentList?.addArgument(it) }
+        oldElement.rightExpression?.let { el.argumentList?.addArgument(it) }
         return el
     }
 
