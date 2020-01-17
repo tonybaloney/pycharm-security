@@ -1,5 +1,6 @@
 package security.fixes
 
+import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
@@ -15,12 +16,10 @@ import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PyyamlSafeLoadFixerTest: SecurityTestTask() {
-    lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
     override fun setUp() {
         super.setUp()
-        this.dummyAnnotation = Annotation(0, 0, HighlightSeverity.WARNING, "", "")
     }
 
     @AfterAll
@@ -34,6 +33,10 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
         assertTrue(fixer.startInWriteAction())
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
+        assertTrue(fixer.text.isNotBlank())
+        val mockProblemDescriptor = mock<ProblemDescriptor> {
+        }
+        fixer.applyFix(this.project, mockProblemDescriptor)
     }
 
     @Test

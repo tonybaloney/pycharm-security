@@ -1,5 +1,6 @@
 package security.fixes
 
+import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
@@ -31,6 +32,10 @@ class TempfileMksFixerTest: SecurityTestTask() {
         assertTrue(fixer.startInWriteAction())
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
+        assertTrue(fixer.text.isNotBlank())
+        val mockProblemDescriptor = mock<ProblemDescriptor> {
+        }
+        fixer.applyFix(this.project, mockProblemDescriptor)
     }
 
     @Test

@@ -34,7 +34,7 @@
         <pyAnnotator implementation="security.validators.FlaskDebugModeValidator"/>
         <pyAnnotator implementation="security.validators.RequestsNoVerifyValidator"/>
         <pyAnnotator implementation="security.validators.HttpxNoVerifyValidator"/>
-        <pyAnnotator implementation="security.validators.SubprocessCallShellModeValidator"/>
+        <pyAnnotator implementation="security.validators.SubprocessShellModeValidator"/>
         <pyAnnotator implementation="security.validators.TempfileMktempValidator"/>
         <pyAnnotator implementation="security.validators.DjangoDebugModeSettingsValidator"/>
         <pyAnnotator implementation="security.validators.InsecureHashValidator"/>
