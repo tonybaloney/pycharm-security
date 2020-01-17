@@ -40,6 +40,71 @@ class SubprocessShellModeValidatorTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test subprocess call with shell mode ref arg`(){
+        var code = """
+            import subprocess
+            subprocess.call(x, shell=True)
+        """.trimIndent()
+        testCodeString(code, 1)
+    }
+
+    @Test
+    fun `test subprocess call with shell mode list ref arg`(){
+        var code = """
+            import subprocess
+            subprocess.call([x], shell=True)
+        """.trimIndent()
+        testCodeString(code, 1)
+    }
+
+    @Test
+    fun `test subprocess call with shell mode string literal arg`(){
+        var code = """
+            import subprocess
+            subprocess.call('test', shell=True)
+        """.trimIndent()
+        testCodeString(code, 0)
+    }
+
+    @Test
+    fun `test subprocess call with shell mode list literal arg`(){
+        var code = """
+            import subprocess
+            subprocess.call(['test', 'x'], shell=True)
+        """.trimIndent()
+        testCodeString(code, 0)
+    }
+
+    @Test
+    fun `test subprocess call with shell mixed list arg`(){
+        var code = """
+            import subprocess
+            subprocess.call(['test', x], shell=True)
+        """.trimIndent()
+        testCodeString(code, 1)
+    }
+
+    @Test
+    fun `test subprocess call with escaped arg`(){
+        var code = """
+            import subprocess
+            import shlex
+            subprocess.call(shlex.quote(x), shell=True)
+        """.trimIndent()
+        testCodeString(code, 0)
+    }
+
+    @Test
+    fun `test subprocess call with escaped list arg`(){
+        var code = """
+            import subprocess
+            import shlex
+            subprocess.call([shlex.quote(x)], shell=True)
+        """.trimIndent()
+        testCodeString(code, 0)
+    }
+
+    @Test
     fun `test subprocess Popen with shell mode`(){
         var code = """
             import subprocess
