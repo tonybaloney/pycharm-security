@@ -17,9 +17,13 @@ class DjangoMiddlewareValidator: PyAnnotator() {
         if (assignedValue !is PyListLiteralExpression) return
         val middleware = assignedValue.elements.filter { el -> el is PyStringLiteralExpression }.map{ (it as PyStringLiteralExpression).stringValue }
 
-        if (middleware.contains("django.middleware.csrf.CsrfViewMiddleware").not())
-            holder.create(node, Checks.DjangoCsrfMiddlewareCheck).registerFix(DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))
-        if (middleware.contains("django.middleware.clickjacking.XFrameOptionsMiddleware").not())
-            holder.create(node, Checks.DjangoClickjackMiddlewareCheck).registerFix(DjangoAddMiddlewareFixer("django.middleware.clickjacking.XFrameOptionsMiddleware"))
+        if (middleware.contains("django.middleware.csrf.CsrfViewMiddleware").not()) {
+            holder.create(node, Checks.DjangoCsrfMiddlewareCheck)
+                .registerFix(DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))
+        }
+        if (middleware.contains("django.middleware.clickjacking.XFrameOptionsMiddleware").not()) {
+            holder.create(node, Checks.DjangoClickjackMiddlewareCheck)
+                    .registerFix(DjangoAddMiddlewareFixer("django.middleware.clickjacking.XFrameOptionsMiddleware"))
+        }
     }
 }

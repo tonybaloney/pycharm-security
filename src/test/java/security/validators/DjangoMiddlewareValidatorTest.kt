@@ -5,14 +5,19 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiRecursiveElementVisitor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyAssignmentStatement
-import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.mockito.ArgumentMatchers.contains
 import org.mockito.Mockito
 import security.Checks
 import security.SecurityTestTask
@@ -66,10 +71,10 @@ class DjangoMiddlewareValidatorTest: SecurityTestTask() {
     fun `test django settings with empty middleware`(){
         var code = """
             MIDDLEWARE = [
-            
             ]
         """.trimIndent()
-        testCodeString(code, 0, Checks.DjangoClickjackMiddlewareCheck)
+        testCodeString(code, 1, Checks.DjangoClickjackMiddlewareCheck)
+        testCodeString(code, 1, Checks.DjangoCsrfMiddlewareCheck)
     }
 
     @Test
@@ -90,7 +95,7 @@ class DjangoMiddlewareValidatorTest: SecurityTestTask() {
 
     private fun testCodeString(code: String, times: Int = 1, check: Checks.CheckType){
         val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(check.toString())) } doReturn(dummyAnnotation);
+            on { createWarningAnnotation(any<PsiElement>(), contains("DJG")) } doReturn(dummyAnnotation);
         }
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("settings.py", PythonFileType.INSTANCE.language, code);
