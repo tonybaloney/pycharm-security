@@ -40,14 +40,7 @@ class UseCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction
         var compareDigestModule = "hmac"
         if (languageLevel.isAtLeast(LanguageLevel.PYTHON37))
             compareDigestModule = "secrets"
-        val newImportFrom = elementGenerator.createFromImportStatement(languageLevel, compareDigestModule, "compare_digest", "")
-        if (file.importBlock.isNotEmpty()) {
-            val lastImport = file.importBlock.last()
-            if (file.fromImports.contains(newImportFrom).not())
-                file.addAfter(newImportFrom, lastImport)
-        } else{
-            file.addBefore(newImportFrom, file.statements.first())
-        }
+        importFrom(file, project, compareDigestModule, "compare_digest")
         val el = elementGenerator.createCallExpression(languageLevel, "compare_digest")
         el.argumentList?.addArgument(oldElement.leftExpression)
         oldElement.rightExpression?.let { el.argumentList?.addArgument(it) }

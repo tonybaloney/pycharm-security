@@ -14,8 +14,9 @@ class HttpxNoVerifyValidator : PyAnnotator() {
         if (!listOf(*requestsMethodNames).contains(calleeName)) return
         val qualifiedName = getQualifiedName(node) ?: return
         if (!qualifiedName.startsWith("httpx.")) return
-        if (node.getKeywordArgument("verify") == null) return
-        if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
+        val verifyArgument = node.getKeywordArgument("verify") ?: return
+        if (verifyArgument !is PyBoolLiteralExpression) return
+        if (verifyArgument.value) return
         holder.create(node, Checks.HttpxNoVerifyCheck)
     }
 }
