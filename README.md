@@ -34,6 +34,10 @@ See [Fixes](doc/fixes.md) for a current list.
 
 See [Release History](HISTORY.md) for the release history.
 
+## Contributing
+
+If you would like to alter or add new checks and fixes, see the [Development](doc/development.rst) page.
+
 ## License
 
 This project is [MIT Licensed](LICENSE).
