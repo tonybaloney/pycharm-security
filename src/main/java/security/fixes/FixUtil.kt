@@ -15,6 +15,10 @@ fun getCallElementAtCaret(file: PsiFile, editor: Editor): PyCallExpression? {
     return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java) ?: return null
 }
 
+fun getListLiteralExpressionAtCaret(file: PsiFile, editor: Editor): PyListLiteralExpression? {
+    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyListLiteralExpression::class.java) ?: return null
+}
+
 fun getBinaryExpressionElementAtCaret(file: PsiFile, editor: Editor): PyBinaryExpression? {
     return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyBinaryExpression::class.java) ?: return null
 }

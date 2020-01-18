@@ -26,9 +26,9 @@ test {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.3.1'
-    type 'PY'
-    plugins 'python', 'yaml'
+    version 'PC-2019.3.1'
+    type 'PC'
+    plugins 'python-ce', 'yaml'
 }
 
 patchPluginXml {
