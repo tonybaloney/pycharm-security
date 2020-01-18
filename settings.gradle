@@ -1,1 +1,4 @@
-rootProject.name = 'pycharm-security'
+rootProject.name = 'pycharm-security';
+include 'shared'
+include 'community'
+include 'professional'

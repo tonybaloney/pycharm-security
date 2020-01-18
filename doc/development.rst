@@ -47,8 +47,8 @@ All validators are a series of [guard clauses](https://refactoring.com/catalog/r
     import com.jetbrains.python.psi.PyBoolLiteralExpression
     import com.jetbrains.python.psi.PyCallExpression
     import com.jetbrains.python.validation.PyAnnotator
-    import security.Checks
-    import security.helpers.QualifiedNames.getQualifiedName
+    import Checks
+    import QualifiedNames.getQualifiedName
 
     class MyNewValidator : PyAnnotator() {
         override fun visitPyCallExpression(node: PyCallExpression) {
@@ -110,8 +110,8 @@ Add both a valid and invalid case.
     import org.junit.jupiter.api.Test
     import org.junit.jupiter.api.TestInstance
     import org.mockito.Mockito
-    import security.Checks
-    import security.SecurityTestTask
+    import Checks
+    import SecurityTestTask
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class PyyamlLoadValidatorTest: SecurityTestTask() {
@@ -293,7 +293,7 @@ Full example:
     import com.nhaarman.mockitokotlin2.verify
     import org.junit.jupiter.api.*
     import org.mockito.Mockito
-    import security.SecurityTestTask
+    import SecurityTestTask
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class MyNewFixerTest: SecurityTestTask() {

@@ -1,8 +1,6 @@
 package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
-import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
@@ -15,7 +13,8 @@ import org.mockito.Mockito
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TempfileMksFixerTest: SecurityTestTask() {
+class PyyamlSafeLoadFixerTest: SecurityTestTask() {
+
     @BeforeAll
     override fun setUp() {
         super.setUp()
@@ -28,7 +27,7 @@ class TempfileMksFixerTest: SecurityTestTask() {
 
     @Test
     fun `verify fixer properies`(){
-        val fixer = TempfileMksFixer()
+        val fixer = PyyamlSafeLoadFixer()
         assertTrue(fixer.startInWriteAction())
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
@@ -41,12 +40,12 @@ class TempfileMksFixerTest: SecurityTestTask() {
     @Test
     fun `test get call element at caret`(){
         var code = """
-            import tempfile
-            tempfile.mktemp()
+            import yaml
+            yaml.load()
         """.trimIndent()
 
         val mockCaretModel = mock<CaretModel> {
-            on { offset } doReturn 16
+            on { offset } doReturn 12
         }
         val mockEditor = mock<Editor> {
             on { caretModel } doReturn mockCaretModel
@@ -55,11 +54,11 @@ class TempfileMksFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = TempfileMksFixer()
+            val fixer = PyyamlSafeLoadFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
             var el = getCallElementAtCaret(testFile, mockEditor)
             assertNotNull(el)
-            assertTrue(el!!.text.contains("tempfile.mktemp"))
+            assertTrue(el!!.text.contains("yaml.load"))
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel
@@ -69,12 +68,12 @@ class TempfileMksFixerTest: SecurityTestTask() {
     @Test
     fun `test get new element at caret`(){
         var code = """
-            import tempfile
-            tempfile.mktemp()
+            import yaml
+            yaml.load()
         """.trimIndent()
 
         val mockCaretModel = mock<CaretModel> {
-            on { offset } doReturn 16
+            on { offset } doReturn 12
         }
         val mockEditor = mock<Editor> {
             on { caretModel } doReturn mockCaretModel
@@ -83,11 +82,11 @@ class TempfileMksFixerTest: SecurityTestTask() {
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val fixer = TempfileMksFixer()
+            val fixer = PyyamlSafeLoadFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
             var el = fixer.getNewExpressionAtCaret(testFile, mockEditor, project)
             assertNotNull(el)
-            assertTrue(el!!.text.contains("tempfile.mkstemp"))
+            assertTrue(el!!.text.contains("yaml.safe_load"))
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel

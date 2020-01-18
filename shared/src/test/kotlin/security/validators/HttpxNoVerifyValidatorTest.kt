@@ -4,7 +4,6 @@ import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.roots.impl.SdkFinder
 import com.intellij.psi.PsiElement
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression

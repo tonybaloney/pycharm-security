@@ -1,0 +1,50 @@
+<idea-plugin>
+    <id>org.tonybaloney.security.pycharm-security-pro</id>
+    <name>Python Security (PyCharm Professional)</name>
+    <vendor email="anthonyshaw@apache.org" url="http://tonybaloney.github.io">Anthony Shaw</vendor>
+
+    <description><![CDATA[
+    Analyzes potential security flaws in your Python code and suggests fixes. Designed to find common security issues in Python code.<br>
+
+    <h2>Package Scanner</h2>
+    The Python-Security plugin will scan your installed Python packages against SafetyDB on startup or via a menu item. Any known security vulnerabilities are raised as warnings.
+
+    <h2>Current checks and fixes</h2>
+    <ul>
+     <li>Timing Attack warnings and prevention with compare_digest</li>
+     <li>Cryptographically weak algorithms for hashing</li>
+     <li>Use of unsafe loading of YAML files</li>
+     <li>Use of remote code execution when instantiating flask applications</li>
+     <li>Use of MITM exposure when making HTTP requests with requests or httpx</li>
+     <li>Bypassing of temporary file creation to inject content</li>
+     <li>Insecure configuration of Django debug mode</li>
+     <li>Insecure configuration of Flask debug mode</li>
+    </ul>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.python</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <backgroundPostStartupActivity implementation="security.packaging.PythonPackageVulnerabilityStartupTask"/>
+    </extensions>
+    <extensions defaultExtensionNs="Pythonid">
+        <pyAnnotator implementation="security.validators.PyyamlLoadValidator"/>
+        <pyAnnotator implementation="security.validators.FlaskDebugModeValidator"/>
+        <pyAnnotator implementation="security.validators.RequestsNoVerifyValidator"/>
+        <pyAnnotator implementation="security.validators.HttpxNoVerifyValidator"/>
+        <pyAnnotator implementation="security.validators.SubprocessShellModeValidator"/>
+        <pyAnnotator implementation="security.validators.TempfileMktempValidator"/>
+        <pyAnnotator implementation="security.validators.DjangoDebugModeSettingsValidator"/>
+        <pyAnnotator implementation="security.validators.InsecureHashValidator"/>
+        <pyAnnotator implementation="security.validators.TimingAttackValidator"/>
+        <pyAnnotator implementation="security.validators.DjangoMiddlewareValidator"/>
+    </extensions>
+    <actions>
+        <action id="Security.CheckSafetyDB" class="security.packaging.SafetyDbCheckerAction" text="Check Python Package Security" description="Check the installed Python packages for any known vulnerabilities." >
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="PyPackagingMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
