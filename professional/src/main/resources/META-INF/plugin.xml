@@ -28,6 +28,10 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <backgroundPostStartupActivity implementation="security.packaging.PythonPackageVulnerabilityStartupTask"/>
+
+        <localInspection language="DjangoTemplate" shortName="DjangoCsrfInspection" bundle="com.jetbrains.django.ui.Django"
+                         enabledByDefault="true" level="WARNING" displayName="CSRF Inspection" groupName="security"
+                         implementationClass="validators.DjangoViewCsrfValidator"/>
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
         <pyAnnotator implementation="security.validators.PyyamlLoadValidator"/>
@@ -40,6 +44,8 @@
         <pyAnnotator implementation="security.validators.InsecureHashValidator"/>
         <pyAnnotator implementation="security.validators.TimingAttackValidator"/>
         <pyAnnotator implementation="security.validators.DjangoMiddlewareValidator"/>
+
+
     </extensions>
     <actions>
         <action id="Security.CheckSafetyDB" class="security.packaging.SafetyDbCheckerAction" text="Check Python Package Security" description="Check the installed Python packages for any known vulnerabilities." >
