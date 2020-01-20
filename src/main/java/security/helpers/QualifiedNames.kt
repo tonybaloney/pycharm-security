@@ -11,7 +11,8 @@ object QualifiedNames {
         val markedCallees = callExpression.multiResolveCallee(resolveContext)
         if (markedCallees.isEmpty()) {
             val firstChild = callExpression.firstChild ?: return null
-            val qualifiedName = (firstChild as PyReferenceExpression).asQualifiedName() ?: return null;
+            if (firstChild !is PyReferenceExpression) return null
+            val qualifiedName = (firstChild).asQualifiedName() ?: return null;
             return qualifiedName.toString()
         }
         else
