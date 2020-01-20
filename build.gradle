@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.12'
+version '1.0.13'
 
 repositories {
     mavenCentral()
@@ -33,10 +33,12 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.12</h2>
+      <h2>1.0.13</h2>
       <ul>
-        <li>Added a quick-fix for escaping shell input</li>
-        <li>More scenarios for shell injection detection</li>
+        <li>Added Django CSRF Middleware Validator </li>
+        <li>Added Django Clickjack Middleware Validator </li>
+        <li>Added Django Middleware Fixer </li>
+        <li>Fixed bug where function references would be unsafely cast to a PyReferenceExpression and cause a fault </li>
       </ul>"""
 }
 

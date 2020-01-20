@@ -48,6 +48,15 @@ class QualifiedNamesTest: SecurityTestTask() {
         assertEquals(getQualifiedName(code), "math.floor")
     }
 
+    @Test
+    fun `test double brackets reference no arguments`(){
+        var code = """
+            import math
+            math.floor()()
+        """.trimIndent()
+        assertEquals(getQualifiedName(code), "math.floor")
+    }
+
     private fun getQualifiedName(code: String): String?{
         var name: String? = null
         ApplicationManager.getApplication().runReadAction {

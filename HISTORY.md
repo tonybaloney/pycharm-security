@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.13
+
+* Added [Django CSRF Middleware Validator](doc/checks/DJG200.md)
+* Added [Django Clickjack Middleware Validator](doc/checks/DJG201.md)
+* Added Django Middleware Fixer
+* Fixed bug where function references would be unsafely cast to a PyReferenceExpression and cause a fault
+
 ## 1.0.12
 
 * Added [Shell Escape Fixer](doc/fixes/shellescapefixer.md), recommended by [PR100](doc/checks/PR100.md)
