@@ -1,25 +1,29 @@
 package security.validators
 
+import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiRecursiveElementVisitor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
-import com.jetbrains.python.psi.PyAssignmentStatement
+import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBinaryExpression
-import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import security.Checks
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TimingAttackValidatorTest: SecurityTestTask() {
+class TimingAttackInspectionTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -63,22 +67,24 @@ class TimingAttackValidatorTest: SecurityTestTask() {
         testCodeString(code, 0, Checks.TimingAttackCheck)
     }
 
-    private fun testCodeString(code: String, times: Int = 1, checkMatch: Checks.CheckType){
-        val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(checkMatch.toString())) } doReturn(dummyAnnotation);
+    private fun testCodeString(code: String, times: Int = 1, check: Checks.CheckType){
+        val mockHolder = mock<ProblemsHolder> {
+            on { registerProblem(any<PsiElement>(), eq(check.toString())) }
+        }
+        val mockLocalSession = mock<LocalInspectionToolSession> {
+
         }
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("settings.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val testValidator = TimingAttackValidator()
-            testValidator.holder = mockHolder
+            val testVisitor = TimingAttackInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
             val expr: @NotNull MutableCollection<PyBinaryExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyBinaryExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
-                testValidator.visitPyBinaryExpression(e)
+                testVisitor.visitPyBinaryExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(checkMatch.toString()))
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.toString()))
         }
     }
 }

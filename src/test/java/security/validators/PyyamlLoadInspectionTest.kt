@@ -1,23 +1,29 @@
 package security.validators
 
+import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
-import com.jetbrains.python.psi.PyAssignmentStatement
+import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import security.Checks
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class FlaskDebugModeValidatorTest: SecurityTestTask() {
+class PyyamlLoadInspectionTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -32,54 +38,41 @@ class FlaskDebugModeValidatorTest: SecurityTestTask() {
     }
 
     @Test
-    fun `test flask app debug mode on`(){
+    fun `test yaml load`(){
         var code = """
-            from flask import Flask
-            
-            app = Flask()
-            app.run(debug=True)
+            import yaml
+            yaml.load()
         """.trimIndent()
         testCodeString(code, 1)
     }
 
     @Test
-    fun `test flask app with debug mode off`(){
+    fun `test yaml safe_load`(){
         var code = """
-            from flask import Flask
-            
-            app = Flask()
-            app.run(debug=False)
-        """.trimIndent()
-        testCodeString(code, 0)
-    }
-
-    @Test
-    fun `test flask with no mention of debug mode`(){
-        var code = """
-            from flask import Flask
-            
-            app = Flask()
-            app.run()
+            import yaml
+            yaml.safe_load()
         """.trimIndent()
         testCodeString(code, 0)
     }
 
     private fun testCodeString(code: String, times: Int = 1){
-        val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(Checks.FlaskDebugModeCheck.toString())) } doReturn(dummyAnnotation);
+        val mockHolder = mock<ProblemsHolder> {
+            on { registerProblem(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString())) }
+        }
+        val mockLocalSession = mock<LocalInspectionToolSession> {
+
         }
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val testValidator = FlaskDebugModeValidator()
-            testValidator.holder = mockHolder
+            val testVisitor = PyyamlLoadInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
-                testValidator.visitPyCallExpression(e)
+                testVisitor.visitPyCallExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.FlaskDebugModeCheck.toString()))
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString()))
         }
     }
 }

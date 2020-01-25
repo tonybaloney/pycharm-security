@@ -1,15 +1,16 @@
 package security.validators
 
+import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
+import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyAssignmentStatement
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
@@ -23,7 +24,7 @@ import security.Checks
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DjangoMiddlewareValidatorTest: SecurityTestTask() {
+class DjangoMiddlewareInspectionTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -94,21 +95,23 @@ class DjangoMiddlewareValidatorTest: SecurityTestTask() {
     }
 
     private fun testCodeString(code: String, times: Int = 1, check: Checks.CheckType){
-        val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), contains("DJG")) } doReturn(dummyAnnotation);
+        val mockHolder = mock<ProblemsHolder> {
+            on { registerProblem(any<PsiElement>(), contains("DJG")) }
+        }
+        val mockLocalSession = mock<LocalInspectionToolSession> {
+
         }
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("settings.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
-            val testValidator = DjangoMiddlewareValidator()
-            testValidator.holder = mockHolder
+            val testVisitor = DjangoMiddlewareInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
             val expr: @NotNull MutableCollection<PyAssignmentStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssignmentStatement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
-                testValidator.visitPyAssignmentStatement(e)
+                testVisitor.visitPyAssignmentStatement(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(check.toString()))
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.toString()))
         }
     }
 }

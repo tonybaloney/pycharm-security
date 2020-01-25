@@ -1,8 +1,6 @@
 package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
-import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
@@ -11,7 +9,10 @@ import com.jetbrains.python.psi.PyListLiteralExpression
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import security.SecurityTestTask
 
@@ -97,12 +98,11 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
             var el = fixer.getNewExpression(project, oldEl!!)
             assertNotNull(el)
             assertTrue(el!!.text.contains("test_plum"))
-            assertTrue(el!!.text.contains("test_banana"))
-            assertTrue(el!!.text.contains("test_apple"))
+            assertTrue(el.text.contains("test_banana"))
+            assertTrue(el.text.contains("test_apple"))
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel
         verify(mockCaretModel, Mockito.times(1)).offset
     }
-
 }

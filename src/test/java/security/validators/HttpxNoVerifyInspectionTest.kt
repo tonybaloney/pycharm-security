@@ -1,22 +1,29 @@
 package security.validators
 
+import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
+import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
-import org.junit.jupiter.api.*
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
 import security.Checks
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RequestsNoVerifyValidatorTest: SecurityTestTask() {
+class HttpxNoVerifyInspectionTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -33,9 +40,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the get method with no verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.get(url, verify=False)
+            httpx.get(url, verify=False)
         """.trimIndent()
         testCodeString(code)
     }
@@ -43,9 +50,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the get method with verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.get(url, verify=True)
+            httpx.get(url, verify=True)
         """.trimIndent()
         testCodeString(code, 0)
     }
@@ -53,9 +60,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the post method with no verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.post(url, verify=False)
+            httpx.post(url, verify=False)
         """.trimIndent()
         testCodeString(code)
     }
@@ -63,9 +70,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the post method with verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.post(url, verify=True)
+            httpx.post(url, verify=True)
         """.trimIndent()
         testCodeString(code, 0)
     }
@@ -73,9 +80,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the options method with no verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.options(url, verify=False)
+            httpx.options(url, verify=False)
         """.trimIndent()
         testCodeString(code)
     }
@@ -83,9 +90,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the put method with no verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.put(url, verify=False)
+            httpx.put(url, verify=False)
         """.trimIndent()
         testCodeString(code)
     }
@@ -93,17 +100,17 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     @Test
     fun `test the patch method with no verify`() {
         var code = """
-            import requests
+            import httpx
             
-            requests.patch(url, verify=False)
+            httpx.patch(url, verify=False)
         """.trimIndent()
         testCodeString(code)
     }
 
 //    @Test
-//    fun `test requests import with get and verify false argument`() {
+//    fun `test httpx import with get and verify false argument`() {
 //        var code = """
-//            from requests import get
+//            from httpx import get
 //
 //            get(url, verify=False)
 //        """.trimIndent()
@@ -111,9 +118,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
 //    }
 
     @Test
-    fun `test requests import with get and no arguments`() {
+    fun `test httpx import with get and no arguments`() {
         var code = """
-            from requests import get
+            from httpx import get
             
             get(url)
         """.trimIndent()
@@ -121,9 +128,9 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     }
 
     @Test
-    fun `test requests import with get and a verify true argument`() {
+    fun `test httpx import with get and a verify true argument`() {
         var code = """
-            from requests import get
+            from httpx import get
             
             get(url, verify=True)
         """.trimIndent()
@@ -131,19 +138,23 @@ class RequestsNoVerifyValidatorTest: SecurityTestTask() {
     }
 
     private fun testCodeString(code: String, times: Int = 1){
-        val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(Checks.RequestsNoVerifyCheck.toString())) } doReturn(dummyAnnotation);
+        val mockHolder = mock<ProblemsHolder> {
+            on { registerProblem(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.toString())) }
+        }
+        val mockLocalSession = mock<LocalInspectionToolSession> {
+
         }
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
-            assertNotNull(testFile);
-            val expr: @NotNull PsiElement = testFile.children[2].children[0]
-            assertNotNull(expr)
+            val testFile = this.createLightFile("settings.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val testVisitor = HttpxNoVerifyInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val testValidator = RequestsNoVerifyValidator()
-            testValidator.holder = mockHolder
-            testValidator.visitPyCallExpression(expr as PyCallExpression)
-            verify(mockHolder, times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.RequestsNoVerifyCheck.toString()))
+            val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyCallExpression(e)
+            }
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.toString()))
         }
     }
 }
