@@ -11,6 +11,7 @@ import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyAssignmentStatement
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
@@ -63,7 +64,7 @@ class DjangoDebugModeSettingsInspectorTest: SecurityTestTask() {
 
     private fun testCodeString(code: String, times: Int = 1){
         val mockHolder = mock<ProblemsHolder> {
-            on { registerProblem(any<PsiElement>(), eq(Checks.DjangoDebugModeCheck.toString())) }
+            on { registerProblem(any<PsiElement>(), eq(Checks.DjangoDebugModeCheck.toString())) } doAnswer {}
         }
         val mockLocalSession = mock<LocalInspectionToolSession> {
 

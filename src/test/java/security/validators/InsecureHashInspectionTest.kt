@@ -11,6 +11,7 @@ import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import org.jetbrains.annotations.NotNull
@@ -120,7 +121,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     private fun testCodeString(code: String, times: Int = 1, check: Checks.CheckType){
         val mockHolder = mock<ProblemsHolder> {
-            on { registerProblem(any<PsiElement>(), eq(check.toString())) }
+            on { registerProblem(any<PsiElement>(), eq(check.toString())) } doAnswer {}
         }
         val mockLocalSession = mock<LocalInspectionToolSession> {
 
