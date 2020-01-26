@@ -35,7 +35,7 @@ class DjangoMiddlewareInspection : PyInspection() {
                 holder?.registerProblem(node, Checks.DjangoCsrfMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))
             }
             if (middleware.contains("django.middleware.clickjacking.XFrameOptionsMiddleware").not()) {
-                holder?.registerProblem(node, Checks.DjangoCsrfMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.clickjacking.XFrameOptionsMiddleware"))
+                holder?.registerProblem(node, Checks.DjangoClickjackMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.clickjacking.XFrameOptionsMiddleware"))
             }
         }
     }

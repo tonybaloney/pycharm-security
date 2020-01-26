@@ -1,6 +1,7 @@
 package security.validators
 
 import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.HighlightSeverity
@@ -10,10 +11,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.*
 import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -22,6 +20,7 @@ import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import security.Checks
 import security.SecurityTestTask
+import kotlin.check
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PyyamlLoadInspectionTest: SecurityTestTask() {
@@ -58,13 +57,13 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     private fun testCodeString(code: String, times: Int = 1){
         val mockHolder = mock<ProblemsHolder> {
-            on { registerProblem(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString())) } doAnswer {}
-        }
-        val mockLocalSession = mock<LocalInspectionToolSession> {
-
+            on { registerProblem(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.getDescription()), any<LocalQuickFix>()) } doAnswer {}
         }
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
             assertNotNull(testFile)
             val testVisitor = PyyamlLoadInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
@@ -73,7 +72,8 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
             expr.forEach { e ->
                 testVisitor.visitPyCallExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString()))
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.getDescription()), any<LocalQuickFix>())
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
 }

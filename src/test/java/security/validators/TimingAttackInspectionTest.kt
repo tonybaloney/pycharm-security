@@ -1,7 +1,10 @@
 package security.validators
 
 import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.QuickFix
+import com.intellij.codeInspection.ex.QuickFixAction
 import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
@@ -10,10 +13,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBinaryExpression
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.*
 import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -70,13 +70,13 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     private fun testCodeString(code: String, times: Int = 1, check: Checks.CheckType){
         val mockHolder = mock<ProblemsHolder> {
-            on { registerProblem(any<PsiElement>(), eq(check.toString())) } doAnswer {}
-        }
-        val mockLocalSession = mock<LocalInspectionToolSession> {
-
+            on { registerProblem(any<PsiElement>(), eq(check.getDescription()), any<LocalQuickFix>()) } doAnswer {}
         }
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("settings.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
             assertNotNull(testFile)
             val testVisitor = TimingAttackInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
@@ -85,7 +85,8 @@ class TimingAttackInspectionTest: SecurityTestTask() {
             expr.forEach { e ->
                 testVisitor.visitPyBinaryExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.toString()))
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), any<LocalQuickFix>())
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
 }
