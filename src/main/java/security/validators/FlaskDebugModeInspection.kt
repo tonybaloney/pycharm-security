@@ -11,6 +11,11 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 
 class FlaskDebugModeInspection : PyInspection() {
+    val check = Checks.FlaskDebugModeCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -23,7 +28,7 @@ class FlaskDebugModeInspection : PyInspection() {
             if ((node.firstChild as PyReferenceExpression).asQualifiedName().toString() != "app.run") return
             if (node.getKeywordArgument("debug") == null) return
             if (!(node.getKeywordArgument("debug") as PyBoolLiteralExpression?)!!.value) return
-            holder?.registerProblem(node, Checks.FlaskDebugModeCheck.Message)
+            holder?.registerProblem(node, Checks.FlaskDebugModeCheck.getDescription())
         }
     }
 }

@@ -11,6 +11,11 @@ import security.fixes.PyyamlSafeLoadFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class PyyamlLoadInspection : PyInspection() {
+    val check = Checks.PyyamlUnsafeLoadCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -22,7 +27,7 @@ class PyyamlLoadInspection : PyInspection() {
             if (calleeName != "load") return
             val qualifiedName = getQualifiedName(node) ?: return
             if (!qualifiedName.equals("yaml.load")) return
-            holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.Message, PyyamlSafeLoadFixer())
+            holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.getDescription(), PyyamlSafeLoadFixer())
         }
     }
 }

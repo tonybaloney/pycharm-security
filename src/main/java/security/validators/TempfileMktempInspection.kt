@@ -11,6 +11,11 @@ import security.fixes.TempfileMksFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class TempfileMktempInspection : PyInspection() {
+    val check = Checks.TempfileMktempCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -22,7 +27,7 @@ class TempfileMktempInspection : PyInspection() {
             if (calleeName != "mktemp") return
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName != "tempfile.mktemp") return
-            holder?.registerProblem(node, Checks.TempfileMktempCheck.Message, TempfileMksFixer())
+            holder?.registerProblem(node, Checks.TempfileMktempCheck.getDescription(), TempfileMksFixer())
         }
     }
 }

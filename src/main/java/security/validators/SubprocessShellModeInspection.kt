@@ -14,6 +14,11 @@ import security.fixes.ShellEscapeFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class SubprocessShellModeInspection : PyInspection() {
+    val check = Checks.SubprocessShellCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -53,7 +58,7 @@ class SubprocessShellModeInspection : PyInspection() {
                 if (list.elements.any { el -> el is PyCallExpression && (el.callee?.name == "shlex_quote" || el.callee?.name == "quote") }) return
             }
 
-            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.Message, ShellEscapeFixer())
+            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(), ShellEscapeFixer())
         }
     }
 }

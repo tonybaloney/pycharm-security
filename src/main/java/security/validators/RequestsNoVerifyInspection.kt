@@ -11,6 +11,11 @@ import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 
 class RequestsNoVerifyInspection : PyInspection() {
+    val check = Checks.RequestsNoVerifyCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -26,7 +31,7 @@ class RequestsNoVerifyInspection : PyInspection() {
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return
-            holder?.registerProblem(node, Checks.RequestsNoVerifyCheck.Message)
+            holder?.registerProblem(node, Checks.RequestsNoVerifyCheck.getDescription())
         }
     }
 }

@@ -11,6 +11,11 @@ import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 
 class HttpxNoVerifyInspection : PyInspection() {
+    val check = Checks.HttpxNoVerifyCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -26,7 +31,7 @@ class HttpxNoVerifyInspection : PyInspection() {
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return
-            holder?.registerProblem(node, Checks.HttpxNoVerifyCheck.Message)
+            holder?.registerProblem(node, Checks.HttpxNoVerifyCheck.getDescription())
         }
     }
 }

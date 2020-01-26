@@ -11,6 +11,11 @@ import security.Checks
 import security.fixes.UseCompareDigestFixer
 
 class TimingAttackInspection : PyInspection() {
+    val check = Checks.TimingAttackCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -26,11 +31,11 @@ class TimingAttackInspection : PyInspection() {
             val leftExpression = node.leftExpression ?: return
             if (rightExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(rightExpression))
-                    holder?.registerProblem(node, Checks.TimingAttackCheck.Message, UseCompareDigestFixer())
+                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer())
             }
             if (leftExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(leftExpression))
-                    holder?.registerProblem(node, Checks.TimingAttackCheck.Message, UseCompareDigestFixer() )
+                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer() )
             }
         }
 

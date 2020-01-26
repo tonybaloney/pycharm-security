@@ -9,6 +9,11 @@ import com.jetbrains.python.psi.PyAssignmentStatement
 import security.Checks
 
 class DjangoDebugModeSettingsInspection : PyInspection() {
+    val check = Checks.DjangoDebugModeCheck;
+
+    override fun getStaticDescription(): String? {
+        return check.getDescription()
+    }
 
     override fun buildVisitor(holder: ProblemsHolder,
                               isOnTheFly: Boolean,
@@ -21,7 +26,7 @@ class DjangoDebugModeSettingsInspection : PyInspection() {
             if (leftExpression != "DEBUG") return;
             val assignedValue = node.assignedValue ?: return
             if (assignedValue.textMatches("True").not()) return;
-            holder?.registerProblem(node, Checks.DjangoDebugModeCheck.Message)
+            holder?.registerProblem(node, Checks.DjangoDebugModeCheck.getDescription())
         }
     }
 }
