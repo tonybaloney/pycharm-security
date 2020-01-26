@@ -39,9 +39,6 @@ class ShellEscapeFixerTest: SecurityTestTask() {
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
         assertTrue(fixer.text.isNotBlank())
-        val mockProblemDescriptor = mock<ProblemDescriptor> {
-        }
-        fixer.applyFix(this.project, mockProblemDescriptor)
     }
 
     @Test
@@ -190,7 +187,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
                 }
                 fixer.applyFix(project, mockProblemDescriptor)
                 assertNotNull(e)
-                verify(mockProblemDescriptor, times(3)).psiElement
+                verify(mockProblemDescriptor, times(2)).psiElement
             }
         }
     }
@@ -215,7 +212,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
                 }
                 fixer.applyFix(project, mockProblemDescriptor)
                 assertNotNull(e)
-                verify(mockProblemDescriptor, times(3)).psiElement
+                verify(mockProblemDescriptor, times(2)).psiElement
             }
         }
     }

@@ -40,9 +40,6 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
         assertTrue(fixer.familyName.isNotBlank())
         assertTrue(fixer.name.isNotBlank())
         assertTrue(fixer.text.isNotBlank())
-        val mockProblemDescriptor = mock<ProblemDescriptor> {
-        }
-        fixer.applyFix(this.project, mockProblemDescriptor)
     }
 
     @Test
