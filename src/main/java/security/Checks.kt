@@ -1,6 +1,7 @@
 package security
 
 import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.ide.BrowserUtil
 import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.AnnotationHolder
@@ -31,6 +32,10 @@ object Checks {
 
         fun getIntentionAction(): IntentionAction {
             return CheckTypeIntentionAction(this)
+        }
+
+        fun getDescription(): String {
+            return this.Message // TODO : Expand
         }
     }
 
@@ -67,4 +72,8 @@ fun AnnotationHolder.create(node: PsiElement, check: Checks.CheckType): Annotati
     val annotation = this.createWarningAnnotation(node, check.toString())
     annotation.registerFix(check.getIntentionAction())
     return annotation
+}
+
+fun ProblemsHolder.create(node: PsiElement, check: Checks.CheckType): Unit {
+    this.registerProblem(node, check.toString())
 }

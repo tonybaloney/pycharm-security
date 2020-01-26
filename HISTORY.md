@@ -1,5 +1,10 @@
 # Release History
 
+## 1.0.14
+
+* All checks are now local inspections, so within the Code Inspection tool, they will show as "Python Security"
+* Users can now alter the severity of any particular check and mute for a given project, file or IDE
+
 ## 1.0.13
 
 * Added [Django CSRF Middleware Validator](doc/checks/DJG200.md)

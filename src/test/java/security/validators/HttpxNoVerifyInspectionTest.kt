@@ -1,26 +1,28 @@
 package security.validators
 
+import com.intellij.codeInspection.LocalInspectionToolSession
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.roots.impl.SdkFinder
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
+import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.*
 import org.jetbrains.annotations.NotNull
-import org.junit.jupiter.api.*
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
 import security.Checks
 import security.SecurityTestTask
+import kotlin.check
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HttpxNoVerifyValidatorTest: SecurityTestTask() {
+class HttpxNoVerifyInspectionTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -135,19 +137,24 @@ class HttpxNoVerifyValidatorTest: SecurityTestTask() {
     }
 
     private fun testCodeString(code: String, times: Int = 1){
-        val mockHolder = mock<AnnotationHolder> {
-            on { createWarningAnnotation(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.toString())) } doReturn(dummyAnnotation);
+        val mockHolder = mock<ProblemsHolder> {
+            on { registerProblem(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.getDescription())) } doAnswer {}
         }
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
-            assertNotNull(testFile);
-            val expr: @NotNull PsiElement = testFile.children[2].children[0]
-            assertNotNull(expr)
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
+            assertNotNull(testFile)
+            val testVisitor = HttpxNoVerifyInspection().buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val testValidator = HttpxNoVerifyValidator()
-            testValidator.holder = mockHolder
-            testValidator.visitPyCallExpression(expr as PyCallExpression)
-            verify(mockHolder, times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.toString()))
+            val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyCallExpression(e)
+            }
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(Checks.HttpxNoVerifyCheck.getDescription()))
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
 }
