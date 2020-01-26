@@ -52,6 +52,8 @@ class UseCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        return
+        if (descriptor.psiElement !is PyBinaryExpression) return
+        val newEl = getNewExpressionAtCaret(descriptor.psiElement.containingFile, project, descriptor.psiElement as PyBinaryExpression) ?: return
+        descriptor.psiElement.replace(newEl)
     }
 }
