@@ -9,7 +9,9 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
+import com.jetbrains.python.psi.LanguageLevel
 import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyElementGenerator
 
 class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     override fun getText(): String {
@@ -40,6 +42,9 @@ class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        return
+        if (descriptor.psiElement !is PyCallExpression) return
+        val elementGenerator = PyElementGenerator.getInstance(project)
+        val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), descriptor.psiElement.text.replace("load", "safe_load")) as PyCallExpression
+        descriptor.psiElement.replace(newEl)
     }
 }
