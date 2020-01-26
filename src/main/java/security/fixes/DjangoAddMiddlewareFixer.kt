@@ -50,6 +50,8 @@ class DjangoAddMiddlewareFixer : LocalQuickFix, IntentionAction, HighPriorityAct
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        return
+        if (descriptor.psiElement !is PyListLiteralExpression) return
+        val newEl = getNewExpression(project, descriptor.psiElement as PyListLiteralExpression) ?: return
+        descriptor.psiElement.replace(newEl)
     }
 }
