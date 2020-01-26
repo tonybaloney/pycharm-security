@@ -78,6 +78,14 @@ class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        return
+        val el = descriptor.psiElement
+        if (el is PyListLiteralExpression) {
+            val newEl = getNewExpressionFromList(descriptor.psiElement.containingFile, project, el) ?: return
+            el.replace(newEl) ?: return
+        }
+        else {
+            val newEl = getNewExpressionFromPyExpression(descriptor.psiElement.containingFile, project, el as PyExpression) ?: return
+            el.replace(newEl) ?: return
+        }
     }
 }

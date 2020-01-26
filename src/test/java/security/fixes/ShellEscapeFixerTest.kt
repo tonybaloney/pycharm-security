@@ -4,15 +4,15 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
-import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyListLiteralExpression
-import com.jetbrains.python.psi.PyReferenceExpression
-import com.jetbrains.python.psi.PyStringLiteralExpression
+import com.jetbrains.python.psi.*
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import junit.framework.TestCase
+import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -168,5 +168,55 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
         verify(mockEditor, Mockito.times(1)).caretModel
         verify(mockCaretModel, Mockito.times(1)).offset
+    }
+
+    @Test
+    fun `test batch fix with literal`(){
+        var code = """
+            import subprocess
+            subprocess.call('foo')
+            subprocess.call('foo')
+        """.trimIndent()
+
+        ApplicationManager.getApplication().runReadAction {
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val fixer = ShellEscapeFixer()
+            val expr: @NotNull MutableCollection<PyExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyStringLiteralExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                val mockProblemDescriptor = mock<ProblemDescriptor> {
+                    on { psiElement } doReturn(e)
+                }
+                fixer.applyFix(project, mockProblemDescriptor)
+                assertNotNull(e)
+                verify(mockProblemDescriptor, times(3)).psiElement
+            }
+        }
+    }
+
+    @Test
+    fun `test batch fix with list literal`(){
+        var code = """
+            import subprocess
+            subprocess.call(['foo'])
+            subprocess.call(['foo'])
+        """.trimIndent()
+
+        ApplicationManager.getApplication().runReadAction {
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val fixer = ShellEscapeFixer()
+            val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                val mockProblemDescriptor = mock<ProblemDescriptor> {
+                    on { psiElement } doReturn(e)
+                }
+                fixer.applyFix(project, mockProblemDescriptor)
+                assertNotNull(e)
+                verify(mockProblemDescriptor, times(3)).psiElement
+            }
+        }
     }
 }
