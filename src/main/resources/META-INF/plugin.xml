@@ -38,6 +38,7 @@
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="TMP100: Use of unsafe tempfile.mktemp" shortName="TempfileMktempInspection" implementationClass="security.validators.TempfileMktempInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="HL100, HL101: Insecure hashing algorithms" shortName="InsecureHashInspection" implementationClass="security.validators.InsecureHashInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="PW100: Comparing secrets and passwords insecurely" shortName="TimingAttackInspection" implementationClass="security.validators.TimingAttackInspection" />
+        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="JJ100: Use of unsanitized Jinja2 Templates" shortName="JinjaAutoinspectInspection" implementationClass="security.validators.JinjaAutoinspectInspection" />
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
     </extensions>

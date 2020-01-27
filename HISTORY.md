@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.15
+
+* All fixes can now be run in batch mode
+* Added [Jinja2 unescaped Template Validator](doc/checks/JJ100.md)
+* Added [Jinja2 unconditional escape fixer](doc/fixes/jinja2unconditional.md)
+
 ## 1.0.14
 
 * All checks are now local inspections, so within the Code Inspection tool, they will show as "Python Security"

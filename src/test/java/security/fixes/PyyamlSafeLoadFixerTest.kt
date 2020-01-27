@@ -1,14 +1,11 @@
 package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
-import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
-import com.jetbrains.python.psi.PyAssignmentStatement
 import com.jetbrains.python.psi.PyCallExpression
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -60,7 +57,7 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
             assertNotNull(testFile)
             val fixer = PyyamlSafeLoadFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getCallElementAtCaret(testFile, mockEditor)
+            var el = getPyCallExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el!!.text.contains("yaml.load"))
         }

@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.14'
+version '1.0.15'
 
 repositories {
     mavenCentral()
@@ -33,10 +33,11 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.14</h2>
+      <h2>1.0.15</h2>
       <ul>
-        <li>All checks are now local inspections, so within the Code Inspection tool, they will show as "Python Security"</li>
-        <li>Users can now alter the severity of any particular check and mute for a given project, file or IDE</li>
+        <li>All quick fixes can now be run in batch mode</li>
+        <li>Added Jinja2 unescaped Template Validator</li>
+        <li>Added Jinja2 unconditional escape fixer</li>
       </ul>"""
 }
 

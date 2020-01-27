@@ -10,3 +10,4 @@
 * [PR100](checks/PR100.md) Use of `shell=True` when running `subprocess.call` from the standard library
 * [TMP100](checks/TMP100.md) Use of `tempfile.mktemp`
 * [DJG100](checks/DJG100.md) Setting `DEBUG = True` in a `settings.py` file (assumed Django project settings)
+* [JJ100](checks/JJ100.md) Use of Jinja2 without autoescaped input
