@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.0.15'
+version '1.1.0'
 
 repositories {
     mavenCentral()
@@ -35,11 +35,15 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.0.15</h2>
+      <h2>1.1.0</h2>
+      <h3>New Features</h3>
       <ul>
-        <li>All quick fixes can now be run in batch mode</li>
-        <li>Added Jinja2 unescaped Template Validator</li>
-        <li>Added Jinja2 unconditional escape fixer</li>
+        <li>Added new hardcoded password check (PW101)</li>
+        <li>Added new builtin exec check (EX100)</li>
+      </ul>
+      <h3>Bugfixes</h3>
+      <ul>
+        <li>Fixed minor bug in Flask debug mode check</li>
       </ul>"""
 }
 
