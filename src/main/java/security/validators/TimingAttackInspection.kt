@@ -22,9 +22,6 @@ class TimingAttackInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-
-        val passwordVariableNames = arrayOf("password", "PASSWORD", "passwd", "secret", "token")
-
         override fun visitPyBinaryExpression(node: PyBinaryExpression?) {
             if (node == null) return
             val rightExpression = node.rightExpression ?: return
@@ -40,7 +37,7 @@ class TimingAttackInspection : PyInspection() {
         }
 
         private fun looksLikeAPassword(expression: PyReferenceExpression): Boolean {
-            return listOf(*passwordVariableNames).contains(expression.name)
+            return listOf(*PasswordVariableNames).contains(expression.name)
         }
     }
 }
