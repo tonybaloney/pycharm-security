@@ -150,7 +150,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
                 }
                 fixer.applyFix(project, mockProblemDescriptor)
                 assertNotNull(e)
-                verify(mockProblemDescriptor, times(4)).psiElement
+                verify(mockProblemDescriptor, times(2)).psiElement
             }
         }
     }

@@ -7,6 +7,7 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
 import com.jetbrains.python.psi.*
@@ -26,10 +27,8 @@ class UseCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        val el = getBinaryExpressionElementAtCaret(file, editor) ?: return
         ApplicationManager.getApplication().runWriteAction {
-            var newEl = getNewExpressionAtCaret(file, project, el) ?: return@runWriteAction
-            el.replace(newEl)
+            getBinaryExpressionElementAtCaret(file, editor)?.let { runFix(project, file, it) }
         }
     }
 
@@ -51,9 +50,13 @@ class UseCompareDigestFixer : LocalQuickFix, IntentionAction, HighPriorityAction
         return true
     }
 
+    fun runFix(project: Project, file: PsiFile, originalElement: PsiElement){
+        if (originalElement !is PyBinaryExpression) return
+        val newEl = getNewExpressionAtCaret(file, project, originalElement) ?: return
+        originalElement.replace(newEl)
+    }
+
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        if (descriptor.psiElement !is PyBinaryExpression) return
-        val newEl = getNewExpressionAtCaret(descriptor.psiElement.containingFile, project, descriptor.psiElement as PyBinaryExpression) ?: return
-        descriptor.psiElement.replace(newEl)
+        runFix(project, descriptor.psiElement.containingFile, descriptor.psiElement)
     }
 }

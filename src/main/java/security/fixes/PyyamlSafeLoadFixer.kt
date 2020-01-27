@@ -7,6 +7,7 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
 import com.jetbrains.python.psi.LanguageLevel
@@ -28,9 +29,14 @@ class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        val callElement = getCallElementAtCaret(file, editor) ?: return
-        val newElement = getNewExpressionAtCaret(file, editor, project) ?: return
-        ApplicationManager.getApplication().runWriteAction { callElement.replace(newElement) }
+        ApplicationManager.getApplication().runWriteAction { getCallElementAtCaret(file, editor)?.let { runFix(project, file, it) } }
+    }
+
+    fun runFix(project: Project, file: PsiFile, originalElement: PsiElement){
+        if (originalElement !is PyCallExpression) return
+        val elementGenerator = PyElementGenerator.getInstance(project)
+        val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), originalElement.text.replace("load", "safe_load")) as PyCallExpression
+        originalElement.replace(newEl)
     }
 
     fun getNewExpressionAtCaret(file: PsiFile, editor: Editor, project: Project): PyCallExpression? {
@@ -42,9 +48,6 @@ class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        if (descriptor.psiElement !is PyCallExpression) return
-        val elementGenerator = PyElementGenerator.getInstance(project)
-        val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), descriptor.psiElement.text.replace("load", "safe_load")) as PyCallExpression
-        descriptor.psiElement.replace(newEl)
+       runFix(project, descriptor.psiElement.containingFile, descriptor.psiElement)
     }
 }

@@ -1,15 +1,5 @@
 package security
 
-import com.intellij.codeInsight.intention.IntentionAction
-import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.ide.BrowserUtil
-import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.AnnotationHolder
-import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
-
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -30,50 +20,8 @@ object Checks {
             return "$Code: $Message"
         }
 
-        fun getIntentionAction(): IntentionAction {
-            return CheckTypeIntentionAction(this)
-        }
-
         fun getDescription(): String {
             return this.Message // TODO : Expand
         }
     }
-
-    class CheckTypeIntentionAction : IntentionAction {
-        val check: CheckType
-
-        constructor(check: CheckType) {
-            this.check = check
-        }
-
-        override fun startInWriteAction(): Boolean {
-            return false
-        }
-
-        override fun getFamilyName(): String {
-            return "security"
-        }
-
-        override fun isAvailable(project: Project, editor: Editor?, file: PsiFile?): Boolean {
-            return true
-        }
-
-        override fun getText(): String {
-            return "Read Documentation"
-        }
-
-        override fun invoke(project: Project, editor: Editor?, file: PsiFile?) {
-            BrowserUtil.browse("https://pycharm-security.readthedocs.io/en/latest/checks/${check.Code}.html")
-        }
-    }
-}
-
-fun AnnotationHolder.create(node: PsiElement, check: Checks.CheckType): Annotation {
-    val annotation = this.createWarningAnnotation(node, check.toString())
-    annotation.registerFix(check.getIntentionAction())
-    return annotation
-}
-
-fun ProblemsHolder.create(node: PsiElement, check: Checks.CheckType): Unit {
-    this.registerProblem(node, check.toString())
 }

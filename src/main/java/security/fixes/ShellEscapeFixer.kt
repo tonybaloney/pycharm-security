@@ -29,12 +29,8 @@ class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        val el = getPyExpressionAtCaret(file, editor) ?: return
         ApplicationManager.getApplication().runWriteAction {
-            if (el is PyListLiteralExpression)
-                el.replace(getNewExpressionFromList(file, project, el) ?: return@runWriteAction)
-            else
-                el.replace(getNewExpressionFromPyExpression(file, project, el) ?: return@runWriteAction)
+            getPyExpressionAtCaret(file, editor)?.let { runFix(project, file, it) }
         }
     }
 
@@ -77,15 +73,18 @@ class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
         return true
     }
 
-    override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        val el = descriptor.psiElement
-        if (el is PyListLiteralExpression) {
-            val newEl = getNewExpressionFromList(descriptor.psiElement.containingFile, project, el) ?: return
-            el.replace(newEl) ?: return
+    fun runFix(project: Project, file: PsiFile, originalElement: PsiElement){
+        if (originalElement is PyListLiteralExpression) {
+            val newEl = getNewExpressionFromList(file, project, originalElement) ?: return
+            originalElement.replace(newEl) ?: return
         }
         else {
-            val newEl = getNewExpressionFromPyExpression(descriptor.psiElement.containingFile, project, el as PyExpression) ?: return
-            el.replace(newEl) ?: return
+            val newEl = getNewExpressionFromPyExpression(file, project, originalElement as PyExpression) ?: return
+            originalElement.replace(newEl) ?: return
         }
+    }
+
+    override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+        runFix(project, descriptor.psiElement.containingFile, descriptor.psiElement)
     }
 }

@@ -7,6 +7,7 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
 import com.jetbrains.python.psi.PyElementGenerator
@@ -33,9 +34,14 @@ class DjangoAddMiddlewareFixer : LocalQuickFix, IntentionAction, HighPriorityAct
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        val listElement = getListLiteralExpressionAtCaret(file, editor) ?: return
-        val newElement = getNewExpression(project, listElement) ?: return
-        ApplicationManager.getApplication().runWriteAction { listElement.replace(newElement) }
+        ApplicationManager.getApplication().runWriteAction { getListLiteralExpressionAtCaret(file, editor)?.let { runFix(project, it) }
+                ?: return@runWriteAction }
+    }
+
+    fun runFix(project: Project, originalElement: PsiElement){
+        if (originalElement !is PyListLiteralExpression) return
+        val newEl = getNewExpression(project, originalElement) ?: return
+        originalElement.replace(newEl)
     }
 
     fun getNewExpression(project: Project, oldList: PyListLiteralExpression): PyListLiteralExpression? {
@@ -50,8 +56,6 @@ class DjangoAddMiddlewareFixer : LocalQuickFix, IntentionAction, HighPriorityAct
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        if (descriptor.psiElement !is PyListLiteralExpression) return
-        val newEl = getNewExpression(project, descriptor.psiElement as PyListLiteralExpression) ?: return
-        descriptor.psiElement.replace(newEl)
+        runFix(project, descriptor.psiElement)
     }
 }
