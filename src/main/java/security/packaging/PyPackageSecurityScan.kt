@@ -12,7 +12,7 @@ import com.jetbrains.python.sdk.PythonSdkType
 import com.jetbrains.python.sdk.PythonSdkUtil
 
 object PyPackageSecurityScan {
-    private var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
+    var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
 
     private fun returnError(project: Project){
         NOTIFICATION_GROUP
