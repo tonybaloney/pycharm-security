@@ -12,3 +12,4 @@
 * [TMP100](checks/TMP100.md) Use of `tempfile.mktemp`
 * [DJG100](checks/DJG100.md) Setting `DEBUG = True` in a `settings.py` file (assumed Django project settings)
 * [JJ100](checks/JJ100.md) Use of Jinja2 without autoescaped input
+* [EX100](checks/EX100.md) Use of builtin `exec()` function
