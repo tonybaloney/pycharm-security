@@ -104,4 +104,40 @@ class InsecureHashInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.InsecureHashAlgorithms, "test.py", InsecureHashInspection())
     }
+
+    @Test
+    fun `test not new method`(){
+        var code = """
+            import hashlib
+            hashlib.pew('blake2')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.InsecureHashAlgorithms, "test.py", InsecureHashInspection())
+    }
+
+    @Test
+    fun `test no args`(){
+        var code = """
+            import hashlib
+            hashlib.new()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.InsecureHashAlgorithms, "test.py", InsecureHashInspection())
+    }
+
+    @Test
+    fun `test first arg non string literal`(){
+        var code = """
+            import hashlib
+            hashlib.new(1)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.InsecureHashAlgorithms, "test.py", InsecureHashInspection())
+    }
+
+    @Test
+    fun `test named arg non string literal`(){
+        var code = """
+            import hashlib
+            hashlib.new(name=1)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.InsecureHashAlgorithms, "test.py", InsecureHashInspection())
+    }
 }
