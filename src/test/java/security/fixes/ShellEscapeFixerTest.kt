@@ -216,4 +216,55 @@ class ShellEscapeFixerTest: SecurityTestTask() {
             }
         }
     }
+
+    @Test
+    fun `test batch fix with list literal of existing escaped instances`(){
+        var code = """
+            import subprocess
+            import shlex
+            subprocess.call([shlex.quote('foo')])
+            subprocess.call(['foo'])
+        """.trimIndent()
+
+        ApplicationManager.getApplication().runReadAction {
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val fixer = ShellEscapeFixer()
+            val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                val mockProblemDescriptor = mock<ProblemDescriptor> {
+                    on { psiElement } doReturn(e)
+                }
+                fixer.applyFix(project, mockProblemDescriptor)
+                assertNotNull(e)
+                verify(mockProblemDescriptor, times(2)).psiElement
+            }
+        }
+    }
+
+    @Test
+    fun `test batch fix with list literal of existing non-escaped instances`(){
+        var code = """
+            import subprocess
+            subprocess.call([get_value_from_place('foo')])
+            subprocess.call(['foo'])
+        """.trimIndent()
+
+        ApplicationManager.getApplication().runReadAction {
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val fixer = ShellEscapeFixer()
+            val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                val mockProblemDescriptor = mock<ProblemDescriptor> {
+                    on { psiElement } doReturn(e)
+                }
+                fixer.applyFix(project, mockProblemDescriptor)
+                assertNotNull(e)
+                verify(mockProblemDescriptor, times(2)).psiElement
+            }
+        }
+    }
 }
