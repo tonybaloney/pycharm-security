@@ -1,8 +1,6 @@
 package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
-import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
@@ -14,7 +12,10 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.jetbrains.annotations.NotNull
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito
 import security.SecurityTestTask
 
@@ -31,7 +32,7 @@ class TempfileMksFixerTest: SecurityTestTask() {
     }
 
     @Test
-    fun `verify fixer properies`(){
+    fun `verify fixer properties`(){
         val fixer = TempfileMksFixer()
         assertTrue(fixer.startInWriteAction())
         assertTrue(fixer.familyName.isNotBlank())
@@ -115,7 +116,7 @@ class TempfileMksFixerTest: SecurityTestTask() {
                 }
                 fixer.applyFix(project, mockProblemDescriptor)
                 assertNotNull(e)
-                verify(mockProblemDescriptor, times(3)).psiElement
+                verify(mockProblemDescriptor, times(2)).psiElement
             }
         }
     }

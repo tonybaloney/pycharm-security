@@ -37,6 +37,11 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(HttpxNoVerifyInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test the get method with no verify`() {
         var code = """
             import httpx

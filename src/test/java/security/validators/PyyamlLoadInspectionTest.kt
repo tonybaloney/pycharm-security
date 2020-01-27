@@ -38,6 +38,11 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(PyyamlLoadInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test yaml load`(){
         var code = """
             import yaml

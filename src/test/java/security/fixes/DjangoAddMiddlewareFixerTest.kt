@@ -132,7 +132,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
                 }
                 fixer.applyFix(project, mockProblemDescriptor)
                 assertNotNull(e)
-                verify(mockProblemDescriptor, times(3)).psiElement
+                verify(mockProblemDescriptor, times(1)).psiElement
             }
         }
     }

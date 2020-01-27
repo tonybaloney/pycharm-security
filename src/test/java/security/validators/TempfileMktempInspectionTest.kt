@@ -38,6 +38,11 @@ class TempfileMktempInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(TempfileMktempInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test temp file with insecure make`(){
         var code = """
             import tempfile

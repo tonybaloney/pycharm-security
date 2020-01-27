@@ -36,6 +36,11 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(FlaskDebugModeInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test flask app debug mode on`(){
         var code = """
             from flask import Flask

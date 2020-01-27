@@ -38,6 +38,11 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(SubprocessShellModeInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test subprocess call with shell mode`(){
         var code = """
             import subprocess

@@ -39,6 +39,11 @@ class TimingAttackInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(TimingAttackInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test match of password comparator left`(){
         var code = """
             password = "BANANA"

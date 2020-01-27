@@ -7,6 +7,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.testFramework.UsefulTestCase
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyAssignmentStatement
@@ -33,6 +34,11 @@ class DjangoDebugModeSettingsInspectorTest: SecurityTestTask() {
     @AfterAll
     override fun tearDown(){
         super.tearDown()
+    }
+
+    @Test
+    fun `verify description is not empty`(){
+        assertFalse(DjangoDebugModeSettingsInspection().staticDescription.isNullOrEmpty())
     }
 
     @Test

@@ -37,6 +37,11 @@ class RequestsNoVerifyInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(RequestsNoVerifyInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test the get method with no verify`() {
         var code = """
             import requests

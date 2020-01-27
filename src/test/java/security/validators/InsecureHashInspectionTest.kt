@@ -36,6 +36,11 @@ class InsecureHashInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(InsecureHashInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test new hash with insecure algorithm`(){
         var code = """
             import hashlib

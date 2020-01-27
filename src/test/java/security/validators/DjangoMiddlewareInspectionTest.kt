@@ -38,6 +38,11 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `verify description is not empty`(){
+        assertFalse(DjangoMiddlewareInspection().staticDescription.isNullOrEmpty())
+    }
+
+    @Test
     fun `test django settings file with no csrf`(){
         var code = """
             MIDDLEWARE = [
