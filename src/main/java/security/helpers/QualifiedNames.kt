@@ -16,6 +16,6 @@ object QualifiedNames {
             return qualifiedName.toString()
         }
         else
-            return markedCallees[0].element?.qualifiedName
+            return markedCallees[0].element?.qualifiedName ?: markedCallees[0].element?.name
     }
 }

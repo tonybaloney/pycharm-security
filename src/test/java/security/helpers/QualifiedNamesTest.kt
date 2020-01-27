@@ -8,6 +8,7 @@ import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.resolve.PyResolveContext
+import junit.framework.TestCase
 import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -55,6 +56,42 @@ class QualifiedNamesTest: SecurityTestTask() {
             math.floor()()
         """.trimIndent()
         assertEquals(getQualifiedName(code), "math.floor")
+    }
+
+    @Test
+    fun `test non named call`(){
+        var code = """
+            import math
+            _()
+        """.trimIndent()
+        assertEquals(getQualifiedName(code), "_")
+    }
+
+    @Test
+    fun `test resolved callee`(){
+        var code = """
+            class x:
+                @staticmethod
+                def meth():
+                    pass
+                    
+            x.meth()
+        """.trimIndent()
+        assertEquals(getQualifiedName(code), "meth")
+    }
+
+    @Test
+    fun `test fully resolved callee`(){
+        var code = """
+            class x:
+                @staticmethod
+                def meth():
+                    pass
+                    
+            y = x
+            y.meth()
+        """.trimIndent()
+        assertEquals(getQualifiedName(code), "meth")
     }
 
     private fun getQualifiedName(code: String): String?{
