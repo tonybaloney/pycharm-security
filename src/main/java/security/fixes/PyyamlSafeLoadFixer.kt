@@ -29,7 +29,7 @@ class PyyamlSafeLoadFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        ApplicationManager.getApplication().runWriteAction { getCallElementAtCaret(file, editor)?.let { runFix(project, file, it) } }
+        ApplicationManager.getApplication().runWriteAction { getPyCallExpressionAtCaret(file, editor)?.let { runFix(project, file, it) } }
     }
 
     fun runFix(project: Project, file: PsiFile, originalElement: PsiElement){

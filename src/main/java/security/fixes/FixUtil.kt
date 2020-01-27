@@ -11,7 +11,7 @@ fun getPyExpressionAtCaret(file: PsiFile, editor: Editor): PyExpression? {
     return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyExpression::class.java) ?: return null
 }
 
-fun getCallElementAtCaret(file: PsiFile, editor: Editor): PyCallExpression? {
+fun getPyCallExpressionAtCaret(file: PsiFile, editor: Editor): PyCallExpression? {
     return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java) ?: return null
 }
 
@@ -24,7 +24,7 @@ fun getBinaryExpressionElementAtCaret(file: PsiFile, editor: Editor): PyBinaryEx
 }
 
 fun getNewCallExpressiontAtCaret(file: PsiFile, editor: Editor, project: Project, old: String, new: String): PyCallExpression ? {
-    var callElement = getCallElementAtCaret(file, editor) ?: return null
+    var callElement = getPyCallExpressionAtCaret(file, editor) ?: return null
     val elementGenerator = PyElementGenerator.getInstance(project)
     val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), callElement.text.replace(old, new)) as PyCallExpression
     return newEl

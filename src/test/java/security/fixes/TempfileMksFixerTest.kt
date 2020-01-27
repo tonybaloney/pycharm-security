@@ -59,7 +59,7 @@ class TempfileMksFixerTest: SecurityTestTask() {
             assertNotNull(testFile)
             val fixer = TempfileMksFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getCallElementAtCaret(testFile, mockEditor)
+            var el = getPyCallExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el!!.text.contains("tempfile.mktemp"))
         }

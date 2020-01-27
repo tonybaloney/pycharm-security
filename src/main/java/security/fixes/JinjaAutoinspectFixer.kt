@@ -10,17 +10,15 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
-import com.jetbrains.python.psi.LanguageLevel
-import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyElementGenerator
+import com.jetbrains.python.psi.*
 
-class TempfileMksFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
+class JinjaAutoinspectUnconditionalFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     override fun getText(): String {
         return name
     }
 
     override fun getFamilyName(): String {
-        return "Use tempfile.mkstemp()"
+        return "Add autoinspect unconditionally"
     }
 
     override fun isAvailable(project: Project, editor: Editor, file: PsiFile): Boolean {
@@ -29,22 +27,32 @@ class TempfileMksFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
 
     @Throws(IncorrectOperationException::class)
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
-        ApplicationManager.getApplication().runWriteAction { getPyCallExpressionAtCaret(file, editor)?.let { runFix(project, file, it) } }
-    }
-
-    fun getNewExpressionAtCaret(file: PsiFile, editor: Editor, project: Project): PyCallExpression? {
-        return getNewCallExpressiontAtCaret(file, editor, project, "mktemp", "mkstemp")
+        ApplicationManager.getApplication().runWriteAction {
+            getPyCallExpressionAtCaret(file, editor)?.let { runFix(project, file, it) }
+        }
     }
 
     override fun startInWriteAction(): Boolean {
         return true
     }
 
-    fun runFix(project: Project, file: PsiFile, originalElement: PsiElement){
-        if (originalElement !is PyCallExpression) return
+    fun runFix(project: Project, file: PsiFile, originalElement: PsiElement): PyCallExpression? {
+        if (originalElement !is PyCallExpression) return null
+        if (file !is PyFile) return null
+        var newEl = originalElement.copy() as PyCallExpression
+        val autoescapeArgument = newEl.getKeywordArgument("autoescape")
         val elementGenerator = PyElementGenerator.getInstance(project)
-        val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), originalElement.text.replace("mktemp", "mkstemp")) as PyCallExpression
+        val newArg = elementGenerator.createKeywordArgument(file.languageLevel, "autoescape", "True")
+        if (autoescapeArgument == null)
+        {
+            newEl.argumentList?.addArgument(newArg)
+        } else {
+            if (autoescapeArgument is PyCallExpression) return null
+            if (autoescapeArgument !is PyBoolLiteralExpression) return null
+            autoescapeArgument.replace(elementGenerator.createFromText(file.languageLevel, PyExpressionStatement::class.java, "True"))
+        }
         originalElement.replace(newEl)
+        return newEl
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {

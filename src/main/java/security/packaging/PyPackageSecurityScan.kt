@@ -14,15 +14,19 @@ import com.jetbrains.python.sdk.PythonSdkUtil
 object PyPackageSecurityScan {
     private var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
 
+    private fun returnError(project: Project){
+        NOTIFICATION_GROUP
+                .createNotification("Could not check Python packages", null,
+                        "Could not verify security of Python packages, unable to locate configured Python Interpreter. Please configure your interpreter.",
+                        NotificationType.INFORMATION)
+                .notify(project)
+    }
+
     fun checkPackages(project: Project){
         var pythonSdks = getPythonSdks(project)
         if (pythonSdks.isEmpty()){
-            NOTIFICATION_GROUP
-                    .createNotification("Could not check Python packages", null,
-                            "Could not verify security of Python packages, unable to locate configured Python Interpreter. Please configure your interpreter.",
-                            NotificationType.INFORMATION)
-                    .notify(project)
-            return;
+            returnError(project)
+            return
         }
         for (sdk in pythonSdks) {
             val packageManager = PyPackageManager.getInstance(sdk)
@@ -38,6 +42,10 @@ object PyPackageSecurityScan {
             }
             var packageChecker = SafetyDbChecker()
             var matches = 0;
+            if (packageManager.packages == null){
+                returnError(project)
+                return
+            }
             for (pack in packageManager.packages!!){
                 if (packageChecker.hasMatch(pack)) {
                     for (issue in packageChecker.getMatches(pack)) {
@@ -69,8 +77,8 @@ object PyPackageSecurityScan {
     }
 
     private fun renderMessage(issue: SafetyDbChecker.SafetyDbRecord) : String{
-        return if (issue.cve.isNullOrEmpty()){
-            "${issue.advisory}"
+        return if (issue.cve.isEmpty()){
+            issue.advisory
         } else {
             "${issue.advisory}<br>See <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=${issue.cve}'>${issue.cve}</a>"
         }
