@@ -1,5 +1,7 @@
 package security
 
+import security.validators.BuiltinExecInspection
+
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -15,7 +17,7 @@ object Checks {
     val TimingAttackCheck = CheckType("PW100", "Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use compare_digest() instead.")
     val HardcodedPasswordCheck = CheckType("PW101", "Passwords, secrets or keys should not be hardcoded into Python code.")
     val JinjaAutoinspectCheck = CheckType("JJ100", "Jinja does not inspect or sanitize input by default, leaving rendered templates open to XSS. Use autoinspect=True.")
-
+    val BuiltinExecCheck = CheckType("EX100", "Use of builtin exec function for dynamic input is insecure and can leave your application open to arbitrary code execution.")
 
     class CheckType(var Code: String, var Message: String) {
         override fun toString(): String {
