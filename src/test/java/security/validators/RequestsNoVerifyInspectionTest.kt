@@ -113,4 +113,25 @@ class RequestsNoVerifyInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.RequestsNoVerifyCheck, "test.py", RequestsNoVerifyInspection())
     }
+
+
+    @Test
+    fun `test wrong qualified path`() {
+        var code = """
+            import requests
+            
+            requestssss.patch(url, verify=False)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.RequestsNoVerifyCheck, "test.py", RequestsNoVerifyInspection())
+    }
+
+    @Test
+    fun `test non boolean literal verify`() {
+        var code = """
+            import requests
+            
+            requests.patch(url, verify='banana')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.RequestsNoVerifyCheck, "test.py", RequestsNoVerifyInspection())
+    }
 }

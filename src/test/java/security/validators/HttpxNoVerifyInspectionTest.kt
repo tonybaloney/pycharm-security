@@ -113,4 +113,24 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.HttpxNoVerifyCheck, "test.py", HttpxNoVerifyInspection())
     }
+
+    @Test
+    fun `test wrong qualified path`() {
+        var code = """
+            import httpx
+            
+            httpxxxx.patch(url, verify=False)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.HttpxNoVerifyCheck, "test.py", HttpxNoVerifyInspection())
+    }
+
+    @Test
+    fun `test non boolean literal verify`() {
+        var code = """
+            import httpx
+            
+            httpx.patch(url, verify='banana')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.HttpxNoVerifyCheck, "test.py", HttpxNoVerifyInspection())
+    }
 }
