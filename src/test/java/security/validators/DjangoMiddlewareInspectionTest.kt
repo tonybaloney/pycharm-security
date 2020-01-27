@@ -65,7 +65,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
     }
 
     @Test
-    fun `test django settings with all requirements`(){
+    fun `test django settings with all requirements`() {
         var code = """
             MIDDLEWARE = [
                 'django.middleware.security.SecurityMiddleware',
@@ -78,5 +78,49 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
             ]
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())
+    }
+
+    @Test
+    fun `test another assignment type`(){
+        var code = """
+            MUDDLE_WARE = [
+            ]
+        """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())
+
+    }
+
+    @Test
+    fun `test another file name`(){
+        var code = """
+                MIDDLEWARE = [
+                ]
+            """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
+    }
+
+    @Test
+    fun `test no left hand `(){
+        var code = """
+                 = [
+                ]
+            """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
+    }
+
+    @Test
+    fun `test no right hand`(){
+        var code = """
+                MIDDLEWARE = 
+            """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
+    }
+
+    @Test
+    fun `test value is not list literal`(){
+        var code = """
+                MIDDLEWARE = 'banana'
+            """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
     }
 }

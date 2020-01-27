@@ -34,6 +34,33 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test yaml load with args`(){
+        var code = """
+            import yaml
+            yaml.load(f)
+        """.trimIndent()
+        testCodeCallExpression(code, 1, Checks.PyyamlUnsafeLoadCheck, "test.py", PyyamlLoadInspection())
+    }
+
+    @Test
+    fun `test not yaml qn load`(){
+        var code = """
+            import yaml
+            waml.load()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.PyyamlUnsafeLoadCheck, "test.py", PyyamlLoadInspection())
+    }
+
+    @Test
+    fun `test yaml not load`(){
+        var code = """
+            import yaml
+            yaml.loooad()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.PyyamlUnsafeLoadCheck, "test.py", PyyamlLoadInspection())
+    }
+
+    @Test
     fun `test yaml safe_load`(){
         var code = """
             import yaml

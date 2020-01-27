@@ -49,4 +49,28 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "settings.py", DjangoDebugModeSettingsInspection())
     }
+
+    @Test
+    fun `test debug true in another file name`(){
+        var code = """
+            DEBUG = True
+        """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "test.py", DjangoDebugModeSettingsInspection())
+    }
+
+    @Test
+    fun `test no left hand`(){
+        var code = """
+            = True
+        """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "test.py", DjangoDebugModeSettingsInspection())
+    }
+
+    @Test
+    fun `test no right hand`(){
+        var code = """
+           DEBUG = 
+        """.trimIndent()
+        testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "test.py", DjangoDebugModeSettingsInspection())
+    }
 }

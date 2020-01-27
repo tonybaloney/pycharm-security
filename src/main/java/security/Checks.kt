@@ -22,7 +22,7 @@ object Checks {
         }
 
         fun getDescription(): String {
-            return this.Message // TODO : Expand
+            return this.toString() // TODO : Expand
         }
     }
 }

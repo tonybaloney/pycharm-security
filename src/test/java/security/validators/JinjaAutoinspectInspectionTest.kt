@@ -101,4 +101,37 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.JinjaAutoinspectCheck, "test.py", JinjaAutoinspectInspection())
     }
+
+    @Test
+    fun `test jinja2 with not template call`(){
+        var code = """
+            import jinja2
+            env = jinja2.Templateeeee(autoescape=jinja2.select_autoescape(
+                enabled_extensions=('html', 'xml'),
+                default_for_string=True,
+            ))
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.JinjaAutoinspectCheck, "test.py", JinjaAutoinspectInspection())
+    }
+
+    @Test
+    fun `test jinja2 with not jinja qn`(){
+        var code = """
+            import jinja2000
+            env = jinja2000.Template(autoescape=jinja2.select_autoescape(
+                enabled_extensions=('html', 'xml'),
+                default_for_string=True,
+            ))
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.JinjaAutoinspectCheck, "test.py", JinjaAutoinspectInspection())
+    }
+
+    @Test
+    fun `test jinja2 autoescape non bool`(){
+        var code = """
+            import jinja2
+            env = jinja2.Template(autoescape='banana')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.JinjaAutoinspectCheck, "test.py", JinjaAutoinspectInspection())
+    }
 }

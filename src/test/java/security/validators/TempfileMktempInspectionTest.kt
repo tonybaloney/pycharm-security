@@ -37,7 +37,16 @@ class TempfileMktempInspectionTest: SecurityTestTask() {
     fun `test temp file with make (safe) temp`(){
         var code = """
             import tempfile
-            mkstemp()
+            tempfile.mkstemp()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.TempfileMktempCheck, "test.py", TempfileMktempInspection())
+    }
+
+    @Test
+    fun `test temp file with other lib`(){
+        var code = """
+            import nottempfile
+            nottempfile.mktemp()
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.TempfileMktempCheck, "test.py", TempfileMktempInspection())
     }

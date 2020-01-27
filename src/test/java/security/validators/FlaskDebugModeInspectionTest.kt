@@ -47,12 +47,45 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test flask app with debug mode not bool`(){
+        var code = """
+            from flask import Flask
+            
+            app = Flask()
+            app.run(debug='banana')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
+    }
+
+    @Test
     fun `test flask with no mention of debug mode`(){
         var code = """
             from flask import Flask
             
             app = Flask()
             app.run()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
+    }
+
+    @Test
+    fun `test flask not run method`(){
+        var code = """
+            from flask import Flask
+            
+            app = Flask()
+            app.fun()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
+    }
+
+    @Test
+    fun `test flask not app run`(){
+        var code = """
+            from flask import Flask
+            
+            app = Flask()
+            blah.run()
         """.trimIndent()
         testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
     }
