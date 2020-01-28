@@ -1,5 +1,9 @@
 # Release History
 
+## 1.1.1
+
+* Support for PyCharm 2020.1
+
 ## 1.1.0
 
 * Added new hardcoded password check [PW100](doc/checks/PW100.md)
