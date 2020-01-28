@@ -41,6 +41,7 @@
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="JJ100: Use of unsanitized Jinja2 Templates" shortName="JinjaAutoinspectInspection" implementationClass="security.validators.JinjaAutoinspectInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="PW101: Hardcoded passwords and secrets" shortName="HardcodedPasswordInspection" implementationClass="security.validators.HardcodedPasswordInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="EX100: Use of builtin exec() function" shortName="BuiltinExecInspection" implementationClass="security.validators.BuiltinExecInspection" />
+        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="MK100: Use of unsanitized Mako Templates" shortName="MakoTemplateInspection" implementationClass="security.validators.MakoTemplateInspection" />
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
     </extensions>
