@@ -11,7 +11,7 @@ Plugin releases are verified by JetBrains, so there is normally a lag between a 
 If you want to install a specific version, go to the [releases](https://github.com/tonybaloney/pycharm-security/releases) page and download the `pycharm-security-xxx.zip` file.
 Inside PyCharm,
 
-![](img/install-from-disk.png)
+![](_static/install-from-disk.png)
 
 ## Installation from source
 
