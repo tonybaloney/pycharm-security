@@ -105,7 +105,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
                  = [
                 ]
             """.trimIndent()
-        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())
     }
 
     @Test
@@ -113,7 +113,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
         var code = """
                 MIDDLEWARE = 
             """.trimIndent()
-        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())
     }
 
     @Test
@@ -121,6 +121,6 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
         var code = """
                 MIDDLEWARE = 'banana'
             """.trimIndent()
-        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "file.py", DjangoMiddlewareInspection())
+        testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())
     }
 }

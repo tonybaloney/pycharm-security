@@ -40,6 +40,8 @@ patchPluginXml {
       <ul>
         <li>Added new hardcoded password check (PW101)</li>
         <li>Added new builtin exec check (EX100)</li>
+        <li>Added new mako unescaped input check (MK100)</li>
+        <li>Added new mako HTML escape quick fix</li>
       </ul>
       <h3>Bugfixes</h3>
       <ul>
