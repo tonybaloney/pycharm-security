@@ -1,5 +1,13 @@
 # Release History
 
+## 1.1.0
+
+* Added new hardcoded password check [PW100](doc/checks/PW100.md)
+* Added new builtin exec check [EX100](doc/checks/EX100.md)
+* Added new mako unescaped input check [MK100](doc/checks/MK100.md)
+* Added new mako HTML escape quick fix
+* Fixed minor bug in Flask debug mode check
+
 ## 1.0.15
 
 * All fixes can now be run in batch mode
