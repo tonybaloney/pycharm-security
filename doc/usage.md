@@ -18,11 +18,11 @@ Where a quick fix is available, it can be applied using the quick fix shortcut k
 
 To scan an entire project, navigate to the **Inspect Code** from the **Code** menu
 
-![](_static/usage-inspect-code-for-project.png)
+<img src="_static/usage-inspect-code-for-project.png" width="50%"/>
 
 To scan a directory, right click on it from the Project panel, and selecting **Inspect Code** from the menu:
 
-![](_static/usage-inspect-code-from-context.png)
+<img src="_static/usage-inspect-code-from-context.png" width="50%"/>
 
 This will pop up with the Inspections Profile Window. 
 
@@ -30,11 +30,11 @@ Click the `...` ellipsis to edit the inspection profiles.
 
 From here, deselect all inspections, then select the **Python Security** group:
 
-![](_static/usage-inspection-profile.png)
+<img src="_static/usage-inspection-profile.png" width="50%"/>
 
 You can customize the severity for this particular run. Save the inspection profile with the name "**Security**" (or similar), by clicking on the cog and choosing **Copy to Project**.
 
-![](_static/usage-save-profile.png)
+<img src="_static/usage-save-profile.png" width="50%"/>
 
     You can also use **Copy to IDE** to reuse this profile for any project.
 
@@ -78,12 +78,10 @@ In PyCharm, navigate to __Preferences -> Editor -> Inspections__ and find the __
 
 The severity levels for any check can be configured in this pane.
 
-![](_static/usage-edit-levels.png)
+<img src="_static/usage-edit-levels.png" width="50%"/>
 
 Some checks are grouped together because they have very similar styles, e.g. the Django middleware checks (DJG200, DJG201) are bundled.
 
 There is a shortcut to this window from the context menu:
 
 ![](_static/usage-edit-setting.png)
-
-## Running on CI/CD

@@ -31,6 +31,7 @@ The plugin looks at your Python code for common security vulnerabilities and sug
    :caption: Contents:
 
    installation
+   usage
    checks
    fixes
    development
