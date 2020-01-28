@@ -5,6 +5,7 @@
 [![Version](https://img.shields.io/jetbrains/plugin/d/13609-python-security.svg)](https://plugins.jetbrains.com/plugin/13609-python-security)
 [![codecov](https://codecov.io/gh/tonybaloney/pycharm-security/branch/master/graph/badge.svg)](https://codecov.io/gh/tonybaloney/pycharm-security)
 [![Documentation Status](https://readthedocs.org/projects/pycharm-security/badge/?version=latest)](https://pycharm-security.readthedocs.io/en/latest/?badge=latest)
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/anthonypjshaw/pycharm-security)](https://hub.docker.com/r/anthonypjshaw/pycharm-security)
 
 <img src="doc/_static/logo.png" width="25%"/>
 
