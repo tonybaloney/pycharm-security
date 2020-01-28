@@ -7,6 +7,7 @@ RUN echo "Building PyCharm $PYCHARM_VERSION with python-security $PYTHON_SECURIT
 WORKDIR /sources
 RUN apt-get -y update && apt-get -y install wget
 RUN wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSION}.tar.gz && tar xzf pycharm-community-${PYCHARM_VERSION}.tar.gz -C /opt/
+RUN mv /opt/pycharm-community-${PYCHARM_VERSION} /opt/pycharm-community
 RUN apt-get -y install unzip
 RUN wget https://github.com/tonybaloney/pycharm-security/releases/download/1.10.0/pycharm-security-${PYTHON_SECURITY_VERSION}.zip && unzip pycharm-security-${PYTHON_SECURITY_VERSION}.zip -d /opt/pycharm-community/plugins
 RUN wget https://github.com/tonybaloney/pycharm-security/raw/docker/doc/_static/SecurityInspectionProfile.xml
