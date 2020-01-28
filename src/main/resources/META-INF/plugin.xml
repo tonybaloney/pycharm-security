@@ -21,7 +21,8 @@
      <li>Insecure configuration of Flask debug mode</li>
     </ul>
     ]]></description>
-
+    <idea-version since-build="192" until-build="201.*" />
+    
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.python</depends>

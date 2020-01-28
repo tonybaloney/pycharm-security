@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.1.0'
+version '1.1.1'
 
 repositories {
     mavenCentral()
@@ -31,21 +31,19 @@ intellij {
     version 'PC-2019.3.1'
     type 'PC'
     plugins 'python-ce', 'yaml'
+    updateSinceUntilBuild false
 }
 
 patchPluginXml {
     changeNotes """
-      <h2>1.1.0</h2>
+      <h2>1.1.1</h2>
       <h3>New Features</h3>
       <ul>
-        <li>Added new hardcoded password check (PW101)</li>
-        <li>Added new builtin exec check (EX100)</li>
-        <li>Added new mako unescaped input check (MK100)</li>
-        <li>Added new mako HTML escape quick fix</li>
+        <li>Support for PyCharm 2020.1</li>
       </ul>
       <h3>Bugfixes</h3>
       <ul>
-        <li>Fixed minor bug in Flask debug mode check</li>
+
       </ul>"""
 }
 
