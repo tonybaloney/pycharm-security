@@ -10,5 +10,5 @@ RUN wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSI
 RUN mv /opt/pycharm-community-${PYCHARM_VERSION} /opt/pycharm-community
 RUN apt-get -y install unzip
 RUN wget https://github.com/tonybaloney/pycharm-security/releases/download/1.10.0/pycharm-security-${PYTHON_SECURITY_VERSION}.zip && unzip pycharm-security-${PYTHON_SECURITY_VERSION}.zip -d /opt/pycharm-community/plugins
-RUN wget https://github.com/tonybaloney/pycharm-security/raw/docker/doc/_static/SecurityInspectionProfile.xml
+RUN wget https://github.com/tonybaloney/pycharm-security/raw/master/doc/_static/SecurityInspectionProfile.xml
 ENTRYPOINT /opt/pycharm-community/bin/inspect.sh /code /sources/SecurityInspectionProfile.xml out.log -format plain -v0 2> /dev/null && cat out.log
