@@ -1,7 +1,8 @@
 # Release History
 
-## 1.1.1
+## 1.2.0
 
+* Added SQL injection with Python formatting check [SQL100](doc/checks/SQL100.md)
 * Support for PyCharm 2020.1
 
 ## 1.1.0

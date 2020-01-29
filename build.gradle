@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.1.1'
+version '1.2.0'
 
 repositories {
     mavenCentral()
@@ -36,9 +36,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.1.1</h2>
+      <h2>1.2.0</h2>
       <h3>New Features</h3>
       <ul>
+        <li>Checks for potential SQL injection with Python formatting expressions</li>
         <li>Support for PyCharm 2020.1</li>
       </ul>
       """

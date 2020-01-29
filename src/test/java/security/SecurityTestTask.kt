@@ -10,10 +10,7 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
-import com.jetbrains.python.psi.PyAssignmentStatement
-import com.jetbrains.python.psi.PyBinaryExpression
-import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyExpression
+import com.jetbrains.python.psi.*
 import com.nhaarman.mockitokotlin2.*
 import org.jetbrains.annotations.NotNull
 import org.mockito.Mockito
@@ -80,6 +77,50 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyBinaryExpression(e)
+            }
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+        }
+    }
+
+    inline fun <inspector: PyInspection>testStringLiteralExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+        ApplicationManager.getApplication().runReadAction {
+            val mockHolder = mock<ProblemsHolder> {
+                on { registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>()) } doAnswer {}
+            }
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
+            assertNotNull(testFile)
+            val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
+
+            val expr: @NotNull MutableCollection<PyStringLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyStringLiteralExpression::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyStringLiteralExpression(e)
+            }
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+        }
+    }
+
+    inline fun <inspector: PyInspection>testFormattedStringElement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+        ApplicationManager.getApplication().runReadAction {
+            val mockHolder = mock<ProblemsHolder> {
+                on { registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>()) } doAnswer {}
+            }
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
+            assertNotNull(testFile)
+            val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
+
+            val expr: @NotNull MutableCollection<PyFormattedStringElement> = PsiTreeUtil.findChildrenOfType(testFile, PyFormattedStringElement::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyFormattedStringElement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
