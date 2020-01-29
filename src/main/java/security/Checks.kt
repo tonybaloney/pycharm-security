@@ -17,6 +17,7 @@ object Checks {
     val JinjaAutoinspectCheck = CheckType("JJ100", "Jinja does not inspect or sanitize input by default, leaving rendered templates open to XSS. Use autoinspect=True.")
     val BuiltinExecCheck = CheckType("EX100", "Use of builtin exec function for dynamic input is insecure and can leave your application open to arbitrary code execution.")
     val MakoTemplateFilterCheck = CheckType("MK100", "Mako does not inspect or sanitize input by default, leaving rendered templates open to XSS. Use default_filters=['h'].")
+    val SqlInjectionCheck = CheckType("SQL100", "Possible SQL injection within String format")
 
     class CheckType(var Code: String, var Message: String) {
         override fun toString(): String {
