@@ -14,3 +14,4 @@
 * [JJ100](checks/JJ100.md) Use of Jinja2 without autoescaped input
 * [EX100](checks/EX100.md) Use of builtin `exec()` function
 * [MK100](checks/MK100.md) Use of Mako template without escaped input
+* [SQL100](checks/SQL100.md) Possible SQL injection with Python string formatting
