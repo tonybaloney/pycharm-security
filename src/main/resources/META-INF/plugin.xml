@@ -44,7 +44,7 @@
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="EX100: Use of builtin exec() function" shortName="BuiltinExecInspection" implementationClass="security.validators.BuiltinExecInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="MK100: Use of unsanitized Mako Templates" shortName="MakoTemplateInspection" implementationClass="security.validators.MakoTemplateInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="SQL100: Possible SQL injection" shortName="SqlInjectionInspection" implementationClass="security.validators.SqlInjectionInspection" />
-        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" level="WEAK_WARNING" displayName="AST100: Use of asserts in non-test files" shortName="AssertInspection" implementationClass="security.validators.AssertInspection" />
+        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" level="WEAK WARNING" displayName="AST100: Use of asserts in non-test files" shortName="AssertInspection" implementationClass="security.validators.AssertInspection" />
 
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
