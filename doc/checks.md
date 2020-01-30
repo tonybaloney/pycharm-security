@@ -17,3 +17,4 @@
 | [EX100](checks/EX100.md)   | General      | Use of builtin `exec()` function                                                                                                                                                 |
 | [MK100](checks/MK100.md)   | `mako`       | Use of Mako template without escaped input                                                                                                                                       |
 | [SQL100](checks/SQL100.md) | General      | Possible SQL injection with Python string formatting                                                                                                                             |
+| [AST100](checks/AST100.md) | General      | Use of `assert` statement in non-test file                                                                                                                                       |
