@@ -34,7 +34,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | insecure_ssl_tls.py                                       | No                               |                            |
 | jinja2_templates.py                                       | Yes                              | [JJ100](checks/JJ100.md)   |
 | mako_templates.py                                         | Yes                              | [MK100](checks/MK100.md)   |
-| ssh_no_host_key_verification.py                           | No                               |                            |
+| ssh_no_host_key_verification.py                           | Yes                              | [PAR100](checks/PAR100.md) |
 | try_except_continue.py                                    | Yes                              | [TRY101](checks/TRY101.md) |
 | try_except_pass.py                                        | Yes                              | [TRY100](checks/TRY100.md) |
 | weak_cryptographic_key.py                                 | No                               |                            |

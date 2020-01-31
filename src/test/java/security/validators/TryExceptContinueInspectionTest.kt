@@ -25,6 +25,26 @@ class TryExceptContinueInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test stmt in no except`(){
+        var code = """
+            try:
+                x = 1
+                
+        """.trimIndent()
+        testTryExceptStatement(code, 0, Checks.TryExceptContinueCheck, "test_foo.py", TryExceptContinueInspection())
+    }
+
+    @Test
+    fun `test stmt no statements in except`(){
+        var code = """
+            try:
+                x = 1
+            except:
+        """.trimIndent()
+        testTryExceptStatement(code, 0, Checks.TryExceptContinueCheck, "test_foo.py", TryExceptContinueInspection())
+    }
+
+    @Test
     fun `test stmt in test file`(){
         var code = """
             try:
