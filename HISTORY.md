@@ -1,5 +1,9 @@
 # Release History
 
+## 1.4.0
+
+* Added [DJG101](doc/checks/DJG101.md) Use of `RawSQL` cursor with quoted parameters will expose the query to SQL injection
+
 ## 1.3.0
 
 * Added [TRY100](doc/checks/TRY100.md) check for try..except..pass statements
