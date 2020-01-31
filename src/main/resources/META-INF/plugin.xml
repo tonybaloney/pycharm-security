@@ -48,6 +48,7 @@
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" level="WEAK WARNING" displayName="TRY100: Except block only containing a pass statement" shortName="TryExceptPassInspection" implementationClass="security.validators.TryExceptPassInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" level="WEAK WARNING" displayName="TRY101: Except block only containing a continue statement" shortName="TryExceptContinueInspection" implementationClass="security.validators.TryExceptContinueInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="PAR100: Paramiko set to automatically trust the host key" shortName="ParamikoHostkeyBypassInspection" implementationClass="security.validators.ParamikoHostkeyBypassInspection" />
+        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" level="WEAK WARNING" displayName="NET100: Possible service binding to all network interfaces" shortName="BindAllInterfacesInspection" implementationClass="security.validators.BindAllInterfacesInspection" />
 
     </extensions>
     <extensions defaultExtensionNs="Pythonid">

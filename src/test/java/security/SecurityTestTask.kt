@@ -22,6 +22,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any<PsiElement>(), eq(check.getDescription()), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
             val mockLocalSession = mock<LocalInspectionToolSession> {
@@ -35,7 +36,11 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyAssignmentStatement(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
+            try {
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
+            } catch (a: AssertionError){
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
+            }
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
@@ -44,6 +49,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any<PsiElement>(), eq(check.getDescription()), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
             val mockLocalSession = mock<LocalInspectionToolSession> {
@@ -57,7 +63,11 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyCallExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
+            try {
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), anyVararg<LocalQuickFix>())
+            } catch (a: AssertionError){
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), eq(check.getDescription()), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
+            }
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }

@@ -24,6 +24,7 @@ object Checks {
     val TryExceptPassCheck = CheckType("TRY100", "Ignoring exceptions without either logging or handling is not considered good security practice.")
     val TryExceptContinueCheck = CheckType("TRY101", "Ignoring exceptions without either logging or handling is not considered good security practice.")
     val ParamikoHostkeyBypassCheck = CheckType("PAR100", "Paramiko set to automatically trust the host key.")
+    val BindAllInterfacesCheck = CheckType("NET100", "Possible hardcoded binding to all network interfaces")
 
     class CheckType(var Code: String, var Message: String) {
         override fun toString(): String {

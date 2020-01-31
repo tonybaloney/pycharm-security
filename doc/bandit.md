@@ -23,7 +23,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | django_xss.py                                             | No                               |                            |
 | exec.py                                                   | Yes                              | [EX100](checks/EX100.md)   |
 | general_bad_file_permissions.py                           | No                               |                            |
-| general_bind_all_interfaces.py                            | No (won't implement)             |                            |
+| general_bind_all_interfaces.py                            | Yes                              | [NET100](checks/NET100.md) |
 | general_hardcoded_password.py                             | Yes                              | [PW101](checks/PW101.md)   |
 | general_hardcoded_tmp.py                                  | No                               |                            |
 | hashlib_new_insecure_functions.py                         | Yes                              | [HL100](checks/HL100.md)   |

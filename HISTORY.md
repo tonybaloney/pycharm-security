@@ -5,6 +5,8 @@
 * Added [TRY100](doc/checks/TRY100.md) check for try..except..pass statements
 * Added [TRY101](doc/checks/TRY101.md) check for try..except..continue statements
 * Added [AST100](doc/checks/AST100.md) check for assert usage outside of a test
+* Added [NET100](doc/checks/NET100.md) check unspecified binding 
+* Added [PAR100](doc/checks/PAR100.md) check for host key bypass in paramiko ssh client usage
 
 ## 1.2.0
 
