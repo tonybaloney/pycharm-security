@@ -18,3 +18,5 @@
 | [MK100](checks/MK100.md)   | `mako`       | Use of Mako template without escaped input                                                                                                                                       |
 | [SQL100](checks/SQL100.md) | General      | Possible SQL injection with Python string formatting                                                                                                                             |
 | [AST100](checks/AST100.md) | General      | Use of `assert` statement in non-test file                                                                                                                                       |
+| [TRY100](checks/TRY100.md) | General      | Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `pass` statement                                                    |
+| [TRY101](checks/TRY101.md) | General      | Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `continue` statement                                                |
