@@ -1,4 +1,4 @@
-# Jinja2 unconditional autoescape fixer
+# Jinja2 unconditional autoescape fixer - Adds autoescaping to Jinja2 templates
 
 ## Suggested By
 

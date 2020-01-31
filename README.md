@@ -29,7 +29,7 @@ See [Supported Checks](doc/checks.md) for a current list.
 
 ## Current quick fixes
 
-See [Fixes](doc/fixes.md) for a current list.
+See [Fixes](doc/fixes/index.rst) for a current list.
 
 ## Release History
 

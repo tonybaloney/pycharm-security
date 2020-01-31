@@ -1,4 +1,4 @@
-# Tempfile `mkstemp` Fixer
+# Tempfile `mkstemp` Fixer - Replaces uses of `tempfile.mktemp` with `tempfile.mkstemp`
 
 ## Suggested By
 

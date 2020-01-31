@@ -1,4 +1,4 @@
-# Compare Digest Fixer
+# Compare Digest Fixer - Replaces direct password/hash comparisons with `compare_digest()`
 
 ## Suggested By
 

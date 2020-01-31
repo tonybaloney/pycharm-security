@@ -8,9 +8,9 @@ If you hover over the highlighted line, or select **Show Context Actions**, PyCh
 
 ![Usage within editor screenshot](_static/usage-in-editor.png)
 
-All checks are documented on the site. Using the code, you can look up details in [List of Checks](checks.md).
+All checks are documented on the site. Using the code, you can look up details in [List of Checks](checks/index).
 
-Some checks have automatic **Quick Fixes** available, listed on [List of Fixes](fixes.md).
+Some checks have automatic **Quick Fixes** available, listed on [List of Fixes](fixes/index).
 
 Where a quick fix is available, it can be applied using the quick fix shortcut key in PyCharm, or by clicking the action in the Context Window.
 

@@ -1,4 +1,4 @@
-# Shell Escape Fixer
+# Shell Escape Fixer - Replaces direct password/hash comparisons with `compare_digest()`
 
 ## Suggested By
 

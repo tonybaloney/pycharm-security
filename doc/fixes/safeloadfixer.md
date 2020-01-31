@@ -1,4 +1,4 @@
-# Safe Load Fixer
+# Safe Load Fixer - Replaces uses of `yaml.load` with `yaml.safe_load`
 
 ## Suggested By
 

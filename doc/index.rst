@@ -27,13 +27,13 @@ The plugin looks at your Python code for common security vulnerabilities and sug
     :alt: Coverage Status
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    installation
    usage
-   checks
-   fixes
+   checks/index
+   fixes/index
    development
    bandit
 
