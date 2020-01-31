@@ -17,13 +17,13 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | Plugin                                                    | Status                           | Check                      |
 |-----------------------------------------------------------|----------------------------------|----------------------------|
 | app_debug.py (Flask Debug)                                | Yes                              | [FLK100](checks/FLK100.md) |
-| asserts.py                                                | No (won't implement)             |                            |
+| asserts.py                                                | Yes                              | [AST100](checks/AST100.md) |
 | crypto_request_no_cert_validation.py (requests no verify) | Yes, for both httpx and requests | [RQ100](checks/RQ100.md))  |
 | django_sql_injection.py                                   | No                               |                            |
 | django_xss.py                                             | No                               |                            |
 | exec.py                                                   | Yes                              | [EX100](checks/EX100.md)   |
-| general_bad_file_permissions.py                           | No                               |                            |
-| general_bind_all_interfaces.py                            | No (won't implement)             |                            |
+| general_bad_file_permissions.py                           | Yes                              | [OS100](checks/OS100.md)   |
+| general_bind_all_interfaces.py                            | Yes                              | [NET100](checks/NET100.md) |
 | general_hardcoded_password.py                             | Yes                              | [PW101](checks/PW101.md)   |
 | general_hardcoded_tmp.py                                  | No                               |                            |
 | hashlib_new_insecure_functions.py                         | Yes                              | [HL100](checks/HL100.md)   |
@@ -34,9 +34,9 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | insecure_ssl_tls.py                                       | No                               |                            |
 | jinja2_templates.py                                       | Yes                              | [JJ100](checks/JJ100.md)   |
 | mako_templates.py                                         | Yes                              | [MK100](checks/MK100.md)   |
-| ssh_no_host_key_verification.py                           | No                               |                            |
-| try_except_continue.py                                    | No (won't implement)             |                            |
-| try_except_pass.py                                        | No (won't implement)             |                            |
+| ssh_no_host_key_verification.py                           | Yes                              | [PAR100](checks/PAR100.md) |
+| try_except_continue.py                                    | Yes                              | [TRY101](checks/TRY101.md) |
+| try_except_pass.py                                        | Yes                              | [TRY100](checks/TRY100.md) |
 | weak_cryptographic_key.py                                 | No                               |                            |
 | yaml_load.py                                              | Yes                              | [YML100](checks/YML100.md) |
 

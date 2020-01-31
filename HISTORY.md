@@ -1,5 +1,14 @@
 # Release History
 
+## 1.3.0
+
+* Added [TRY100](doc/checks/TRY100.md) check for try..except..pass statements
+* Added [TRY101](doc/checks/TRY101.md) check for try..except..continue statements
+* Added [AST100](doc/checks/AST100.md) check for assert usage outside of a test
+* Added [NET100](doc/checks/NET100.md) check unspecified binding 
+* Added [PAR100](doc/checks/PAR100.md) check for host key bypass in paramiko ssh client usage
+* Added [OS100](doc/checks/OS100.md) check calls to `os.chmod()` for dangerous POSIX permissions
+
 ## 1.2.0
 
 * Added SQL injection with Python formatting check [SQL100](doc/checks/SQL100.md)
