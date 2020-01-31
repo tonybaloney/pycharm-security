@@ -2,7 +2,7 @@
 
 ## 1.4.0
 
-* Added [DJG101](doc/checks/DJG101.md) Use of `RawSQL` cursor with quoted parameters will expose the query to SQL injection
+* Added [DJG101](doc/checks/DJG101.md) Using quoted, parametrized literal will bypass Django SQL Injection protection
 
 ## 1.3.0
 

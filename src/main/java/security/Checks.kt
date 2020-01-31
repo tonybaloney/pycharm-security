@@ -10,7 +10,7 @@ object Checks {
     val SubprocessShellCheck = CheckType("PR100", "Calling subprocess commands with shell=True can leave the host shell open to local code execution or remote code execution attacks.")
     val TempfileMktempCheck = CheckType("TMP100", "The way that tempfile.mktemp creates temporary files is insecure and leaves it open to attackers replacing the file contents. Use tempfile.mkstemp instead.")
     val DjangoDebugModeCheck = CheckType("DJG100", "Running Django in Debug mode is highly insecure and should only be used for local development purposes.")
-    val DjangoRawSqlCheck = CheckType("DJG101", "Possible SQL injection via quoted parametrized literal.")
+    val DjangoRawSqlCheck = CheckType("DJG101", "Using quoted, parametrized literal will bypass Django SQL Injection protection.")
     val DjangoCsrfMiddlewareCheck = CheckType("DJG200", "Django middleware is missing CsrfViewMiddleware, which blocks cross-site request forgery.")
     val DjangoClickjackMiddlewareCheck = CheckType("DJG201", "Django middleware is missing XFrameOptionsMiddleware, which blocks clickjacking.")
     val InsecureHashAlgorithms = CheckType("HL100", "MD4, MD5, SHA, and SHA1 hashing algorithms have cryptographically weak algorithms and should not be used for obfuscating or protecting data.")

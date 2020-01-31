@@ -38,7 +38,7 @@ patchPluginXml {
     changeNotes """
       <h2>1.4.0</h2>
       <ul>
-        <li>Added DJG101 : Use of `RawSQL` cursor with quoted parameters will expose the query to SQL injection</li>
+        <li>Added DJG101 : Using quoted, parametrized literal will bypass Django SQL Injection protection</li>
       </ul>
       """
 }

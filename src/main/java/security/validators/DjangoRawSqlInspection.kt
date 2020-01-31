@@ -9,7 +9,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.ImportValidators.hasImportedNamespace
 
 class DjangoRawSqlInspection : PyInspection() {
     val check = Checks.DjangoClickjackMiddlewareCheck;
@@ -23,12 +23,15 @@ class DjangoRawSqlInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+        val methodNames = arrayOf("RawSQL", "raw", "execute")
         override fun visitPyCallExpression(node: PyCallExpression?) {
             if (node == null) return
             val calleeName = node.callee?.name ?: return
-            if (calleeName != "RawSQL") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (!qualifiedName.startsWith("django.db.models.expressions.RawSQL")) return
+            if (!listOf(*methodNames).contains(calleeName)) return
+
+            if (node.containingFile !is PyFile) return
+            if (!hasImportedNamespace(node.containingFile as PyFile, "django")) return
+
             val sqlStatement = node.arguments.first() ?: return
             if (sqlStatement !is PyStringLiteralExpression) return
             val param = Regex("%s")
