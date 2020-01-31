@@ -7,6 +7,7 @@
 * Added [AST100](doc/checks/AST100.md) check for assert usage outside of a test
 * Added [NET100](doc/checks/NET100.md) check unspecified binding 
 * Added [PAR100](doc/checks/PAR100.md) check for host key bypass in paramiko ssh client usage
+* Added [OS100](doc/checks/OS100.md) check calls to `os.chmod()` for dangerous POSIX permissions
 
 ## 1.2.0
 

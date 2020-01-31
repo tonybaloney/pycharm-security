@@ -22,3 +22,4 @@
 | [TRY101](checks/TRY101.md) | General      | Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `continue` statement                                                |
 | [PAR100](checks/PAR100.md) | `paramiko`   | Host key inspection bypass using the `paramiko` SSH library                                                                                                                      |
 | [NET100](checks/NET100.md) | `socket`     | Socket binding to unspecified IPv4 or IPv6 address                                                                                                                               |
+| [OS100](checks/OS100.md)   | General      | Calls to `os.chmod()` with dangerous POSIX permissions                                                                                                                           |

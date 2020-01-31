@@ -47,8 +47,6 @@ class BindAllInterfacesInspection : PyInspection() {
                         holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
                 }
             }
-
-
         }
     }
 }
