@@ -25,7 +25,7 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Current checks
 
-See [Supported Checks](doc/checks.md) for a current list.
+See [Supported Checks](doc/checks/index.rst) for a current list.
 
 ## Current quick fixes
 

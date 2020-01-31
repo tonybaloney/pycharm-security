@@ -40,20 +40,16 @@ The plugin looks at your Python code for common security vulnerabilities and sug
 Features
 ~~~~~~~~
 
+* Over 20 builtin code checks giving your contextual security warnings in your code
+* Misconfiguration warnings for Django and Flask web frameworks
+* Cross-Site-Scripting detection for both Jinja2 and Mako templating engines
+* SQL Injection detection in all Python string formats
+* Automatic reporting of known vulnerabilities and CVEs in your installed Python Packages within PyCharm
+* Detection of security flaws and misconfiguration in 3rd party libraries like Jinja2, Paramiko and Mako
+* Can be used to scan large code bases with inspection profiles
+* Configurable alert levels and warning suppression by file, line, or project
+* Scan code in your CI/CD using Docker
+
 .. image:: _static/screenshot.png
-
-
-Package Scanner
----------------
-
-This plugin will check the installed packages in your Python projects against an offline copy SafetyDB and raise a warning for any vulnerabilities.
-
-.. image:: _static/safetydb-screenshot.png
-
-This process is initiated at Project load time, also it can be executed via the `Tools > Check Python Package Security` menu item:
-
-.. image:: _static/tool-item-screenshot.png
-
-
 
 

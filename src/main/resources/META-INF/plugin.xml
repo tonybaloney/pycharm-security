@@ -5,20 +5,19 @@
 
     <description><![CDATA[
     Analyzes potential security flaws in your Python code and suggests fixes. Designed to find common security issues in Python code.<br>
+    Reports on installed packages and any known security reports. <br/>
 
-    <h2>Package Scanner</h2>
-    The Python-Security plugin will scan your installed Python packages against SafetyDB on startup or via a menu item. Any known security vulnerabilities are raised as warnings.
-
-    <h2>Current checks and fixes</h2>
+    <h2>Features</h2>
     <ul>
-     <li>Timing Attack warnings and prevention with compare_digest</li>
-     <li>Cryptographically weak algorithms for hashing</li>
-     <li>Use of unsafe loading of YAML files</li>
-     <li>Use of remote code execution when instantiating flask applications</li>
-     <li>Use of MITM exposure when making HTTP requests with requests or httpx</li>
-     <li>Bypassing of temporary file creation to inject content</li>
-     <li>Insecure configuration of Django debug mode</li>
-     <li>Insecure configuration of Flask debug mode</li>
+     <li>Over 20 builtin code checks giving your contextual security warnings in your code</li>
+     <li>Misconfiguration warnings for Django and Flask web frameworks</li>
+     <li>Cross-Site-Scripting detection for both Jinja2 and Mako templating engines</li>
+     <li>SQL Injection detection in all Python string formats</li>
+     <li>Automatic reporting of known vulnerabilities and CVEs in your installed Python Packages within PyCharm</li>
+     <li>Detection of security flaws and misconfiguration in 3rd party libraries like Jinja2, Paramiko and Mako</li>
+     <li>Can be used to scan large code bases with inspection profiles</li>
+     <li>Configurable alert levels and warning suppression by file, line, or project</li>
+     <li>Scan code in your CI/CD using Docker</li>
     </ul>
     ]]></description>
     <idea-version since-build="193" until-build="201.*" />
