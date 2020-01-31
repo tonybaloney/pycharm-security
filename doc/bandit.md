@@ -18,8 +18,8 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 |-----------------------------------------------------------|----------------------------------|----------------------------|
 | app_debug.py (Flask Debug)                                | Yes                              | [FLK100](checks/FLK100.md) |
 | asserts.py                                                | Yes                              | [AST100](checks/AST100.md) |
-| crypto_request_no_cert_validation.py (requests no verify) | Yes, for both httpx and requests | [RQ100](checks/RQ100.md))  |
-| django_sql_injection.py                                   | No                               |                            |
+| crypto_request_no_cert_validation.py (requests no verify) | Yes, for both httpx and requests | [RQ100](checks/RQ100.md)   |
+| django_sql_injection.py                                   | Yes                              | [DJG101](checks/DJG101.md) |
 | django_xss.py                                             | No                               |                            |
 | exec.py                                                   | Yes                              | [EX100](checks/EX100.md)   |
 | general_bad_file_permissions.py                           | Yes                              | [OS100](checks/OS100.md)   |
