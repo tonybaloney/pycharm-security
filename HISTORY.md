@@ -1,5 +1,9 @@
 # Release History
 
+## 1.4.0
+
+* Added [DJG101](doc/checks/DJG101.md) Using quoted, parametrized literal will bypass Django SQL Injection protection
+
 ## 1.3.0
 
 * Added [TRY100](doc/checks/TRY100.md) check for try..except..pass statements

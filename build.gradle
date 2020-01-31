@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.3.0'
+version '1.4.0'
 
 repositories {
     mavenCentral()
@@ -36,14 +36,9 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.3.0</h2>
+      <h2>1.4.0</h2>
       <ul>
-        <li>Added TRY100 check for try..except..pass statements</li>
-<li>Added TRY101 check for try..except..continue statements</li>
-<li>Added AST100 check for assert usage outside of a test</li>
-<li>Added NET100 check unspecified binding </li>
-<li>Added PAR100 check for host key bypass in paramiko ssh client usage</li>
-<li>Added OS100 check calls to `os.chmod()` for dangerous POSIX permissions</li>
+        <li>Added DJG101 : Using quoted, parametrized literal will bypass Django SQL Injection protection</li>
       </ul>
       """
 }

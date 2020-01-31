@@ -41,6 +41,7 @@ Django Web Framework
     :maxdepth: 1
 
     DJG100 : Setting `DEBUG = True` in a `settings.py` file (assumed Django project settings) <DJG100>
+    DJG101 : Using quoted, parametrized literal will bypass Django SQL Injection protection <DJG101>
     DJG200 : Django middleware is missing `CsrfViewMiddleware`, which blocks cross-site request forgery <DJG200>
     DJG201 : Django middleware is missing `XFrameOptionsMiddleware`, which blocks clickjacking. <DJG201>
 
