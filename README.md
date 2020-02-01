@@ -7,7 +7,7 @@
 [![Documentation Status](https://readthedocs.org/projects/pycharm-security/badge/?version=latest)](https://pycharm-security.readthedocs.io/en/latest/?badge=latest)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/anthonypjshaw/pycharm-security)](https://hub.docker.com/r/anthonypjshaw/pycharm-security)
 
-<img src="doc/_static/logo.png" width="25%"/>
+<img src="doc/_static/logo-full-width.png.png" width="75%"/>
 
 A plugin to run security checks for common flaws in Python code and suggest quick fixes.
 
