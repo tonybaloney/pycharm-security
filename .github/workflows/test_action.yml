@@ -8,6 +8,6 @@ jobs:
     steps:
       - name: Run PyCharm Security
         id: pycharm-security
-        uses: tonybaloney/pycharm-security@master
+        uses: ./
         with:
           path: $GITHUB_WORKSPACE
