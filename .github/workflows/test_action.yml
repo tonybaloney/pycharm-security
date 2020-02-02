@@ -4,8 +4,9 @@ on: [push]
 jobs:
   test_example:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Execute the pycharm-security action
     steps:
+      - uses: actions/checkout@v1
       - name: Run PyCharm Security
         id: pycharm-security
         uses: ./
