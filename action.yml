@@ -11,7 +11,7 @@ outputs:
     description: 'Results from the scan'
 runs:
   using: 'docker'
-  image: 'docker://docker.pkg.github.com/tonybaloney/pycharm-security/pycharm-security-action:1.4.2'
+  image: '.github/actions/Dockerfile'
   args:
     - ${{ inputs.path }}
 branding:
