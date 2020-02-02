@@ -2,6 +2,7 @@
 
 ## 1.4.1
 
+* Changed [YML100](doc/checks/YML100.md) to not match when `loader=SafeLoader` is used
 * Altered [PW100](doc/checks/PW100.md) to only match on == and != operators, reducing false positives
 
 ## 1.4.0
