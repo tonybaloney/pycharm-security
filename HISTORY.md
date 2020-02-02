@@ -1,5 +1,9 @@
 # Release History
 
+## 1.4.1
+
+* Altered [PW100](doc/checks/PW100.md) to only match on == and != operators, reducing false positives
+
 ## 1.4.0
 
 * Added [DJG101](doc/checks/DJG101.md) Using quoted, parametrized literal will bypass Django SQL Injection protection

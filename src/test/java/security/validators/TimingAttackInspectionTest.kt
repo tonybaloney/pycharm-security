@@ -53,4 +53,34 @@ class TimingAttackInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testBinaryExpression(code, 0, Checks.TimingAttackCheck, "test.py", TimingAttackInspection())
     }
+
+    @Test
+    fun `test skip of is None`(){
+        var code = """
+            var = "BANANA"
+            if "BANANA" is None:
+                pass
+        """.trimIndent()
+        testBinaryExpression(code, 0, Checks.TimingAttackCheck, "test.py", TimingAttackInspection())
+    }
+
+    @Test
+    fun `test skip of plus`(){
+        var code = """
+            var = "BANANA"
+            if "BANANA" + hammock:
+                pass
+        """.trimIndent()
+        testBinaryExpression(code, 0, Checks.TimingAttackCheck, "test.py", TimingAttackInspection())
+    }
+
+    @Test
+    fun `test include of not equal`(){
+        var code = """
+            var = "BANANA"
+            if "BANANA" != password:
+                pass
+        """.trimIndent()
+        testBinaryExpression(code, 1, Checks.TimingAttackCheck, "test.py", TimingAttackInspection())
+    }
 }

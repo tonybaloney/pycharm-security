@@ -26,6 +26,7 @@ class TimingAttackInspection : PyInspection() {
             if (node == null) return
             val rightExpression = node.rightExpression ?: return
             val leftExpression = node.leftExpression ?: return
+            if (!node.isOperator("==") && !node.isOperator("!=")) return
             if (rightExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(rightExpression))
                     holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer())
