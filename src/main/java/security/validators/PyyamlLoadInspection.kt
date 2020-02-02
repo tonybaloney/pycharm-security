@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.fixes.PyyamlSafeLoadFixer
 import security.helpers.QualifiedNames.getQualifiedName
@@ -27,6 +28,11 @@ class PyyamlLoadInspection : PyInspection() {
             if (calleeName != "load") return
             val qualifiedName = getQualifiedName(node) ?: return
             if (!qualifiedName.equals("yaml.load")) return
+            // Inspect loader kwarg
+            val loaderArg = node.getKeywordArgument("loader")
+            if (loaderArg != null && loaderArg is PyReferenceExpression)
+                if (loaderArg.referencedName == "SafeLoader") return
+
             holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.getDescription(), PyyamlSafeLoadFixer())
         }
     }

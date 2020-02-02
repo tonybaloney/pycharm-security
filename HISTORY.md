@@ -1,5 +1,9 @@
 # Release History
 
+## 1.4.1
+
+* Changed [YML100](doc/checks/YML100.md) to not match when `loader=SafeLoader` is used
+
 ## 1.4.0
 
 * Added [DJG101](doc/checks/DJG101.md) Using quoted, parametrized literal will bypass Django SQL Injection protection
