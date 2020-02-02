@@ -1,5 +1,9 @@
 # Release History
 
+## 1.4.2
+
+* Fixed a bug where packages that had a vulnerability in safetydb but no CVE record would raise a NPE to PyCharm [issue#33](issues/33)
+
 ## 1.4.1
 
 * Changed [YML100](doc/checks/YML100.md) to not match when `loader=SafeLoader` is used
