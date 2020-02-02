@@ -6,6 +6,9 @@ inputs:
     description: 'Path to code to scan'
     required: true
     default: '.'
+outputs:
+  result:
+    description: 'Results from the scan'
 runs:
   using: 'docker'
   image: '.github/actions/Dockerfile'
