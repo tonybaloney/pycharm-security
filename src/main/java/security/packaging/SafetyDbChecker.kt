@@ -18,7 +18,7 @@ class SafetyDbChecker {
 
     data class SafetyDbRecord(
         val advisory: String,
-        val cve: String,
+        val cve: String?,
         val id: String,
         val specs: List<String>,
         val v: String

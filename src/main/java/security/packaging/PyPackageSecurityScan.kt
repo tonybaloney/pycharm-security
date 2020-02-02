@@ -76,15 +76,15 @@ object PyPackageSecurityScan {
         }
     }
 
-    private fun renderMessage(issue: SafetyDbChecker.SafetyDbRecord) : String{
-        return if (issue.cve.isEmpty()){
+    fun renderMessage(issue: SafetyDbChecker.SafetyDbRecord) : String {
+        return if (issue.cve.isNullOrEmpty()){
             issue.advisory
         } else {
             "${issue.advisory}<br>See <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=${issue.cve}'>${issue.cve}</a>"
         }
     }
 
-    private fun getPythonSdks(project: Project): Set<Sdk> {
+    fun getPythonSdks(project: Project): Set<Sdk> {
         val pythonSdks: MutableSet<Sdk> = Sets.newLinkedHashSet()
         for (module in ModuleManager.getInstance(project).modules) {
             val sdk = PythonSdkUtil.findPythonSdk(module)

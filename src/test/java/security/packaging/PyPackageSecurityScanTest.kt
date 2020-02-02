@@ -36,4 +36,18 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
         verify(mockNotificationGroup, times(1)).createNotification( eq("Could not check Python packages"), anyOrNull<String>(), any<String>(), eq(NotificationType.INFORMATION))
         verify(mockNotification, times(1)).notify(project)
     }
+
+    @Test
+    fun `test render renderMessage with null cve record`(){
+        val record = SafetyDbChecker.SafetyDbRecord("Test is bad", null, "xyz", listOf("<= 1.0.0"), "<= 1.0.0")
+        val message = PyPackageSecurityScan.renderMessage(record)
+        assertFalse(message.isEmpty())
+    }
+
+    @Test
+    fun `test render renderMessage with valid cve record`(){
+        val record = SafetyDbChecker.SafetyDbRecord("Test is bad", "CVE-2020-123.3", "xyz", listOf("<= 1.0.0"), "<= 1.0.0")
+        val message = PyPackageSecurityScan.renderMessage(record)
+        assertFalse(message.isEmpty())
+    }
 }
