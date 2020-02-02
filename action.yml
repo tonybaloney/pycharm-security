@@ -1,0 +1,16 @@
+name: 'Python Security'
+author: 'Anthony Shaw'
+description: 'Scan your Python Code for security issues'
+inputs:
+  path:
+    description: 'Path to code to scan'
+    required: true
+    default: '.'
+runs:
+  using: 'docker'
+  image: '.github/actions/Dockerfile'
+  args:
+    - ${{ inputs.path }}
+branding:
+  icon: 'lock'
+  color: 'blue'
