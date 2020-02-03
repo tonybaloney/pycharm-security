@@ -30,7 +30,7 @@ class BuiltinExecInspection : PyInspection() {
             if (!qualifiedName.equals("exec")) return
 
             // First argument as a string literal is ok
-            if (node.arguments.isEmpty()) return
+            if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() is PyStringLiteralExpression) return
 
             holder?.registerProblem(node, Checks.BuiltinExecCheck.getDescription())
