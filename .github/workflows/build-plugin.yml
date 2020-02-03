@@ -1,0 +1,26 @@
+name: Build plugin for tags
+
+on: [create]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build plugin
+      run: ./gradlew buildPlugin
+    - name: Upload build
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: "*.zip"
+        # Directory containing files to upload
+        path: build/
