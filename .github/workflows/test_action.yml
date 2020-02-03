@@ -12,6 +12,6 @@ jobs:
           ref: 'master'
           path: 'pycharm-security'
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@$master
+        uses: tonybaloney/pycharm-security@master
         with:
           path: .
