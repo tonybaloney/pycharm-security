@@ -1,9 +1,6 @@
 name: Build plugin for tags
 
 on:
-  push:
-    branches:
-      - master
   release:
     types: [published, created]
 
