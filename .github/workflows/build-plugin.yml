@@ -1,6 +1,9 @@
 name: Build plugin for tags
 
 on:
+  push:
+    branches:
+      - master
   release:
     types: [published, created]
 
@@ -18,8 +21,8 @@ jobs:
       with:
         arguments: test -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info
     - uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: buildPlugin -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info
+      with:
+        arguments: buildPlugin -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info
     - name: Upload build
       uses: actions/upload-artifact@v1.0.0
       with:
