@@ -1,6 +1,8 @@
 name: Build plugin for tags
 
-on: [create]
+on:
+  release:
+    types: [published, created]
 
 jobs:
   build:
