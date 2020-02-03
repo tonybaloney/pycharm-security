@@ -32,6 +32,7 @@ The plugin looks at your Python code for common security vulnerabilities and sug
 
    installation
    usage
+   github
    checks/index
    fixes/index
    development
