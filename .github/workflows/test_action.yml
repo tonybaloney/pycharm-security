@@ -12,6 +12,6 @@ jobs:
           ref: 'master'
           path: 'pycharm-security'
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@${{ github.event.pull_request.head.sha }}
+        uses: tonybaloney/pycharm-security@${{ event.pull_request.head.sha }}
         with:
           path: .
