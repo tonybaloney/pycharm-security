@@ -7,8 +7,9 @@ jobs:
     name: Execute the pycharm-security action
     steps:
       - uses: actions/checkout@v1
+        repository: 'tonybaloney/pycharm-security-testing'
       - name: Run PyCharm Security
         id: pycharm-security
         uses: ./
         with:
-          path: $GITHUB_WORKSPACE
+          path: .
