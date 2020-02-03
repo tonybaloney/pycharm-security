@@ -1,3 +1,5 @@
+.. _development:
+
 Development
 ===========
 
@@ -9,8 +11,6 @@ Important gradle targets are:
 * `:runIde` - Start PyCharm with the plugin in debug mode
 * `:jacocoTestReport` - Run test coverage
 * `:verifyPlugin` - Run plugin verification before publishing
-
-
 
 Creating a Validator
 --------------------
@@ -35,42 +35,22 @@ First, determine the element type you're looking for.
 For example, if you're looking for a call expression (function call or method call)
 
 1. Create a new class inside `security.validators`
-2. Extend the `PyAnnotator` type from `com.jetbrains.python.validation.PyAnnotator`
-3. Override the `visitPyCallExpression` function
+2. Copy a similar validator
+3. Override the `visitPyxxx` function
 
 All validators are a series of [guard clauses](https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html) then finally a call to `holder.create(node, check)` once all the criteria have been met:
-
-.. code-block:: kotlin
-
-    package security.validators
-
-    import com.jetbrains.python.psi.PyBoolLiteralExpression
-    import com.jetbrains.python.psi.PyCallExpression
-    import com.jetbrains.python.validation.PyAnnotator
-    import security.Checks
-    import security.helpers.QualifiedNames.getQualifiedName
-
-    class MyNewValidator : PyAnnotator() {
-        override fun visitPyCallExpression(node: PyCallExpression) {
-            val calleeName = node.callee?.name ?: return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (!qualifiedName.startsWith("httpx.")) return
-            if (node.getKeywordArgument("verify") == null) return
-            if ((node.getKeywordArgument("verify") as PyBoolLiteralExpression?)!!.value) return
-            holder.create(node, Checks.MyCheck)
-        }
-    }
 
 Linking the validator to the plugin
 +++++++++++++++++++++++++++++++++++
 
-Inside `src/main/java/resources/META-INF/plugin.xml` add a new `pyAnnotator` tag inside the `extensions` with the name of your class.
+Inside `src/main/java/resources/META-INF/plugin.xml` add a new `localInspection` tag inside the `extensions` with the name of your class.
 
 .. code-block:: xml
 
-    <extensions defaultExtensionNs="Pythonid">
+    <extensions defaultExtensionNs="com.intellij">
      ...
-     <pyAnnotator implementation="security.validators.MyNewValidator"/>
+     <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="OS100: Call to os.chmod setting permission values" shortName="OsChmodInspection" implementationClass="security.validators.OsChmodInspection" />
+
     </extensions>
 
 Next, start the development IDE using the `:runIde` target and debug in Gradle.
@@ -80,47 +60,26 @@ In the editor, try writing code and seeing if it triggers your code using breakp
 Testing the validator
 +++++++++++++++++++++
 
-Validators are tricky to test, but the `PyyamlLoadValidatorTest` is a good example.
-
-It will create code blocks, create a validator and call `visitPyCallExpression`.
-
 The annotator is mocked and the number of calls is verified to see if the warning window was raised.
 
-Add both a valid and invalid case.
+The basic boiler plate for a test is:
 
 .. code-block:: kotlin
 
     package security.validators
 
-    import com.intellij.lang.annotation.Annotation
-    import com.intellij.lang.annotation.AnnotationHolder
-    import com.intellij.lang.annotation.HighlightSeverity
-    import com.intellij.openapi.application.ApplicationManager
-    import com.intellij.psi.PsiElement
-    import com.intellij.psi.util.PsiTreeUtil
-    import com.jetbrains.python.PythonFileType
-    import com.jetbrains.python.psi.PyCallExpression
-    import com.nhaarman.mockitokotlin2.any
-    import com.nhaarman.mockitokotlin2.doReturn
-    import com.nhaarman.mockitokotlin2.eq
-    import com.nhaarman.mockitokotlin2.mock
-    import org.jetbrains.annotations.NotNull
     import org.junit.jupiter.api.AfterAll
     import org.junit.jupiter.api.BeforeAll
     import org.junit.jupiter.api.Test
     import org.junit.jupiter.api.TestInstance
-    import org.mockito.Mockito
     import security.Checks
     import security.SecurityTestTask
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class PyyamlLoadValidatorTest: SecurityTestTask() {
-        lateinit var dummyAnnotation: Annotation
-
+    class MyNewInspectionTest: SecurityTestTask() {
         @BeforeAll
         override fun setUp() {
             super.setUp()
-            this.dummyAnnotation = Annotation(0, 0, HighlightSeverity.WARNING, "", "")
         }
 
         @AfterAll
@@ -129,46 +88,30 @@ Add both a valid and invalid case.
         }
 
         @Test
+        fun `verify description is not empty`(){
+            assertFalse(MyNewInspection().staticDescription.isNullOrEmpty())
+        }
+    }
+
+Then, think of positive and negative scenarios to check for and create a test for each.
+All validators can be tested with a code string and a call to one of the inline functions in `SecurityTestTask`.
+
+For example, to test your `visitPyCallExpression` override, use `testCodeCallExpression` with the code, the expected number of triggers (e.g. 1), the expected Check, the test module name, and the inspection type:
+
+.. code-block:: kotlin
+
+        @Test
         fun `test yaml load`(){
             var code = """
                 import yaml
                 yaml.load()
             """.trimIndent()
-            testCodeString(code, 1)
+            testCodeCallExpression(code, 1, Checks.MyNewCheck, "test.py", MyNewInspection())
         }
-
-        @Test
-        fun `test yaml safe_load`(){
-            var code = """
-                import yaml
-                yaml.safe_load()
-            """.trimIndent()
-            testCodeString(code, 0)
-        }
-
-        private fun testCodeString(code: String, times: Int = 1){
-            val mockHolder = mock<AnnotationHolder> {
-                on { createWarningAnnotation(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString())) } doReturn(dummyAnnotation);
-            }
-            ApplicationManager.getApplication().runReadAction {
-                val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
-                assertNotNull(testFile)
-                val testValidator = PyyamlLoadValidator()
-                testValidator.holder = mockHolder
-
-                val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
-                assertNotNull(expr)
-                expr.forEach { e ->
-                    testValidator.visitPyCallExpression(e)
-                }
-                Mockito.verify(mockHolder, Mockito.times(times)).createWarningAnnotation(any<PsiElement>(), eq(Checks.PyyamlUnsafeLoadCheck.toString()))
-            }
-        }
-    }
 
 Run the test code and also run it with coverage to see whether you're catching all guard clauses.
 
-Note that inside unit tests, the qualified names are never resolved to their packages because the test framework does not have the Python standard library loaded.
+    Note that inside unit tests, the qualified names are never resolved to their packages because the test framework does not have the Python standard library loaded.
 
 Creating a fixer
 ----------------

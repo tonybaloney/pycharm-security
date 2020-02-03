@@ -1,6 +1,6 @@
 # GitHub Action
 
-The PyCharm Security plugin is available as a CI/CD workflow for GitHub Actions.
+The PyCharm Security plugin is available as a CI/CD workflow for GitHub Actions on the [GitHub Marketplace](https://github.com/marketplace/actions/pycharm-python-security-scanner).
 
 ## Example
 
@@ -27,7 +27,7 @@ This would give a log of issues inside the report:
 
 ## List of vulnerabilities and inspections
 
-See [check index](checks/index.rst) for a list of currently supported inspections.
+See [check index](checks/index) for a list of currently supported inspections.
 
 ## Additional configuration
 
