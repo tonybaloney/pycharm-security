@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@master
+        uses: tonybaloney/pycharm-security@1.5.0
         with:
           path: .
 ```
@@ -37,7 +37,7 @@ For example, to scan the `src` subdirectory:
 
 ```yaml
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@master
+        uses: tonybaloney/pycharm-security@1.5.0
         with:
           path: src/
 ```
