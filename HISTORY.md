@@ -1,5 +1,13 @@
 # Release History
 
+## 1.4.4
+
+* Fixed bug in BindAllInterfacesInspection where a call to `bind()` with no arguments would raise an NPE [issue#36](issues/36)
+
+## 1.4.3
+
+* Added github action support (alpha)
+
 ## 1.4.2
 
 * Fixed a bug where packages that had a vulnerability in safetydb but no CVE record would raise a NPE to PyCharm [issue#33](issues/33)
