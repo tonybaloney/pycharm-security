@@ -1,4 +1,4 @@
-name: 'Python Security'
+name: 'PyCharm Python Security Scanner'
 author: 'Anthony Shaw'
 description: 'Scan your Python Code for security issues'
 inputs:
