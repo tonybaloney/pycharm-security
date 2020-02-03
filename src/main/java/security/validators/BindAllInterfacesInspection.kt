@@ -33,6 +33,7 @@ class BindAllInterfacesInspection : PyInspection() {
             if (node == null) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "bind") return
+            if (node.arguments.isNullOrEmpty()) return
             val firstArg = node.arguments.first() ?: return
 
             // Takes single argument (IP)
