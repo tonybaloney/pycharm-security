@@ -3,8 +3,8 @@ author: 'Anthony Shaw'
 description: 'Scan your Python Code for security issues'
 inputs:
   path:
-    description: 'Path to code to scan'
-    required: true
+    description: 'Subdirectory to scan within workdir'
+    required: false
     default: '.'
 outputs:
   result:

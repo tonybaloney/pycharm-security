@@ -11,11 +11,17 @@
 
 A plugin to run security checks for common flaws in Python code and suggest quick fixes.
 
-Available on the [Jetbrains plugin marketplace](https://plugins.jetbrains.com/plugin/13609-python-security)
+* Available as a PyCharm plugin on the [Jetbrains plugin marketplace](https://plugins.jetbrains.com/plugin/13609-python-security)
+* Available as a GitHub Action for your CI/CD workflow [on the GitHub Marketplace](https://github.com/marketplace/actions/pycharm-python-security-scanner).
+* Available as a standalone container image [on the Docker Hub](https://hub.docker.com/r/anthonypjshaw/pycharm-security)
 
-![](doc/_static/screenshot.png)
+## Documentation
 
-Documentation is available on [readthedocs](https://pycharm-security.readthedocs.io/en/latest/?badge=latest).
+Documentation is available on [pycharm-security.readthedocs.io](https://pycharm-security.readthedocs.io/en/latest/?badge=latest), including examples and explanations for all the checks.
+
+## GitHub Action Documentation
+
+Documentation for the GitHub action is [on the documentation site](https://pycharm-security.readthedocs.io/en/latest/?badge=latest).
 
 ## SafetyDB
 
