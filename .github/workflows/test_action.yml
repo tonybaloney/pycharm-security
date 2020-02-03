@@ -10,6 +10,7 @@ jobs:
         with:
           repository: 'tonybaloney/pycharm-security-testing'
           ref: 'master'
+          path: 'pycharm-security'
       - name: Run PyCharm Security
         uses: tonybaloney/pycharm-security@master
         with:
