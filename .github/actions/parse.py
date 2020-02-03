@@ -4,8 +4,13 @@ import sys
 
 def main():
     data = json.load(sys.stdin)
-    print(data)
-    print("::warning file=app.js,line=1,col=5::Missing semicolon")
+    if 'problems' in data:
+        for problem in data['problems']:
+            fn = problem['file'].replace('file:///github/workspace/', '')
+            line = problem['line']
+            col = problem['offset']
+            description = problem['description']
+            print(f"::warning file={fn},line={line},col={col}::{description}")
 
 if __name__ == "__main__":
     main()
