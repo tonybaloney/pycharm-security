@@ -21,7 +21,7 @@ Documentation is available on [pycharm-security.readthedocs.io](https://pycharm-
 
 ## GitHub Action Documentation
 
-Documentation for the GitHub action is [on the documentation site](https://pycharm-security.readthedocs.io/en/latest/?badge=latest).
+Documentation for the GitHub action is [on the documentation site](https://pycharm-security.readthedocs.io/en/latest/github.html).
 
 ## SafetyDB
 
