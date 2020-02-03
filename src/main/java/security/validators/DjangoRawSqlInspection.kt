@@ -32,6 +32,7 @@ class DjangoRawSqlInspection : PyInspection() {
             if (node.containingFile !is PyFile) return
             if (!hasImportedNamespace(node.containingFile as PyFile, "django")) return
 
+            if (node.arguments.isNullOrEmpty()) return
             val sqlStatement = node.arguments.first() ?: return
             if (sqlStatement !is PyStringLiteralExpression) return
             val param = Regex("%s")
