@@ -4,14 +4,16 @@ import sys
 
 def main():
     data = json.load(sys.stdin)
+    cnt = 0
     if 'problems' in data:
         for problem in data['problems']:
-            fn = problem['file'].replace('file:///github/workspace/', '')
+            fn = problem['file'].replace('file://$PROJECT_DIR$/', '')
             line = problem['line']
             col = problem['offset']
             description = problem['description']
-            print("found issue in {0}".format(fn))
             print(f"::warning file={fn},line={line},col={col}::{description}")
+            cnt += 1
+    print("Found {0} issues".format(cnt))
 
 if __name__ == "__main__":
     main()
