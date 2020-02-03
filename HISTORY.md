@@ -1,5 +1,9 @@
 # Release History
 
+## 1.4.5
+
+* Updated documentation for GitHub actions. Made path optional
+
 ## 1.4.4
 
 * Fixed bug in BindAllInterfacesInspection where a call to `bind()` with no arguments would raise an NPE [issue#36](issues/36)
