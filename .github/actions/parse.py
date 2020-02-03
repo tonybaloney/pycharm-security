@@ -10,6 +10,7 @@ def main():
             line = problem['line']
             col = problem['offset']
             description = problem['description']
+            print("found issue in {0}".format(fn))
             print(f"::warning file={fn},line={line},col={col}::{description}")
 
 if __name__ == "__main__":
