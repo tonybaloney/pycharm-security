@@ -21,8 +21,8 @@ RUN apt-get -y install openjdk-11-jre-headless
 WORKDIR /sources/plugin
 
 # Test and compile plugin
-RUN ./gradlew test -PintellijPublishToken=FAKE_TOKEN
-RUN ./gradlew buildPlugin -PintellijPublishToken=FAKE_TOKEN
+RUN ./gradlew test --no-daemon -PintellijPublishToken=FAKE_TOKEN
+RUN ./gradlew buildPlugin --no-daemon -PintellijPublishToken=FAKE_TOKEN
 
 # Install built plugin
 RUN unzip build/distributions/pycharm-security-*.zip -d /opt/pycharm-community/plugins
