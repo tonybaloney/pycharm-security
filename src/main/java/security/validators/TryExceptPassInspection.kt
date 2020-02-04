@@ -16,7 +16,7 @@ class TryExceptPassInspection : PyInspection() {
     val check = Checks.TryExceptPassCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

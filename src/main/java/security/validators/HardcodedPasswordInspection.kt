@@ -13,7 +13,7 @@ class HardcodedPasswordInspection : PyInspection() {
     val check = Checks.HardcodedPasswordCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

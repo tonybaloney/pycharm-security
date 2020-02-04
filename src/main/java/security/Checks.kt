@@ -1,7 +1,5 @@
 package security
 
-import security.validators.ParamikoHostkeyBypassInspection
-
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -20,21 +18,29 @@ object Checks {
     val JinjaAutoinspectCheck = CheckType("JJ100", "Jinja does not inspect or sanitize input by default, leaving rendered templates open to XSS. Use autoinspect=True.")
     val BuiltinExecCheck = CheckType("EX100", "Use of builtin exec function for dynamic input is insecure and can leave your application open to arbitrary code execution.")
     val MakoTemplateFilterCheck = CheckType("MK100", "Mako does not inspect or sanitize input by default, leaving rendered templates open to XSS. Use default_filters=['h'].")
-    val SqlInjectionCheck = CheckType("SQL100", "Possible SQL injection within String format")
+    val SqlInjectionCheck = CheckType("SQL100", "Possible SQL injection within String format.")
     val AssertCheck = CheckType("AST100", "Asserts should only be used in tests. Asserts are typically bypassed in a production environment.")
     val TryExceptPassCheck = CheckType("TRY100", "Ignoring exceptions without either logging or handling is not considered good security practice.")
     val TryExceptContinueCheck = CheckType("TRY101", "Ignoring exceptions without either logging or handling is not considered good security practice.")
     val ParamikoHostkeyBypassCheck = CheckType("PAR100", "Paramiko set to automatically trust the host key.")
-    val BindAllInterfacesCheck = CheckType("NET100", "Possible hardcoded binding to all network interfaces")
-    val ChmodInsecurePermissionsCheck = CheckType("OS100", "Modification of system files to allow execution")
+    val BindAllInterfacesCheck = CheckType("NET100", "Possible hardcoded binding to all network interfaces.")
+    val ChmodInsecurePermissionsCheck = CheckType("OS100", "Modification of system files to allow execution.")
 
     class CheckType(var Code: String, var Message: String) {
         override fun toString(): String {
             return "$Code: $Message"
         }
 
+        private fun getLink(): String {
+            return "<a href='https://pycharm-security.readthedocs.io/en/latest/checks/$Code.html'>See $Code documentation</a>"
+        }
+
         fun getDescription(): String {
-            return this.toString() // TODO : Expand
+            return "$this Found in '#ref'."
+        }
+
+        fun getStaticDescription(): String {
+            return this.toString() + " " + this.getLink()
         }
     }
 }

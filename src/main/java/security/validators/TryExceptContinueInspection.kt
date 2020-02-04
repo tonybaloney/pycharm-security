@@ -17,7 +17,7 @@ class TryExceptContinueInspection : PyInspection() {
     val check = Checks.TryExceptContinueCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

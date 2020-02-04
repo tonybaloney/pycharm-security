@@ -13,7 +13,7 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
     val check = Checks.ParamikoHostkeyBypassCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

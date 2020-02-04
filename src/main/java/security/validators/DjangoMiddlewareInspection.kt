@@ -15,7 +15,7 @@ class DjangoMiddlewareInspection : PyInspection() {
     val check = Checks.DjangoClickjackMiddlewareCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

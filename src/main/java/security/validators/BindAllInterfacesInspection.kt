@@ -14,7 +14,7 @@ class BindAllInterfacesInspection : PyInspection() {
     val check = Checks.BindAllInterfacesCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

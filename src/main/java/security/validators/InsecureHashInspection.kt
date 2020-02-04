@@ -14,7 +14,7 @@ class InsecureHashInspection : PyInspection() {
     val check = Checks.InsecureHashAlgorithms;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

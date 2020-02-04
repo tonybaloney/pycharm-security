@@ -1,5 +1,17 @@
 # Release History
 
+## 1.6.0 
+
+* Dockerfile compiles from source, so 'latest' docker image is from master and each tag is correctly set
+* Annotations descriptions have links to the documentation [issue#]
+* GitHub Action now supports "failure on warning"
+* GitHub Action now always uses latest image
+* GitHub Action supports setting path to custom inspection XML file
+
+## 1.5.0
+
+* Github actions now have annotations
+
 ## 1.4.5
 
 * Updated documentation for GitHub actions. Made path optional

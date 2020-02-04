@@ -14,7 +14,7 @@ class TimingAttackInspection : PyInspection() {
     val check = Checks.TimingAttackCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

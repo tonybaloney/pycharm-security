@@ -13,7 +13,7 @@ class AssertInspection : PyInspection() {
     val check = Checks.AssertCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,

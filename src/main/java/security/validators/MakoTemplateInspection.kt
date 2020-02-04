@@ -14,7 +14,7 @@ class MakoTemplateInspection : PyInspection() {
     val check = Checks.MakoTemplateFilterCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
