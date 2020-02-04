@@ -14,7 +14,7 @@ class HttpxNoVerifyInspection : PyInspection() {
     val check = Checks.HttpxNoVerifyCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -31,7 +31,7 @@ class HttpxNoVerifyInspection : PyInspection() {
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return
-            holder?.registerProblem(node, Checks.HttpxNoVerifyCheck.getDescription(custom=node.text))
+            holder?.registerProblem(node, Checks.HttpxNoVerifyCheck.getDescription())
         }
     }
 }

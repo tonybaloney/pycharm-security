@@ -31,7 +31,7 @@ class OsChmodInspection : PyInspection() {
     val check = Checks.ChmodInsecurePermissionsCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -85,17 +85,17 @@ class OsChmodInspection : PyInspection() {
             // Reference expression to stat.xxx
             if (modeArg is PyReferenceExpression){
                 if (isBad(modeArg))
-                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription(custom=node.text))
+                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
             }
             else if (modeArg is PyNumericLiteralExpression) {
                 if (modeArg.longValue == null) return
                 val mode = getPosixPermissions(modeArg.longValue!!.toInt()) ?: return
                 if (mode.union(badPermissions).isNotEmpty())
-                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription(custom=node.text))
+                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
             } else if (modeArg is PyBinaryExpression){
                 // Convert Python OR'd values into a set...
                 if (hasBad(modeArg))
-                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription(custom=node.text))
+                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
             }
         }
     }

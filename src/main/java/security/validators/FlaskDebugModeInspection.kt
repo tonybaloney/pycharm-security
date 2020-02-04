@@ -16,7 +16,7 @@ class FlaskDebugModeInspection : PyInspection() {
     val check = Checks.FlaskDebugModeCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -34,7 +34,7 @@ class FlaskDebugModeInspection : PyInspection() {
             val debugArg = node.getKeywordArgument("debug") ?: return
             if (debugArg !is PyBoolLiteralExpression) return
             if (!debugArg.value) return
-            holder?.registerProblem(node, Checks.FlaskDebugModeCheck.getDescription(custom=node.text))
+            holder?.registerProblem(node, Checks.FlaskDebugModeCheck.getDescription())
         }
     }
 }

@@ -17,7 +17,7 @@ class SubprocessShellModeInspection : PyInspection() {
     val check = Checks.SubprocessShellCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -58,7 +58,7 @@ class SubprocessShellModeInspection : PyInspection() {
                 if (list.elements.any { el -> el is PyCallExpression && (el.callee?.name == "shlex_quote" || el.callee?.name == "quote") }) return
             }
 
-            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(custom=node.text), ShellEscapeFixer())
+            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(), ShellEscapeFixer())
         }
     }
 }

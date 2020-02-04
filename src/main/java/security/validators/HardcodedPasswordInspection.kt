@@ -13,7 +13,7 @@ class HardcodedPasswordInspection : PyInspection() {
     val check = Checks.HardcodedPasswordCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -28,7 +28,7 @@ class HardcodedPasswordInspection : PyInspection() {
             if (!listOf(*PasswordVariableNames).contains(left.name)) return
             val right = node.assignedValue ?: return
             if (right !is PyStringLiteralExpression) return
-            holder?.registerProblem(node, Checks.HardcodedPasswordCheck.getDescription(custom=node.text))
+            holder?.registerProblem(node, Checks.HardcodedPasswordCheck.getDescription())
         }
     }
 }

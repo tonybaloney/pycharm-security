@@ -16,7 +16,6 @@ import com.nhaarman.mockitokotlin2.*
 import org.jetbrains.annotations.NotNull
 import org.mockito.ArgumentMatchers.contains
 import org.mockito.Mockito
-import security.validators.DjangoDebugModeSettingsInspection
 
 open class SecurityTestTask: BasePlatformTestCase() {
     inline fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){

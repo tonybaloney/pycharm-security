@@ -12,7 +12,7 @@ class DjangoDebugModeSettingsInspection : PyInspection() {
     val check = Checks.DjangoDebugModeCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -26,7 +26,7 @@ class DjangoDebugModeSettingsInspection : PyInspection() {
             if (leftExpression != "DEBUG") return;
             val assignedValue = node.assignedValue ?: return
             if (assignedValue.textMatches("True").not()) return;
-            holder?.registerProblem(node, Checks.DjangoDebugModeCheck.getDescription(custom=node.text))
+            holder?.registerProblem(node, Checks.DjangoDebugModeCheck.getDescription())
         }
     }
 }

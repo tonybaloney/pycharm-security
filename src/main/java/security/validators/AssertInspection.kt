@@ -13,7 +13,7 @@ class AssertInspection : PyInspection() {
     val check = Checks.AssertCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -25,7 +25,7 @@ class AssertInspection : PyInspection() {
             if (node == null) return
             if (node.containingFile.name.contains("test"))
                 return
-            holder?.registerProblem(node, Checks.AssertCheck.getDescription(custom=node.text), ProblemHighlightType.WEAK_WARNING)
+            holder?.registerProblem(node, Checks.AssertCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }
     }
 }

@@ -12,7 +12,7 @@ class SqlInjectionInspection : PyInspection() {
     val check = Checks.SqlInjectionCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -53,13 +53,13 @@ class SqlInjectionInspection : PyInspection() {
                 if ((node.parent as PyReferenceExpression).name != "format") return
                 if (node.parent.parent == null) return
                 if (node.parent.parent !is PyCallExpression) return
-                holder?.registerProblem(node, Checks.SqlInjectionCheck.getDescription(custom=node.text))
+                holder?.registerProblem(node, Checks.SqlInjectionCheck.getDescription())
             }
 
             // % format string
             if (node.parent is PyBinaryExpression) {
                 if ((node.parent as PyBinaryExpression).operator.toString() != "Py:PERC") return
-                holder?.registerProblem(node, Checks.SqlInjectionCheck.getDescription(custom=node.text))
+                holder?.registerProblem(node, Checks.SqlInjectionCheck.getDescription())
             }
         }
     }

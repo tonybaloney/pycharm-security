@@ -14,7 +14,7 @@ class InsecureHashInspection : PyInspection() {
     val check = Checks.InsecureHashAlgorithms;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -43,10 +43,10 @@ class InsecureHashInspection : PyInspection() {
             var firstArg = node.arguments[0]
             if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((nameKwArg).stringValue))
-                    holder?.registerProblem(node, check.getDescription(custom=node.text))
+                    holder?.registerProblem(node, check.getDescription())
             } else if (firstArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((firstArg).stringValue))
-                    holder?.registerProblem(node, check.getDescription(custom=node.text))
+                    holder?.registerProblem(node, check.getDescription())
             }
         }
 
@@ -55,7 +55,7 @@ class InsecureHashInspection : PyInspection() {
             if (listOf(*algorithms).contains(calleeName).not()) return
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName.startsWith("hashlib."))
-                holder?.registerProblem(node, check.getDescription(custom=node.text))
+                holder?.registerProblem(node, check.getDescription())
         }
     }
 }

@@ -14,7 +14,7 @@ class TimingAttackInspection : PyInspection() {
     val check = Checks.TimingAttackCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -29,11 +29,11 @@ class TimingAttackInspection : PyInspection() {
             if (!node.isOperator("==") && !node.isOperator("!=")) return
             if (rightExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(rightExpression))
-                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(custom=node.text), UseCompareDigestFixer())
+                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer())
             }
             if (leftExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(leftExpression))
-                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(custom=node.text), UseCompareDigestFixer() )
+                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer() )
             }
         }
 

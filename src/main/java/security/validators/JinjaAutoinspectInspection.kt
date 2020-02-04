@@ -15,7 +15,7 @@ class JinjaAutoinspectInspection : PyInspection() {
     val check = Checks.JinjaAutoinspectCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -31,11 +31,11 @@ class JinjaAutoinspectInspection : PyInspection() {
             val autoescapeArgument = node.getKeywordArgument("autoescape")
             if (autoescapeArgument == null)
             {
-                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(custom=node.text), JinjaAutoinspectUnconditionalFixer())
+                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
             } else {
                 if (autoescapeArgument !is PyBoolLiteralExpression) return
                 if (autoescapeArgument.value) return
-                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(custom=node.text), JinjaAutoinspectUnconditionalFixer())
+                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
             }
         }
     }

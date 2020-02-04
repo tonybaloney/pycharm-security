@@ -14,7 +14,7 @@ class TempfileMktempInspection : PyInspection() {
     val check = Checks.TempfileMktempCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -27,7 +27,7 @@ class TempfileMktempInspection : PyInspection() {
             if (calleeName != "mktemp") return
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName != "tempfile.mktemp") return
-            holder?.registerProblem(node, Checks.TempfileMktempCheck.getDescription(custom=node.text), TempfileMksFixer())
+            holder?.registerProblem(node, Checks.TempfileMktempCheck.getDescription(), TempfileMksFixer())
         }
     }
 }

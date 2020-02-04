@@ -15,7 +15,7 @@ class DjangoMiddlewareInspection : PyInspection() {
     val check = Checks.DjangoClickjackMiddlewareCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -32,10 +32,10 @@ class DjangoMiddlewareInspection : PyInspection() {
             val middleware = assignedValue.elements.filter { el -> el is PyStringLiteralExpression }.map { (it as PyStringLiteralExpression).stringValue }
 
             if (middleware.contains("django.middleware.csrf.CsrfViewMiddleware").not()) {
-                holder?.registerProblem(node, Checks.DjangoCsrfMiddlewareCheck.getDescription(custom=node.text), DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))
+                holder?.registerProblem(node, Checks.DjangoCsrfMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))
             }
             if (middleware.contains("django.middleware.clickjacking.XFrameOptionsMiddleware").not()) {
-                holder?.registerProblem(node, Checks.DjangoClickjackMiddlewareCheck.getDescription(custom=node.text), DjangoAddMiddlewareFixer("django.middleware.clickjacking.XFrameOptionsMiddleware"))
+                holder?.registerProblem(node, Checks.DjangoClickjackMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.clickjacking.XFrameOptionsMiddleware"))
             }
         }
     }

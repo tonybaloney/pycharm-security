@@ -35,11 +35,12 @@ object Checks {
             return "<a href='https://pycharm-security.readthedocs.io/en/latest/checks/$Code.html'>See $Code documentation</a>"
         }
 
-        fun getDescription(custom: String? = null): String {
-            if (custom.isNullOrEmpty())
-                return this.toString() + " " + this.getLink()
-            else
-                return this.toString() + "Found in <code>$custom</code>. " + this.getLink()
+        fun getDescription(): String {
+            return "$this Found in '#ref'."
+        }
+
+        fun getStaticDescription(): String {
+            return this.toString() + " " + this.getLink()
         }
     }
 }

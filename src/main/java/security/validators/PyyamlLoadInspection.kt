@@ -15,7 +15,7 @@ class PyyamlLoadInspection : PyInspection() {
     val check = Checks.PyyamlUnsafeLoadCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -33,7 +33,7 @@ class PyyamlLoadInspection : PyInspection() {
             if (loaderArg != null && loaderArg is PyReferenceExpression)
                 if (loaderArg.referencedName == "SafeLoader") return
 
-            holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.getDescription(custom=node.text), PyyamlSafeLoadFixer())
+            holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.getDescription(), PyyamlSafeLoadFixer())
         }
     }
 }

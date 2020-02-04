@@ -15,7 +15,7 @@ class DjangoRawSqlInspection : PyInspection() {
     val check = Checks.DjangoClickjackMiddlewareCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -45,7 +45,7 @@ class DjangoRawSqlInspection : PyInspection() {
                     // End or beginning of string, so this SQL injection technique wouldn't be possible.
                     return
                 }
-                holder?.registerProblem(node, Checks.DjangoRawSqlCheck.getDescription(custom=node.text))
+                holder?.registerProblem(node, Checks.DjangoRawSqlCheck.getDescription())
             }
         }
     }

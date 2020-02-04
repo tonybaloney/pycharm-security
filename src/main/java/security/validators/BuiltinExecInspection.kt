@@ -15,7 +15,7 @@ class BuiltinExecInspection : PyInspection() {
     val check = Checks.BuiltinExecCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -33,7 +33,7 @@ class BuiltinExecInspection : PyInspection() {
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() is PyStringLiteralExpression) return
 
-            holder?.registerProblem(node, Checks.BuiltinExecCheck.getDescription(custom=node.text))
+            holder?.registerProblem(node, Checks.BuiltinExecCheck.getDescription())
         }
     }
 }

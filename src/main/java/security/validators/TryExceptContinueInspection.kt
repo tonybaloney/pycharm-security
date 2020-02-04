@@ -17,7 +17,7 @@ class TryExceptContinueInspection : PyInspection() {
     val check = Checks.TryExceptContinueCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -37,7 +37,7 @@ class TryExceptContinueInspection : PyInspection() {
                 if (statements.isNullOrEmpty()) continue
                 // Check except block contains something other than comments and a continue statement
                 if (statements.first().statements.any{ it !is PyContinueStatement && it !is PsiComment}) continue
-                holder?.registerProblem(part, Checks.TryExceptContinueCheck.getDescription(custom=part.text), ProblemHighlightType.WEAK_WARNING)
+                holder?.registerProblem(part, Checks.TryExceptContinueCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
             }
         }
     }

@@ -14,7 +14,7 @@ class MakoTemplateInspection : PyInspection() {
     val check = Checks.MakoTemplateFilterCheck;
 
     override fun getStaticDescription(): String? {
-        return check.getDescription()
+        return check.getStaticDescription()
     }
 
     override fun buildVisitor(holder: ProblemsHolder,
@@ -30,7 +30,7 @@ class MakoTemplateInspection : PyInspection() {
             val defaultFiltersArgument = node.getKeywordArgument("default_filters")
             if (defaultFiltersArgument == null)
             {
-                holder?.registerProblem(node, Checks.MakoTemplateFilterCheck.getDescription(custom=node.text), MakoFilterFixer())
+                holder?.registerProblem(node, Checks.MakoTemplateFilterCheck.getDescription(), MakoFilterFixer())
             }
         }
     }
