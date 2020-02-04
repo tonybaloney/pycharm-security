@@ -9,7 +9,7 @@ RUN rm -rf /sources/plugin/build
 WORKDIR /sources
 
 # Install dependencies
-RUN apt-get -y update && apt-get -y install wget unzip openjdk-11-jre-headless && rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update && apt-get -y install wget unzip openjdk-11-jre-headless
 
 # Install PyCharm
 RUN wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSION}.tar.gz \
