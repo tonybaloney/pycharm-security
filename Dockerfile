@@ -1,6 +1,5 @@
 ARG PYCHARM_VERSION=2019.3.2
 FROM ubuntu:18.04
-ARG PYTHON_SECURITY_VERSION
 ARG PYCHARM_VERSION
 RUN echo "Building PyCharm $PYCHARM_VERSION with python-security"
 
@@ -26,7 +25,7 @@ RUN ./gradlew test -PintellijPublishToken=FAKE_TOKEN
 RUN ./gradlew buildPlugin -PintellijPublishToken=FAKE_TOKEN
 
 # Install built plugin
-RUN unzip build/pycharm-security-*.zip -d /opt/pycharm-community/plugins
+RUN unzip build/distributions/pycharm-security-*.zip -d /opt/pycharm-community/plugins
 
 # Install default inspection profile
 RUN wget https://github.com/tonybaloney/pycharm-security/raw/master/doc/_static/SecurityInspectionProfile.xml -O /sources/SecurityInspectionProfile.xml
