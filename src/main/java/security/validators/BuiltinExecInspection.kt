@@ -33,7 +33,7 @@ class BuiltinExecInspection : PyInspection() {
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() is PyStringLiteralExpression) return
 
-            holder?.registerProblem(node, Checks.BuiltinExecCheck.getDescription())
+            holder?.registerProblem(node, Checks.BuiltinExecCheck.getDescription(custom=node.text))
         }
     }
 }

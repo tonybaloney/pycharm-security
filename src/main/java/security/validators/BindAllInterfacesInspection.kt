@@ -38,14 +38,14 @@ class BindAllInterfacesInspection : PyInspection() {
 
             // Takes single argument (IP)
             if (isMatch(firstArg))
-                holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(custom=node.text), ProblemHighlightType.WEAK_WARNING)
 
             if (firstArg is PyParenthesizedExpression){
                 val exp = firstArg.containedExpression ?: return
                 // Takes two arguments as tuple (IP, port), e.g. TCP, UDP
                 if (exp is PyTupleExpression && !exp.isEmpty) {
                     if (isMatch(exp.firstChild))
-                        holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                        holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(custom=node.text), ProblemHighlightType.WEAK_WARNING)
                 }
             }
         }

@@ -31,7 +31,7 @@ class HttpxNoVerifyInspection : PyInspection() {
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return
-            holder?.registerProblem(node, Checks.HttpxNoVerifyCheck.getDescription())
+            holder?.registerProblem(node, Checks.HttpxNoVerifyCheck.getDescription(custom=node.text))
         }
     }
 }

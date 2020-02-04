@@ -36,7 +36,7 @@ class TryExceptPassInspection : PyInspection() {
                 if (statements.isNullOrEmpty()) continue
                 // Check except block contains something other than comments and a pass statement
                 if (statements.first().statements.any{ it !is PyPassStatement && it !is PsiComment}) continue
-                holder?.registerProblem(part, Checks.TryExceptPassCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                holder?.registerProblem(part, Checks.TryExceptPassCheck.getDescription(custom=part.text), ProblemHighlightType.WEAK_WARNING)
             }
         }
     }

@@ -29,11 +29,11 @@ class TimingAttackInspection : PyInspection() {
             if (!node.isOperator("==") && !node.isOperator("!=")) return
             if (rightExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(rightExpression))
-                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer())
+                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(custom=node.text), UseCompareDigestFixer())
             }
             if (leftExpression is PyReferenceExpression) {
                 if (looksLikeAPassword(leftExpression))
-                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(), UseCompareDigestFixer() )
+                    holder?.registerProblem(node, Checks.TimingAttackCheck.getDescription(custom=node.text), UseCompareDigestFixer() )
             }
         }
 

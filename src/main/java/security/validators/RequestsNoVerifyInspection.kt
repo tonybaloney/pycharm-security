@@ -31,7 +31,7 @@ class RequestsNoVerifyInspection : PyInspection() {
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return
-            holder?.registerProblem(node, Checks.RequestsNoVerifyCheck.getDescription())
+            holder?.registerProblem(node, Checks.RequestsNoVerifyCheck.getDescription(custom=node.text))
         }
     }
 }

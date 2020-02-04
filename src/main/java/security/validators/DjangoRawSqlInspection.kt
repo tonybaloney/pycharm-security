@@ -45,7 +45,7 @@ class DjangoRawSqlInspection : PyInspection() {
                     // End or beginning of string, so this SQL injection technique wouldn't be possible.
                     return
                 }
-                holder?.registerProblem(node, Checks.DjangoRawSqlCheck.getDescription())
+                holder?.registerProblem(node, Checks.DjangoRawSqlCheck.getDescription(custom=node.text))
             }
         }
     }

@@ -29,7 +29,7 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() !is PyReferenceExpression) return
             if (!listOf(*badPolicyNames).contains(node.arguments.first().name)) return
-            holder?.registerProblem(node, Checks.ParamikoHostkeyBypassCheck.getDescription())
+            holder?.registerProblem(node, Checks.ParamikoHostkeyBypassCheck.getDescription(custom=node.text))
         }
     }
 }

@@ -31,11 +31,11 @@ class JinjaAutoinspectInspection : PyInspection() {
             val autoescapeArgument = node.getKeywordArgument("autoescape")
             if (autoescapeArgument == null)
             {
-                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
+                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(custom=node.text), JinjaAutoinspectUnconditionalFixer())
             } else {
                 if (autoescapeArgument !is PyBoolLiteralExpression) return
                 if (autoescapeArgument.value) return
-                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
+                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(custom=node.text), JinjaAutoinspectUnconditionalFixer())
             }
         }
     }

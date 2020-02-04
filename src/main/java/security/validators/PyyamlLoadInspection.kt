@@ -33,7 +33,7 @@ class PyyamlLoadInspection : PyInspection() {
             if (loaderArg != null && loaderArg is PyReferenceExpression)
                 if (loaderArg.referencedName == "SafeLoader") return
 
-            holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.getDescription(), PyyamlSafeLoadFixer())
+            holder?.registerProblem(node, Checks.PyyamlUnsafeLoadCheck.getDescription(custom=node.text), PyyamlSafeLoadFixer())
         }
     }
 }

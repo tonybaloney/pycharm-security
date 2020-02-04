@@ -34,7 +34,7 @@ class FlaskDebugModeInspection : PyInspection() {
             val debugArg = node.getKeywordArgument("debug") ?: return
             if (debugArg !is PyBoolLiteralExpression) return
             if (!debugArg.value) return
-            holder?.registerProblem(node, Checks.FlaskDebugModeCheck.getDescription())
+            holder?.registerProblem(node, Checks.FlaskDebugModeCheck.getDescription(custom=node.text))
         }
     }
 }

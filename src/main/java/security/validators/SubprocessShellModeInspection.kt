@@ -58,7 +58,7 @@ class SubprocessShellModeInspection : PyInspection() {
                 if (list.elements.any { el -> el is PyCallExpression && (el.callee?.name == "shlex_quote" || el.callee?.name == "quote") }) return
             }
 
-            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(), ShellEscapeFixer())
+            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(custom=node.text), ShellEscapeFixer())
         }
     }
 }

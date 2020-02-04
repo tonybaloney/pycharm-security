@@ -43,10 +43,10 @@ class InsecureHashInspection : PyInspection() {
             var firstArg = node.arguments[0]
             if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((nameKwArg).stringValue))
-                    holder?.registerProblem(node, check.getDescription())
+                    holder?.registerProblem(node, check.getDescription(custom=node.text))
             } else if (firstArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((firstArg).stringValue))
-                    holder?.registerProblem(node, check.getDescription())
+                    holder?.registerProblem(node, check.getDescription(custom=node.text))
             }
         }
 
@@ -55,7 +55,7 @@ class InsecureHashInspection : PyInspection() {
             if (listOf(*algorithms).contains(calleeName).not()) return
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName.startsWith("hashlib."))
-                holder?.registerProblem(node, check.getDescription())
+                holder?.registerProblem(node, check.getDescription(custom=node.text))
         }
     }
 }

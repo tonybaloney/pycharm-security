@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@1.5.0
+        uses: tonybaloney/pycharm-security@master
 ```
 
 This would give a log of issues inside the report:
@@ -41,7 +41,7 @@ For example, to scan the `src` subdirectory:
 
 ```yaml
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@1.5.0
+        uses: tonybaloney/pycharm-security@master
         with:
           path: src/
 ```
@@ -58,7 +58,7 @@ For example:
 
 ```yaml
       - name: Run PyCharm Security
-        uses: tonybaloney/pycharm-security@1.5.0
+        uses: tonybaloney/pycharm-security@master
         with:
           profile: customProfile.xml
 ```
@@ -79,4 +79,4 @@ From here, choose the inspections you want to run, then select the **Python Secu
 
 You can customize the severity. Save the inspection profile with the name "**Security**" (or similar), by clicking on the cog and choosing **Copy to Project**.
 
-Make sure the inspection profile is checked in to your git repository for the plugin to use it.
+Make sure the inspection profile is checked in to your git repository for the plugin to use it. They are usually saved into `.idea/inspectionProfiles/`.

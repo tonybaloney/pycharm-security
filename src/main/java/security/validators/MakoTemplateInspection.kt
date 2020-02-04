@@ -30,7 +30,7 @@ class MakoTemplateInspection : PyInspection() {
             val defaultFiltersArgument = node.getKeywordArgument("default_filters")
             if (defaultFiltersArgument == null)
             {
-                holder?.registerProblem(node, Checks.MakoTemplateFilterCheck.getDescription(), MakoFilterFixer())
+                holder?.registerProblem(node, Checks.MakoTemplateFilterCheck.getDescription(custom=node.text), MakoFilterFixer())
             }
         }
     }

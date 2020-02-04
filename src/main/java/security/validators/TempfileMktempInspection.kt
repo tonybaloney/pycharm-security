@@ -27,7 +27,7 @@ class TempfileMktempInspection : PyInspection() {
             if (calleeName != "mktemp") return
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName != "tempfile.mktemp") return
-            holder?.registerProblem(node, Checks.TempfileMktempCheck.getDescription(), TempfileMksFixer())
+            holder?.registerProblem(node, Checks.TempfileMktempCheck.getDescription(custom=node.text), TempfileMksFixer())
         }
     }
 }
