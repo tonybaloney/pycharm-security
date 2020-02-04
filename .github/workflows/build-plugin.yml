@@ -20,12 +20,4 @@ jobs:
     - uses: eskatos/gradle-command-action@v1
       with:
         arguments: buildPlugin -PintellijPublishToken=FAKE_TOKEN -PideaPath="" --info
-    - name: Upload build
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        # Artifact name
-        name: "pycharm-security-${version}.zip"
-        # Directory containing files to upload
-        path: build/distributions
-        env:
-          version: $GITHUB_REF
+

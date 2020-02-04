@@ -6,6 +6,14 @@ inputs:
     description: 'Subdirectory to scan within workdir'
     required: false
     default: '.'
+  profile:
+    description: 'Path to an inspection profile XML file'
+    required: false
+    default: '/sources/SecurityInspectionProfile.xml'
+  fail_on_warnings:
+    description: 'Fail the task if warnings were found in the code'
+    required: false
+    default: "no"
 outputs:
   result:
     description: 'Results from the scan'

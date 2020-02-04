@@ -13,7 +13,11 @@ def main():
             description = problem['description']
             print(f"::warning file={fn},line={line},col={col}::{description}")
             cnt += 1
-    print("Found {0} issues".format(cnt))
+
+    if cnt > 0:
+        exit(1)
+    else:
+        exit(0)
 
 if __name__ == "__main__":
     main()
