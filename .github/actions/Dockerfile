@@ -1,4 +1,4 @@
-FROM anthonypjshaw/pycharm-security:release-1.4.4
+FROM anthonypjshaw/pycharm-security:latest
 COPY action.sh /action.sh
 COPY parse.py /code/parse.py
 RUN apt-get -y install python3
