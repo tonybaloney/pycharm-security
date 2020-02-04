@@ -13,5 +13,11 @@ jobs:
           path: 'pycharm-security'
       - name: Run PyCharm Security
         uses: tonybaloney/pycharm-security@master
+      - name: Run PyCharm Security
+        uses: tonybaloney/pycharm-security@master
         with:
           path: .
+      - name: Run PyCharm Security
+        uses: tonybaloney/pycharm-security@master
+        with:
+          profile: "customProfile.xml"
