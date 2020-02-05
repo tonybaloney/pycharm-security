@@ -8,13 +8,15 @@ General and Best Practice
     :maxdepth: 1
 
     AST100 : Use of `assert` statement in non-test file <AST100>
+    EX100 : Use of builtin `exec()` function for non-string literal <EX100>
+    OS100 : Calls to `os.chmod()` with dangerous POSIX permissions <OS100>
+    PIC100 : Loading serialized data with the pickle module can expose arbitrary code execution using the __reduce__ method. <PIC100>
+    PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
+    SQL100 : Possible SQL injection with Python string formatting <SQL100>
+    TMP100 : Use of insecure `tempfile.mktemp` <TMP100>
     TRY100 : Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `pass` statement <TRY100>
     TRY101 : Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `continue` statement <TRY101>
-    OS100 : Calls to `os.chmod()` with dangerous POSIX permissions <OS100>
-    PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
-    TMP100 : Use of insecure `tempfile.mktemp` <TMP100>
-    EX100 : Use of builtin `exec()` function for non-string literal <EX100>
-    SQL100 : Possible SQL injection with Python string formatting <SQL100>
+
 
 Passwords and Security
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -68,9 +70,9 @@ SSL and Networking
     :maxdepth: 1
 
     NET100 : Socket binding to unspecified IPv4 or IPv6 address <NET100>
+    PAR100 (`paramiko`) : Host key inspection bypass using the `paramiko` SSH library <PAR100>
     RQ100 (`requests`) : Use of `verify=False` when making HTTP requests using the `requests` package <RQ100>
     RQ101 (`httpx`) : Use of `verify=False` when making HTTP requests using the `httpx` package <RQ101>
-    PAR100 (`paramiko`) : Host key inspection bypass using the `paramiko` SSH library <PAR100>
 
 Templating Engines
 ~~~~~~~~~~~~~~~~~~

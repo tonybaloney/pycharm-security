@@ -1,5 +1,9 @@
 # Release History
 
+## 1.7.0
+
+* Added pickle load inspection [PIC100](doc/checks/PIC100.md)
+
 ## 1.6.0 
 
 * Dockerfile compiles from source, so 'latest' docker image is from master and each tag is correctly set [issue#41](issues/41)
