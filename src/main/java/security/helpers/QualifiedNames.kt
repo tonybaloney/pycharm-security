@@ -5,7 +5,7 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import com.jetbrains.python.psi.resolve.PyResolveContext
 
 object QualifiedNames {
-    val resolveContext: PyResolveContext = PyResolveContext.defaultContext()
+    var resolveContext: PyResolveContext = PyResolveContext.defaultContext()
 
     fun getQualifiedName(callExpression: PyCallExpression): String? {
         val markedCallees = callExpression.multiResolveCallee(resolveContext)

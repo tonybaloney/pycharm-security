@@ -55,6 +55,41 @@ class ImportValidatorsTest: SecurityTestTask() {
         assertTrue(testHasImport(code, "django"))
     }
 
+    @Test
+    fun `test from import multi`(){
+        var code = """
+            from django.db import DbConnection
+        """.trimIndent()
+        assertTrue(testHasImport(code, "django.db"))
+    }
+
+    @Test
+    fun `test multiple import`(){
+        var code = """
+            import banana
+            import apple
+        """.trimIndent()
+        assertTrue(testHasImport(code, "apple"))
+    }
+
+    @Test
+    fun `test multiple import dotted`(){
+        var code = """
+            import banana
+            import fruit.apple
+        """.trimIndent()
+        assertTrue(testHasImport(code, "fruit"))
+    }
+
+    @Test
+    fun `test multiple import dotted not exist`(){
+        var code = """
+            import banana
+            import fruit.apple
+        """.trimIndent()
+        assertFalse(testHasImport(code, "pear"))
+    }
+
     private fun testHasImport(code: String, importName: String): Boolean{
         var hasImport: Boolean = false
         ApplicationManager.getApplication().runReadAction {
