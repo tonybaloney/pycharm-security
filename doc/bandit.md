@@ -25,7 +25,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | general_bad_file_permissions.py                           | Yes                              | [OS100](checks/OS100.md)   |
 | general_bind_all_interfaces.py                            | Yes                              | [NET100](checks/NET100.md) |
 | general_hardcoded_password.py                             | Yes                              | [PW101](checks/PW101.md)   |
-| general_hardcoded_tmp.py                                  | No                               |                            |
+| general_hardcoded_tmp.py                                  | Yes                              | [TMP101](checks/TMP101.md) |
 | hashlib_new_insecure_functions.py                         | Yes                              | [HL100](checks/HL100.md)   |
 | injection_paramiko.py                                     | No                               |                            |
 | injection_shell.py                                        | Yes                              | [PR100](checks/PR100.md)   |
@@ -39,16 +39,3 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | try_except_pass.py                                        | Yes                              | [TRY100](checks/TRY100.md) |
 | weak_cryptographic_key.py                                 | No                               |                            |
 | yaml_load.py                                              | Yes                              | [YML100](checks/YML100.md) |
-
-
-List of checks that are in this plugin but **not** in bandit:
-
-| Check                      | Purpose                                                                    |
-|----------------------------|----------------------------------------------------------------------------|
-| [DJG100](checks/DJG100.md) | Django Debug mode enabled                                                  |
-| [DJG200](checks/DJG200.md) | Django CSRF Middleware misconfiguration                                    |
-| [DJG201](checks/DJG201.md) | Django Clickjacking Middleware misconfiguration                            |
-| [HL101](checks/HL101.md)   | Use of hashing algorithms that are susceptible to length-extension attacks |
-| [PW100](checks/PW100.md)   | Potential timing attack detection with string comparisons                  |
-| [RQ101](checks/RQ101.md)   | No SSL verification on the httpx library                                   |
-| [TMP100](checks/TMP100.md) | Use of insecure tmp file creation                                          |
