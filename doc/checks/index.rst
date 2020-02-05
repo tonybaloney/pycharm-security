@@ -84,3 +84,12 @@ Templating Engines
 
     JJ100 (`jinja2`) : Use of Jinja2 without autoescaped input <JJ100>
     MK100 (`mako`) : Use of Mako template without escaped input <MK100>
+
+
+XML
+~~~
+
+.. toctree::
+    :maxdepth: 1
+
+    XML200 : Use of `allow_dotted_names` with XML RPC Simple Server allows remote code execution <XML200>

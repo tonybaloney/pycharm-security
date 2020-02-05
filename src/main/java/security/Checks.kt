@@ -28,6 +28,7 @@ object Checks {
     val BindAllInterfacesCheck = CheckType("NET100", "Possible hardcoded binding to all network interfaces.")
     val ChmodInsecurePermissionsCheck = CheckType("OS100", "Modification of system files to allow execution.")
     val PickleLoadCheck = CheckType("PIC100", "Loading serialized data with the pickle module can expose arbitrary code execution using the __reduce__ method.")
+    val XmlRpcServerDottedNamesCheck = CheckType("XML200", "Using allow_dotted_names option may allow attackers to execute arbitrary code.")
 
     class CheckType(var Code: String, private var Message: String) {
         override fun toString(): String {

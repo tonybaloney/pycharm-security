@@ -5,7 +5,11 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
+import com.jetbrains.python.nameResolver.NameResolverTools
 import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.impl.PyTypeProvider
+import com.jetbrains.python.psi.resolve.PyResolveContext
+import com.jetbrains.python.psi.types.TypeEvalContext
 import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -78,6 +82,20 @@ class QualifiedNamesTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test fully resolved callee with context`(){
+        var code = """
+            class x:
+                @staticmethod
+                def meth():
+                    pass
+                    
+            y = x
+            y.meth()
+        """.trimIndent()
+        assertEquals(getQualifiedName(code, false), "meth")
+    }
+
+    @Test
     fun `test fully resolved callee`(){
         var code = """
             class x:
@@ -88,14 +106,29 @@ class QualifiedNamesTest: SecurityTestTask() {
             y = x
             y.meth()
         """.trimIndent()
-        assertEquals(getQualifiedName(code), "meth")
+        assertEquals(getQualifiedName(code, true), "meth")
     }
 
-    private fun getQualifiedName(code: String): String?{
+    @Test
+    fun `test alias`(){
+        var code = """
+            import x as y
+            y.meth()
+        """.trimIndent()
+        assertEquals(getQualifiedName(code, true), "y.meth")
+    }
+
+    private fun getQualifiedName(code: String, resolveContext: Boolean = false): String?{
         var name: String? = null
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
+
+            if (resolveContext){
+                val typeEvalContext = TypeEvalContext.codeCompletion(this.project, testFile)
+                QualifiedNames.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+            }
+
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
