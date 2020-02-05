@@ -92,4 +92,5 @@ XML
 .. toctree::
     :maxdepth: 1
 
+    XML100 : Use of standard library XML modules that are vulnerable to entity expansion DoS <XML100>
     XML200 : Use of `allow_dotted_names` with XML RPC Simple Server allows remote code execution <XML200>

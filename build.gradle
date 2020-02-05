@@ -41,6 +41,7 @@ patchPluginXml {
         <li>Added pickle load inspection [PIC100]</li>
         <li>Added django safe strings inspection [DJG102]</li>
         <li>Added hardcoded temp path read or write inspection [TMP101]</li>
+        <li>Added XML std library exploit inspection [XML100]</li>
         <li>Added XML RPC dotted paths inspection [XML200]</li>
         <li>Added links to documentation in inspection details</li>
       </ul>

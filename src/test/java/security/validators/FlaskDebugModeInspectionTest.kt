@@ -89,4 +89,24 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
     }
+
+    @Test
+    fun `test flask not imported`(){
+        var code = """
+            from banana import Flask
+            
+            app = Flask()
+            blah.run()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
+    }
+
+    @Test
+    fun `test not reference parent`(){
+        var code = """
+            from flask import Flask
+            "1".run()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, FlaskDebugModeCheck, "test.py", FlaskDebugModeInspection())
+    }
 }
