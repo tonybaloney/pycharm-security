@@ -21,7 +21,7 @@ import org.mockito.Mockito
 import security.helpers.QualifiedNames
 
 open class SecurityTestTask: BasePlatformTestCase() {
-    inline fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+    fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
@@ -79,7 +79,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         }
     }
 
-    inline fun <inspector: PyInspection>testBinaryExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+    fun <inspector: PyInspection>testBinaryExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
@@ -101,7 +101,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         }
     }
 
-    inline fun <inspector: PyInspection>testStringLiteralExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+    fun <inspector: PyInspection>testStringLiteralExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
@@ -123,7 +123,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         }
     }
 
-    inline fun <inspector: PyInspection>testFormattedStringElement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+    fun <inspector: PyInspection>testFormattedStringElement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
@@ -145,7 +145,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         }
     }
 
-    inline fun <inspector: PyInspection>testAssertStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+    fun <inspector: PyInspection>testAssertStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>()) } doAnswer {}
@@ -167,7 +167,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
         }
     }
 
-    inline fun <inspector: PyInspection>testTryExceptStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+    fun <inspector: PyInspection>testTryExceptStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>()) } doAnswer {}
@@ -185,6 +185,50 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyTryExceptStatement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>())
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+        }
+    }
+
+    fun <inspector: PyInspection>testImportStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+        ApplicationManager.getApplication().runReadAction {
+            val mockHolder = mock<ProblemsHolder> {
+                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+            }
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
+            assertNotNull(testFile)
+            val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
+
+            val expr: @NotNull MutableCollection<PyImportStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyImportStatement::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyImportStatement(e)
+            }
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+        }
+    }
+
+    fun <inspector: PyInspection>testFromImportStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+        ApplicationManager.getApplication().runReadAction {
+            val mockHolder = mock<ProblemsHolder> {
+                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+            }
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
+            assertNotNull(testFile)
+            val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
+
+            val expr: @NotNull MutableCollection<PyFromImportStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyFromImportStatement::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyFromImportStatement(e)
+            }
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
