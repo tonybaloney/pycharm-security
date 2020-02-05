@@ -37,15 +37,13 @@ class SqlInjectionInspection : PyInspection() {
             return false
         }
 
-        override fun visitPyFormattedStringElement(node: PyFormattedStringElement?) {
+        override fun visitPyFormattedStringElement(node: PyFormattedStringElement) {
             // F-string
-            if (node == null) return
             if (!looksLikeSql(node.content)) return
             holder?.registerProblem(node, Checks.SqlInjectionCheck.getDescription())
         }
 
-        override fun visitPyStringLiteralExpression(node: PyStringLiteralExpression?) {
-            if (node == null) return
+        override fun visitPyStringLiteralExpression(node: PyStringLiteralExpression) {
             if (!looksLikeSql(node.stringValue)) return
 
             // .Format() string

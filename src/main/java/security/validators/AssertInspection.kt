@@ -21,8 +21,7 @@ class AssertInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyAssertStatement(node: PyAssertStatement?) {
-            if (node == null) return
+        override fun visitPyAssertStatement(node: PyAssertStatement) {
             if (node.containingFile.name.contains("test"))
                 return
             holder?.registerProblem(node, Checks.AssertCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)

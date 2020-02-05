@@ -24,8 +24,7 @@ class TryExceptContinueInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyTryExceptStatement(node: PyTryExceptStatement?) {
-            if (node == null) return
+        override fun visitPyTryExceptStatement(node: PyTryExceptStatement) {
             if (node.containingFile.name.contains("test")) return
             if (node.exceptParts.isEmpty()) return
 

@@ -23,8 +23,8 @@ class DjangoMiddlewareInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyAssignmentStatement(node: PyAssignmentStatement?) {
-            if (node?.containingFile?.name != "settings.py") return
+        override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
+            if (node.containingFile?.name != "settings.py") return
             val leftExpression = node.leftHandSideExpression?.text ?: return
             if (leftExpression != "MIDDLEWARE") return
             val assignedValue = node.assignedValue ?: return

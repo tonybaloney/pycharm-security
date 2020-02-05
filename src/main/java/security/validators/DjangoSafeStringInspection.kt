@@ -23,8 +23,7 @@ class DjangoSafeStringInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
         val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText")
-        override fun visitPyCallExpression(node: PyCallExpression?) {
-            if (node == null) return
+        override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (!listOf(*methodNames).contains(calleeName)) return
             val qualifiedName = QualifiedNames.getQualifiedName(node) ?: return

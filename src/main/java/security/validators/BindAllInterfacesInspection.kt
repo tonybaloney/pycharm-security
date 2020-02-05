@@ -29,8 +29,7 @@ class BindAllInterfacesInspection : PyInspection() {
             return (listOf(*allInterfacesStrings).contains((el).stringValue))
         }
 
-        override fun visitPyCallExpression(node: PyCallExpression?) {
-            if (node == null) return
+        override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "bind") return
             if (node.arguments.isNullOrEmpty()) return

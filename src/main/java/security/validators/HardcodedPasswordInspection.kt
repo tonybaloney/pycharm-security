@@ -22,8 +22,7 @@ class HardcodedPasswordInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyAssignmentStatement(node: PyAssignmentStatement?) {
-            if (node == null) return
+        override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
             val left = node.leftHandSideExpression ?: return
             if (left !is PyTargetExpression) return
             if (!listOf(*PasswordVariableNames).contains(left.name)) return

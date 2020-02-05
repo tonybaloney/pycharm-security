@@ -72,8 +72,7 @@ class OsChmodInspection : PyInspection() {
             return false
         }
 
-        override fun visitPyCallExpression(node: PyCallExpression?) {
-            if (node == null) return
+        override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "chmod") return
 
