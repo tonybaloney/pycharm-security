@@ -5,6 +5,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
+import com.jetbrains.python.nameResolver.NameResolverTools
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.impl.PyTypeProvider
 import com.jetbrains.python.psi.resolve.PyResolveContext
