@@ -23,7 +23,7 @@ object PyPackageSecurityScan {
     }
 
     fun checkPackages(project: Project){
-        var pythonSdks = getPythonSdks(project)
+        val pythonSdks = getPythonSdks(project)
         if (pythonSdks.isEmpty()){
             returnError(project)
             return
@@ -38,10 +38,10 @@ object PyPackageSecurityScan {
                                 "Could not locate the package manager.",
                                 NotificationType.INFORMATION)
                         .notify(project)
-                return;
+                return
             }
-            var packageChecker = SafetyDbChecker()
-            var matches = 0;
+            val packageChecker = SafetyDbChecker()
+            var matches = 0
             if (packageManager.packages == null){
                 returnError(project)
                 return
@@ -49,7 +49,7 @@ object PyPackageSecurityScan {
             for (pack in packageManager.packages!!){
                 if (packageChecker.hasMatch(pack)) {
                     for (issue in packageChecker.getMatches(pack)) {
-                        matches++;
+                        matches++
                         NOTIFICATION_GROUP
                                 .createNotification("Found Security Vulnerability in $pack package", null,
                                         renderMessage(issue),

@@ -12,7 +12,7 @@ import security.Checks
 import security.fixes.DjangoAddMiddlewareFixer
 
 class DjangoMiddlewareInspection : PyInspection() {
-    val check = Checks.DjangoClickjackMiddlewareCheck;
+    val check = Checks.DjangoClickjackMiddlewareCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -23,13 +23,13 @@ class DjangoMiddlewareInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyAssignmentStatement(node: PyAssignmentStatement?) {
-            if (node?.containingFile?.name != "settings.py") return;
+        override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
+            if (node.containingFile?.name != "settings.py") return
             val leftExpression = node.leftHandSideExpression?.text ?: return
-            if (leftExpression != "MIDDLEWARE") return;
+            if (leftExpression != "MIDDLEWARE") return
             val assignedValue = node.assignedValue ?: return
             if (assignedValue !is PyListLiteralExpression) return
-            val middleware = assignedValue.elements.filter { el -> el is PyStringLiteralExpression }.map { (it as PyStringLiteralExpression).stringValue }
+            val middleware = assignedValue.elements.filterIsInstance<PyStringLiteralExpression>().map { it.stringValue }
 
             if (middleware.contains("django.middleware.csrf.CsrfViewMiddleware").not()) {
                 holder?.registerProblem(node, Checks.DjangoCsrfMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))

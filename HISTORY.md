@@ -3,6 +3,7 @@
 ## 1.7.0
 
 * Added pickle load inspection [PIC100](doc/checks/PIC100.md)
+* Added django safe strings inspection [DJG102](doc/checks/DJG102.md)
 
 ## 1.6.0 
 

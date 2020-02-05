@@ -13,7 +13,7 @@ import com.jetbrains.python.psi.PyTryExceptStatement
 import security.Checks
 
 class TryExceptPassInspection : PyInspection() {
-    val check = Checks.TryExceptPassCheck;
+    val check = Checks.TryExceptPassCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -24,8 +24,7 @@ class TryExceptPassInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyTryExceptStatement(node: PyTryExceptStatement?) {
-            if (node == null) return
+        override fun visitPyTryExceptStatement(node: PyTryExceptStatement) {
             if (node.containingFile.name.contains("test")) return
             if (node.exceptParts.isEmpty()) return
 

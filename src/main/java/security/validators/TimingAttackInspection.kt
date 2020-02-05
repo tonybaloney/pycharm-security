@@ -11,7 +11,7 @@ import security.Checks
 import security.fixes.UseCompareDigestFixer
 
 class TimingAttackInspection : PyInspection() {
-    val check = Checks.TimingAttackCheck;
+    val check = Checks.TimingAttackCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -22,8 +22,7 @@ class TimingAttackInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyBinaryExpression(node: PyBinaryExpression?) {
-            if (node == null) return
+        override fun visitPyBinaryExpression(node: PyBinaryExpression) {
             val rightExpression = node.rightExpression ?: return
             val leftExpression = node.leftExpression ?: return
             if (!node.isOperator("==") && !node.isOperator("!=")) return

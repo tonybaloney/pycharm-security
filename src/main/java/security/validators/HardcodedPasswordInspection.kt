@@ -5,12 +5,13 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
-import com.jetbrains.python.psi.*
+import com.jetbrains.python.psi.PyAssignmentStatement
+import com.jetbrains.python.psi.PyStringLiteralExpression
+import com.jetbrains.python.psi.PyTargetExpression
 import security.Checks
-import security.fixes.UseCompareDigestFixer
 
 class HardcodedPasswordInspection : PyInspection() {
-    val check = Checks.HardcodedPasswordCheck;
+    val check = Checks.HardcodedPasswordCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -21,8 +22,7 @@ class HardcodedPasswordInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyAssignmentStatement(node: PyAssignmentStatement?) {
-            if (node == null) return
+        override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
             val left = node.leftHandSideExpression ?: return
             if (left !is PyTargetExpression) return
             if (!listOf(*PasswordVariableNames).contains(left.name)) return

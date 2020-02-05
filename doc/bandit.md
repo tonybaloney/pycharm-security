@@ -20,7 +20,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | asserts.py                                                | Yes                              | [AST100](checks/AST100.md) |
 | crypto_request_no_cert_validation.py (requests no verify) | Yes, for both httpx and requests | [RQ100](checks/RQ100.md)   |
 | django_sql_injection.py                                   | Yes                              | [DJG101](checks/DJG101.md) |
-| django_xss.py                                             | No                               |                            |
+| django_xss.py                                             | Yes                              | [DJG102](checks/DJG102.md) |
 | exec.py                                                   | Yes                              | [EX100](checks/EX100.md)   |
 | general_bad_file_permissions.py                           | Yes                              | [OS100](checks/OS100.md)   |
 | general_bind_all_interfaces.py                            | Yes                              | [NET100](checks/NET100.md) |

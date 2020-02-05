@@ -11,7 +11,7 @@ import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 
 class InsecureHashInspection : PyInspection() {
-    val check = Checks.InsecureHashAlgorithms;
+    val check = Checks.InsecureHashAlgorithms
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -39,8 +39,8 @@ class InsecureHashInspection : PyInspection() {
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName.startsWith("hashlib.").not()) return
             if (node.arguments.isEmpty()) return
-            var nameKwArg = node.getKeywordArgument("name")
-            var firstArg = node.arguments[0]
+            val nameKwArg = node.getKeywordArgument("name")
+            val firstArg = node.arguments[0]
             if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((nameKwArg).stringValue))
                     holder?.registerProblem(node, check.getDescription())

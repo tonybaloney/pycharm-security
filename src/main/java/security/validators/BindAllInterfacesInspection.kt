@@ -11,7 +11,7 @@ import com.jetbrains.python.psi.*
 import security.Checks
 
 class BindAllInterfacesInspection : PyInspection() {
-    val check = Checks.BindAllInterfacesCheck;
+    val check = Checks.BindAllInterfacesCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -29,8 +29,7 @@ class BindAllInterfacesInspection : PyInspection() {
             return (listOf(*allInterfacesStrings).contains((el).stringValue))
         }
 
-        override fun visitPyCallExpression(node: PyCallExpression?) {
-            if (node == null) return
+        override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "bind") return
             if (node.arguments.isNullOrEmpty()) return

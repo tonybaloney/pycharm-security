@@ -11,7 +11,7 @@ import security.fixes.MakoFilterFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class MakoTemplateInspection : PyInspection() {
-    val check = Checks.MakoTemplateFilterCheck;
+    val check = Checks.MakoTemplateFilterCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

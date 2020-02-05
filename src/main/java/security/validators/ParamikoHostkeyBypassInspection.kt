@@ -10,7 +10,7 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 
 class ParamikoHostkeyBypassInspection : PyInspection() {
-    val check = Checks.ParamikoHostkeyBypassCheck;
+    val check = Checks.ParamikoHostkeyBypassCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

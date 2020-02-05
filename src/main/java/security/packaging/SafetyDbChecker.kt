@@ -30,7 +30,7 @@ class SafetyDbChecker {
             this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json").reader())
     }
     constructor (databaseReader: Reader, lookupReader: Reader ) {
-        load(databaseReader, lookupReader);
+        load(databaseReader, lookupReader)
     }
 
     private fun load(databaseReader: Reader, lookupReader: Reader) {

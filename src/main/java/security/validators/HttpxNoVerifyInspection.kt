@@ -11,7 +11,7 @@ import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 
 class HttpxNoVerifyInspection : PyInspection() {
-    val check = Checks.HttpxNoVerifyCheck;
+    val check = Checks.HttpxNoVerifyCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

@@ -8,13 +8,12 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyContinueStatement
-import com.jetbrains.python.psi.PyPassStatement
 import com.jetbrains.python.psi.PyStatementList
 import com.jetbrains.python.psi.PyTryExceptStatement
 import security.Checks
 
 class TryExceptContinueInspection : PyInspection() {
-    val check = Checks.TryExceptContinueCheck;
+    val check = Checks.TryExceptContinueCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -25,8 +24,7 @@ class TryExceptContinueInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
-        override fun visitPyTryExceptStatement(node: PyTryExceptStatement?) {
-            if (node == null) return
+        override fun visitPyTryExceptStatement(node: PyTryExceptStatement) {
             if (node.containingFile.name.contains("test")) return
             if (node.exceptParts.isEmpty()) return
 

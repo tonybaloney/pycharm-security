@@ -44,7 +44,7 @@ class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
     fun getNewEscapedExpression(file: PsiFile, project: Project, oldElement: PyExpression): PyCallExpression? {
         val elementGenerator = PyElementGenerator.getInstance(project)
         if (file !is PyFile) return null
-        var newEl = elementGenerator.createCallExpression(file.languageLevel, "shlex_quote")
+        val newEl = elementGenerator.createCallExpression(file.languageLevel, "shlex_quote")
         newEl.argumentList?.addArgument(oldElement)
         return newEl
     }
@@ -53,7 +53,7 @@ class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
         val elementGenerator = PyElementGenerator.getInstance(project)
         if (file !is PyFile) return null
         importFrom(file, project, "shlex", "quote", "shlex_quote")
-        var list = elementGenerator.createListLiteral()
+        val list = elementGenerator.createListLiteral()
         for (item in oldElement.elements){
             if (item is PyReferenceExpression){
                 list.add(getNewEscapedExpression(file, project, item) as @org.jetbrains.annotations.NotNull PsiElement)

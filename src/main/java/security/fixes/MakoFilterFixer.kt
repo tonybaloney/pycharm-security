@@ -39,7 +39,7 @@ class MakoFilterFixer: LocalQuickFix, IntentionAction, HighPriorityAction {
     fun runFix(project: Project, file: PsiFile, originalElement: PsiElement): PyCallExpression? {
         if (originalElement !is PyCallExpression) return null
         if (file !is PyFile) return null
-        var newEl = originalElement.copy() as PyCallExpression
+        val newEl = originalElement.copy() as PyCallExpression
         val autoescapeArgument = newEl.getKeywordArgument("default_filters")
         if (autoescapeArgument != null) return null
         val elementGenerator = PyElementGenerator.getInstance(project)
