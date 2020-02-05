@@ -2,8 +2,6 @@ package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.editor.CaretModel
-import com.intellij.openapi.editor.Editor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
