@@ -21,7 +21,7 @@ RUN wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSI
 RUN cd plugin/ && ./gradlew test --no-daemon -PintellijPublishToken=FAKE_TOKEN \
     && ./gradlew buildPlugin --no-daemon -PintellijPublishToken=FAKE_TOKEN \
     && unzip build/distributions/pycharm-security-*.zip -d /opt/pycharm-community/plugins \
-    && cd .. && rm -rf plugin/
+    && cd .. && rm -rf plugin/ && rm -rf ~/.gradle
 
 # Install default inspection profile
 RUN wget https://github.com/tonybaloney/pycharm-security/raw/master/doc/_static/SecurityInspectionProfile.xml -O /sources/SecurityInspectionProfile.xml
