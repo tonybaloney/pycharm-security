@@ -1,15 +1,17 @@
 <idea-plugin>
     <id>org.tonybaloney.security.pycharm-security</id>
     <name>Python Security</name>
-    <vendor email="anthonyshaw@apache.org" url="http://tonybaloney.github.io">Anthony Shaw</vendor>
+    <vendor email="anthonyshaw@apache.org" url="https://github.com/tonybaloney/pycharm-security/">Anthony Shaw</vendor>
 
     <description><![CDATA[
     Analyzes potential security flaws in your Python code and suggests fixes. Designed to find common security issues in Python code.<br>
     Reports on installed packages and any known security reports. <br/>
 
+    Also available for your CI/CD as a GitHub Action <a href="https://github.com/marketplace/actions/pycharm-python-security-scanner">on the GitHub marketplace</a>.
+
     <h2>Features</h2>
     <ul>
-     <li>Over 20 builtin code checks giving your contextual security warnings in your code</li>
+     <li>Over 40 builtin code checks giving your contextual security warnings in your code</li>
      <li>Misconfiguration warnings for Django and Flask web frameworks</li>
      <li>Cross-Site-Scripting detection for both Jinja2 and Mako templating engines</li>
      <li>SQL Injection detection in all Python string formats</li>
