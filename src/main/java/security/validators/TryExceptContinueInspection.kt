@@ -8,13 +8,12 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyContinueStatement
-import com.jetbrains.python.psi.PyPassStatement
 import com.jetbrains.python.psi.PyStatementList
 import com.jetbrains.python.psi.PyTryExceptStatement
 import security.Checks
 
 class TryExceptContinueInspection : PyInspection() {
-    val check = Checks.TryExceptContinueCheck;
+    val check = Checks.TryExceptContinueCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

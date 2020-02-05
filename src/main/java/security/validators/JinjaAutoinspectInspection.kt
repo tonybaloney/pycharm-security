@@ -12,7 +12,7 @@ import security.fixes.JinjaAutoinspectUnconditionalFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class JinjaAutoinspectInspection : PyInspection() {
-    val check = Checks.JinjaAutoinspectCheck;
+    val check = Checks.JinjaAutoinspectCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

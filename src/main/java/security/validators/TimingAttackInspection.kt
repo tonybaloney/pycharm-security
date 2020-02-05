@@ -11,7 +11,7 @@ import security.Checks
 import security.fixes.UseCompareDigestFixer
 
 class TimingAttackInspection : PyInspection() {
-    val check = Checks.TimingAttackCheck;
+    val check = Checks.TimingAttackCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

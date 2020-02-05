@@ -10,7 +10,7 @@ import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 
 class PickleLoadInspection : PyInspection() {
-    val check = Checks.PickleLoadCheck;
+    val check = Checks.PickleLoadCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

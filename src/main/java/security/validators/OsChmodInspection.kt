@@ -14,7 +14,7 @@ import java.nio.file.attribute.PosixFilePermission
 
 fun getPosixPermissions(permValue: Int): Set<PosixFilePermission>? {
     // I don't think a version of this exists in the JDK stdlib?!
-    var permissions = arrayListOf<PosixFilePermission>()
+    val permissions = arrayListOf<PosixFilePermission>()
     if ((1 and permValue) > 0) permissions.add(PosixFilePermission.OWNER_EXECUTE)
     if (2 and permValue > 0) permissions.add(PosixFilePermission.OWNER_WRITE)
     if (4 and permValue > 0) permissions.add(PosixFilePermission.OWNER_READ)
@@ -28,7 +28,7 @@ fun getPosixPermissions(permValue: Int): Set<PosixFilePermission>? {
 }
 
 class OsChmodInspection : PyInspection() {
-    val check = Checks.ChmodInsecurePermissionsCheck;
+    val check = Checks.ChmodInsecurePermissionsCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

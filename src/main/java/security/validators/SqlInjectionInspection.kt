@@ -9,7 +9,7 @@ import com.jetbrains.python.psi.*
 import security.Checks
 
 class SqlInjectionInspection : PyInspection() {
-    val check = Checks.SqlInjectionCheck;
+    val check = Checks.SqlInjectionCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -23,7 +23,7 @@ class SqlInjectionInspection : PyInspection() {
         // Double-word SQL commands (high-certainty)
         val certainlySqlStartingStrings = arrayOf("INSERT INTO ", "DELETE FROM", "ALTER TABLE ", "DROP DATABASE ", "CREATE DATABASE ")
         // Double-word SQL commands (low-certainty)
-        val possiblySqlCommandPairs = mapOf<String, String>("SELECT " to " FROM ", "UPDATE " to " SET ")
+        val possiblySqlCommandPairs = mapOf("SELECT " to " FROM ", "UPDATE " to " SET ")
 
         fun looksLikeSql(str: String) : Boolean {
             // Quickly respond to double-worded SQL statements

@@ -13,7 +13,7 @@ import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 
 class FlaskDebugModeInspection : PyInspection() {
-    val check = Checks.FlaskDebugModeCheck;
+    val check = Checks.FlaskDebugModeCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

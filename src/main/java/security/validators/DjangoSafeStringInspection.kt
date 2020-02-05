@@ -7,13 +7,11 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyFile
-import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.ImportValidators.hasImportedNamespace
+import security.helpers.QualifiedNames
 
 class DjangoSafeStringInspection : PyInspection() {
-    val check = Checks.DjangoSafeStringCheck;
+    val check = Checks.DjangoSafeStringCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -29,10 +27,8 @@ class DjangoSafeStringInspection : PyInspection() {
             if (node == null) return
             val calleeName = node.callee?.name ?: return
             if (!listOf(*methodNames).contains(calleeName)) return
-
-            if (node.containingFile !is PyFile) return
-            if (!hasImportedNamespace(node.containingFile as PyFile, "django.utils.safestring")) return
-
+            val qualifiedName = QualifiedNames.getQualifiedName(node) ?: return
+            if (!qualifiedName.startsWith("django.utils.safestring")) return
             holder?.registerProblem(node, Checks.DjangoSafeStringCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }
     }

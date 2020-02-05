@@ -14,7 +14,7 @@ import security.fixes.ShellEscapeFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class SubprocessShellModeInspection : PyInspection() {
-    val check = Checks.SubprocessShellCheck;
+    val check = Checks.SubprocessShellCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

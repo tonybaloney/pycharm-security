@@ -12,7 +12,7 @@ import security.fixes.PyyamlSafeLoadFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class PyyamlLoadInspection : PyInspection() {
-    val check = Checks.PyyamlUnsafeLoadCheck;
+    val check = Checks.PyyamlUnsafeLoadCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -27,7 +27,7 @@ class PyyamlLoadInspection : PyInspection() {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "load") return
             val qualifiedName = getQualifiedName(node) ?: return
-            if (!qualifiedName.equals("yaml.load")) return
+            if (qualifiedName != "yaml.load") return
             // Inspect loader kwarg
             val loaderArg = node.getKeywordArgument("loader")
             if (loaderArg != null && loaderArg is PyReferenceExpression)

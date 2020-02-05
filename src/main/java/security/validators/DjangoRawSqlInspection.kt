@@ -12,7 +12,7 @@ import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 
 class DjangoRawSqlInspection : PyInspection() {
-    val check = Checks.DjangoClickjackMiddlewareCheck;
+    val check = Checks.DjangoClickjackMiddlewareCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -39,7 +39,7 @@ class DjangoRawSqlInspection : PyInspection() {
             val paramMatches = param.findAll(sqlStatement.stringValue)
             for (match in paramMatches){
                 try {
-                    if (sqlStatement.stringValue.substring(match.range.start - 1, match.range.start) != "'") return
+                    if (sqlStatement.stringValue.substring(match.range.first - 1, match.range.first) != "'") return
                     if (sqlStatement.stringValue.substring(match.range.last + 1, match.range.last + 2) != "'") return
                 } catch (oobe: StringIndexOutOfBoundsException){
                     // End or beginning of string, so this SQL injection technique wouldn't be possible.

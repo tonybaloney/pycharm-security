@@ -11,7 +11,7 @@ import com.jetbrains.python.psi.*
 import security.Checks
 
 class BindAllInterfacesInspection : PyInspection() {
-    val check = Checks.BindAllInterfacesCheck;
+    val check = Checks.BindAllInterfacesCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

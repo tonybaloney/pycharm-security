@@ -13,7 +13,7 @@ import com.jetbrains.python.psi.PyTryExceptStatement
 import security.Checks
 
 class TryExceptPassInspection : PyInspection() {
-    val check = Checks.TryExceptPassCheck;
+    val check = Checks.TryExceptPassCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

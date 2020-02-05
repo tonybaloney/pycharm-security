@@ -11,7 +11,7 @@ import security.fixes.TempfileMksFixer
 import security.helpers.QualifiedNames.getQualifiedName
 
 class TempfileMktempInspection : PyInspection() {
-    val check = Checks.TempfileMktempCheck;
+    val check = Checks.TempfileMktempCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

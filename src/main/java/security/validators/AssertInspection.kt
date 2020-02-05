@@ -10,7 +10,7 @@ import com.jetbrains.python.psi.PyAssertStatement
 import security.Checks
 
 class AssertInspection : PyInspection() {
-    val check = Checks.AssertCheck;
+    val check = Checks.AssertCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()

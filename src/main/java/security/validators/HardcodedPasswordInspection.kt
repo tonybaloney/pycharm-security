@@ -5,12 +5,13 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
-import com.jetbrains.python.psi.*
+import com.jetbrains.python.psi.PyAssignmentStatement
+import com.jetbrains.python.psi.PyStringLiteralExpression
+import com.jetbrains.python.psi.PyTargetExpression
 import security.Checks
-import security.fixes.UseCompareDigestFixer
 
 class HardcodedPasswordInspection : PyInspection() {
-    val check = Checks.HardcodedPasswordCheck;
+    val check = Checks.HardcodedPasswordCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
