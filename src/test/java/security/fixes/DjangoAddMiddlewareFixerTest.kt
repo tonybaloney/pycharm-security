@@ -6,7 +6,6 @@ import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
-import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyListLiteralExpression
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock

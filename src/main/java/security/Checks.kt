@@ -7,6 +7,7 @@ object Checks {
     val HttpxNoVerifyCheck = CheckType("RQ101", "Setting verify=False when using httpx bypasses SSL verification and leaves requests susceptible to MITM attacks.")
     val SubprocessShellCheck = CheckType("PR100", "Calling subprocess commands with shell=True can leave the host shell open to local code execution or remote code execution attacks.")
     val TempfileMktempCheck = CheckType("TMP100", "The way that tempfile.mktemp creates temporary files is insecure and leaves it open to attackers replacing the file contents. Use tempfile.mkstemp instead.")
+    val HardcodedTempFileCheck = CheckType("TMP101", "Reading or writing temporary files with a hardcoded path is insecure and leaves it open to attackers replacing the file contents. Use tempfile.mkstemp instead.")
     val DjangoDebugModeCheck = CheckType("DJG100", "Running Django in Debug mode is highly insecure and should only be used for local development purposes.")
     val DjangoRawSqlCheck = CheckType("DJG101", "Using quoted, parametrized literal will bypass Django SQL Injection protection.")
     val DjangoSafeStringCheck = CheckType("DJG102", "Using safe strings bypasses the Django XSS protection.")

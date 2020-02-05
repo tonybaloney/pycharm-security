@@ -14,6 +14,7 @@ General and Best Practice
     PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
     SQL100 : Possible SQL injection with Python string formatting <SQL100>
     TMP100 : Use of insecure `tempfile.mktemp` <TMP100>
+    TMP101 : Use of hardcoded temporary file path <TMP101>
     TRY100 : Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `pass` statement <TRY100>
     TRY101 : Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `continue` statement <TRY101>
 
