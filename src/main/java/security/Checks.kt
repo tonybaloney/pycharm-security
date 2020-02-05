@@ -28,7 +28,7 @@ object Checks {
     val ChmodInsecurePermissionsCheck = CheckType("OS100", "Modification of system files to allow execution.")
     val PickleLoadCheck = CheckType("PIC100", "Loading serialized data with the pickle module can expose arbitrary code execution using the __reduce__ method.")
 
-    class CheckType(var Code: String, var Message: String) {
+    class CheckType(var Code: String, private var Message: String) {
         override fun toString(): String {
             return "$Code: $Message"
         }

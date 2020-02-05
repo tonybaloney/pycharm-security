@@ -24,10 +24,9 @@ fun getBinaryExpressionElementAtCaret(file: PsiFile, editor: Editor): PyBinaryEx
 }
 
 fun getNewCallExpressiontAtCaret(file: PsiFile, editor: Editor, project: Project, old: String, new: String): PyCallExpression ? {
-    var callElement = getPyCallExpressionAtCaret(file, editor) ?: return null
+    val callElement = getPyCallExpressionAtCaret(file, editor) ?: return null
     val elementGenerator = PyElementGenerator.getInstance(project)
-    val newEl = elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), callElement.text.replace(old, new)) as PyCallExpression
-    return newEl
+    return elementGenerator.createExpressionFromText(LanguageLevel.getDefault(), callElement.text.replace(old, new)) as PyCallExpression
 }
 
 fun import(file: PyFile, project: Project, target: String, alias: String = ""){

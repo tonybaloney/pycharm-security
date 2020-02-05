@@ -12,7 +12,7 @@ object QualifiedNames {
         if (markedCallees.isEmpty()) {
             val firstChild = callExpression.firstChild ?: return null
             if (firstChild !is PyReferenceExpression) return null
-            val qualifiedName = (firstChild).asQualifiedName() ?: return null;
+            val qualifiedName = (firstChild).asQualifiedName() ?: return null
             return qualifiedName.toString()
         }
         else

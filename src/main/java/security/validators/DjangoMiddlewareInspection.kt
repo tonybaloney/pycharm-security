@@ -29,7 +29,7 @@ class DjangoMiddlewareInspection : PyInspection() {
             if (leftExpression != "MIDDLEWARE") return
             val assignedValue = node.assignedValue ?: return
             if (assignedValue !is PyListLiteralExpression) return
-            val middleware = assignedValue.elements.filterIsInstance<PyStringLiteralExpression>().map { (it as PyStringLiteralExpression).stringValue }
+            val middleware = assignedValue.elements.filterIsInstance<PyStringLiteralExpression>().map { it.stringValue }
 
             if (middleware.contains("django.middleware.csrf.CsrfViewMiddleware").not()) {
                 holder?.registerProblem(node, Checks.DjangoCsrfMiddlewareCheck.getDescription(), DjangoAddMiddlewareFixer("django.middleware.csrf.CsrfViewMiddleware"))
