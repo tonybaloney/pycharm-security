@@ -13,12 +13,7 @@ import com.intellij.util.IncorrectOperationException
 import com.jetbrains.python.psi.PyElementGenerator
 import com.jetbrains.python.psi.PyListLiteralExpression
 
-class DjangoAddMiddlewareFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
-    val middleware: String
-
-    constructor(middleware: String){
-        this.middleware = middleware
-    }
+class DjangoAddMiddlewareFixer(val middleware: String) : LocalQuickFix, IntentionAction, HighPriorityAction {
 
     override fun getText(): String {
         return name
