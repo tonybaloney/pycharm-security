@@ -34,7 +34,6 @@ class DjangoSafeStringInspection : PyInspection() {
             if (!hasImportedNamespace(node.containingFile as PyFile, "django.utils.safestring")) return
 
             holder?.registerProblem(node, Checks.DjangoSafeStringCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
-
         }
     }
 }

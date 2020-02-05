@@ -21,7 +21,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `verify description is not empty`(){
-        assertFalse(DjangoRawSqlInspection().staticDescription.isNullOrEmpty())
+        assertFalse(DjangoSafeStringInspection().staticDescription.isNullOrEmpty())
     }
 
     @Test
@@ -83,7 +83,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
     fun `test no import`(){
         var code = """
             mystr = b'<b>Hello World</b>'
-            mystr = django.utils.safestring.SafeBytes(mystr)
+            mystr = SafeBytes(mystr)
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoSafeStringCheck, "test.py", DjangoSafeStringInspection())
     }
