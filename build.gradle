@@ -69,4 +69,5 @@ jacocoTestReport {
 markdownToHtml {
     sourceDir file("doc/checks/")
     outputDir file("src/main/resources/docs")
+    fencedCodeBlocks true
 }

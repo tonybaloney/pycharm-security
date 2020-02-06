@@ -2,13 +2,15 @@
 <p>An IPv4 unspecified address, "0.0.0.0", or an IPv6 unspecified address "::" inside a <code>bind()</code> call. This implies attempt to bind all network interfaces.</p>
 <p>Unspecified address literals are: - <code>0.0.0.0</code> - <code>::</code> - <code>0:0:0:0:0:0:0:0</code></p>
 <h2>Example</h2>
-<p>```python import socket</p>
-<h1>create an INET, STREAMing socket</h1>
-<p>serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</p>
-<h1>bind the socket to a public host, and a well-known port</h1>
-<p>serversocket.bind(("0.0.0.0", 80))</p>
-<h1>become a server socket</h1>
-<p>serversocket.listen(5) ```</p>
+<pre><code class="python">import socket
+
+# create an INET, STREAMing socket
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# bind the socket to a public host, and a well-known port
+serversocket.bind((&quot;0.0.0.0&quot;, 80))
+# become a server socket
+serversocket.listen(5)
+</code></pre>
 <h2>See Also</h2>
 <ul>
   <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-1281">NIST documentation</a></li>

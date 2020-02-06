@@ -1,14 +1,12 @@
 <h1>PW100</h1>
 <p>Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks.</p>
 <h2>Example</h2>
-<p><code>python
-if password == &quot;SUPER_SECRET&quot;: 
+<pre><code class="python">if password == &quot;SUPER_SECRET&quot;: 
   proceed()
-</code></p>
-<p><code>python
-if password == hash:
+</code></pre>
+<pre><code class="python">if password == hash:
   proceed()
-</code></p>
+</code></pre>
 <h2>Quick Fixes</h2>
 <ul>
   <li>Plugin will recommend <a href="../fixes/comparedigestfixer.html">Compare Digest Fixer</a>.</li>

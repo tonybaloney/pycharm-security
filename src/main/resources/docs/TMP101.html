@@ -1,10 +1,9 @@
 <h1>TMP101</h1>
 <p>Using a hardcoded path to read or write temporary files is insecure and leaves it open to attackers replacing the file contents. </p>
 <h2>Example</h2>
-<p><code>python
-with open(&#39;/tmp/my_app&#39;, &#39;w&#39;) as tmp_file:
+<pre><code class="python">with open(&#39;/tmp/my_app&#39;, &#39;w&#39;) as tmp_file:
     tmp_file.write(&#39;data&#39;)
-</code></p>
+</code></pre>
 <h2>Fixes</h2>
 <ul>
   <li>Use <code>tempfile.mkstemp()</code> or another standard library function for generating temporary file names</li>

@@ -4,11 +4,10 @@
 <p>Mako offers the ability to sanitize with filters. However, no filters are applied by default.</p>
 <h2>Example</h2>
 <p>This flaw applies to templates constructed generically:</p>
-<p><code>python
-from mako.template import Template
+<pre><code class="python">from mako.template import Template
 t = Template(&quot;&lt;html&gt;&lt;body&gt; Hello ${ person }&lt;/body&gt;&lt;/html&gt;&quot;)
 t.render(person=&quot;&lt;script type=&#39;javascript&#39;&gt;alert(&#39;I am an XSS flaw!&#39;)&lt;/script&gt;&quot;)
-</code></p>
+</code></pre>
 <h2>Quick Fixes</h2>
 <ul>
   <li><a href="../fixes/makohtmlescape.html">Mako HTML escape fixer</a></li>

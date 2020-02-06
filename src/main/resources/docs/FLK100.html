@@ -2,8 +2,11 @@
 <p>Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.</p>
 <h2>Example</h2>
 <p>The following code will raise this warning:</p>
-<p>```python from flask import Flask</p>
-<p>app = Flask(__name__) app.run(debug=True) ```</p>
+<pre><code class="python">from flask import Flask
+
+app = Flask(__name__)
+app.run(debug=True)
+</code></pre>
 <h2>See Also</h2>
 <ul>
   <li><a href="https://flask.palletsprojects.com/en/1.1.x/quickstart/#debug-mode">Flask Documentation</a></li>

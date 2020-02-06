@@ -11,8 +11,11 @@
 </ul>
 <p>As the use of this function may be intention, it is a weak warning by default.</p>
 <h2>Example</h2>
-<p>```python from django.utils.safestring import mark_safe</p>
-<p>mystr = '<b>Hello World</b>' mystr = mark_safe(mystr) ```</p>
+<pre><code class="python">from django.utils.safestring import mark_safe
+
+mystr = &#39;&lt;b&gt;Hello World&lt;/b&gt;&#39;
+mystr = mark_safe(mystr)
+</code></pre>
 <h2>Fixes</h2>
 <ul>
   <li>Use <a href="https://docs.djangoproject.com/en/stable/ref/utils/#django.utils.html.format_html">format_html()</a> instead.</li>

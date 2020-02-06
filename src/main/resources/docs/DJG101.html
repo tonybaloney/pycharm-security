@@ -9,23 +9,32 @@
 <p>Whilst the methods support parametrized queries, if the <code>%s</code> value is quoted with single-quotes, the value is still vulnerable to SQL injection.</p>
 <h2>Example</h2>
 <p>The first example is using the RawSQL constructor directly and annotating a query set:</p>
-<p>```python from django.db.models.expressions import RawSQL</p>
-<p>qs.annotate(val=RawSQL("select col from sometable where othercol = '%s'", (someparam,))) # this is bad!</p>
-<p>```</p>
+<pre><code class="python">from django.db.models.expressions import RawSQL
+
+qs.annotate(val=RawSQL(&quot;select col from sometable where othercol = &#39;%s&#39;&quot;, (someparam,)))  # this is bad!
+</code></pre>
 <p>Another example is using the <code>raw()</code> method on a manager to filter results, exposing SQL injection:</p>
-<p>```python from django import things from .models import User</p>
-<p>def my_view(self):  User.objects.raw("SELECT * FROM myapp_person WHERE last_name = '%s'", [lname]) # this is also bad!</p>
-<p>```</p>
+<pre><code class="python">from django import things
+from .models import User
+
+def my_view(self):
+    User.objects.raw(&quot;SELECT * FROM myapp_person WHERE last_name = &#39;%s&#39;&quot;, [lname])  # this is also bad!
+</code></pre>
 <p>Cursors can also be exploited using the same technique:</p>
-<p>```python from django.db import connection</p>
-<p>def my_custom_sql(self):  with connection.cursor() as cursor:  cursor.execute("UPDATE bar SET foo = 1 WHERE baz = %s", [self.baz])  cursor.execute("SELECT foo FROM bar WHERE baz = '%s'", [self.baz])  row = cursor.fetchone()  return row</p>
-<p>```</p>
+<pre><code class="python">from django.db import connection
+
+def my_custom_sql(self):
+    with connection.cursor() as cursor:
+        cursor.execute(&quot;UPDATE bar SET foo = 1 WHERE baz = %s&quot;, [self.baz])
+        cursor.execute(&quot;SELECT foo FROM bar WHERE baz = &#39;%s&#39;&quot;, [self.baz])
+        row = cursor.fetchone()
+    return row
+</code></pre>
 <h2>Fixes</h2>
 <p>Remove the quotations from the string values:</p>
-<p><code>python
-(&quot;UPDATE bar SET foo = 1 WHERE baz = %s&quot;, [self.baz]) # good
+<pre><code class="python">(&quot;UPDATE bar SET foo = 1 WHERE baz = %s&quot;, [self.baz]) # good
 (&quot;UPDATE bar SET foo = 1 WHERE baz = &#39;%s&#39;&quot;, [self.baz]) # bad!
-</code></p>
+</code></pre>
 <h2>See Also</h2>
 <ul>
   <li><a href="https://docs.djangoproject.com/en/3.0/ref/models/expressions/#django.db.models.expressions.RawSQL">Official Documentation</a></li>

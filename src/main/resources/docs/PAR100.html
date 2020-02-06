@@ -3,8 +3,11 @@
 <p>The paramiko library will automatically reject unknown host keys on connection. This can be disabled by calling the <code>set_missing_host_key_policy()</code> method on a client instance. </p>
 <p>This practice is discouraged, as an attacker could be using DNS injection, or another technique, such as IP spoofing to trick the client into connecting to a different server.</p>
 <h2>Example</h2>
-<p>```python import paramiko</p>
-<p>client = paramiko.client.SSHClient() client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy) ```</p>
+<pre><code class="python">import paramiko
+
+client = paramiko.client.SSHClient()
+client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy)
+</code></pre>
 <h2>See Also</h2>
 <ul>
   <li><a href="http://docs.paramiko.org/en/stable/api/client.html#paramiko.client.MissingHostKeyPolicy">Missing host key policy documentation</a></li>

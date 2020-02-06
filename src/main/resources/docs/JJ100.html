@@ -4,20 +4,18 @@
 <p>Jinja offers the ability to sanitize with the <code>autoescape</code> argument on the <code>Environment</code> initializer, however this is <code>False</code> by default.</p>
 <h2>Example</h2>
 <p>This flaw applies to templates constructed generically:</p>
-<p><code>python
-from jinja2 import Template
+<pre><code class="python">from jinja2 import Template
 t = Template(&quot;&lt;html&gt;&lt;body&gt; Hello {{person}}&lt;/body&gt;&lt;/html&gt;&quot;)
 t.render(person=&quot;&lt;script type=&#39;javascript&#39;&gt;alert(&#39;I am an XSS flaw!&#39;)&lt;/script&gt;&quot;)
-</code></p>
+</code></pre>
 <p>And those fetched from an environment:</p>
-<p><code>python
-from jinja2 import Environment, PackageLoader
+<pre><code class="python">from jinja2 import Environment, PackageLoader
 env = Environment(
     loader=PackageLoader(&#39;yourapplication&#39;, &#39;templates&#39;),
 )
 template = env.get_template(&#39;mytemplate.html&#39;)
 template.render(person=&quot;&lt;script type=&#39;javascript&#39;&gt;alert(&#39;I am an XSS flaw!&#39;)&lt;/script&gt;&quot;)
-</code></p>
+</code></pre>
 <h2>Quick Fixes</h2>
 <ul>
   <li><a href="../fixes/jinja2unconditional.html">Jinja2 unconditional autoescape fixer</a></li>
