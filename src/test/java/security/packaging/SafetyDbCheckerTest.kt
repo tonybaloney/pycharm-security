@@ -44,6 +44,9 @@ internal class SafetyDbCheckerTest {
                 ],
               "co": [
                    "~=0.5.0"
+              ],
+              "invalid": [
+                "!!22"
               ]
             }
         """.trimIndent()
@@ -175,6 +178,16 @@ internal class SafetyDbCheckerTest {
     fun testMissingPackageDoesNotHaveMatch() {
         val testPackage = mock<PyPackage> {
             on { name } doReturn "madeup"
+            on { version } doReturn "0.1.0"
+        }
+        assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+    }
+
+    @Test
+    fun `test invalid specifier`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "invalid"
             on { version } doReturn "0.1.0"
         }
         assertFalse(instance.hasMatch(testPackage))

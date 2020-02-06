@@ -16,6 +16,18 @@ class SafetyDbChecker {
     private lateinit var database: Map<String?, List<SafetyDbRecord>>
     private lateinit var lookup: Map<String?, List<String>>
 
+    private val tripleRequirementMap: HashMap<String, PyRequirementRelation> = hashMapOf(
+            "===" to PyRequirementRelation.STR_EQ)
+    private val doubleRequirementMap: HashMap<String, PyRequirementRelation> = hashMapOf(
+            "==" to PyRequirementRelation.EQ,
+            "<=" to PyRequirementRelation.LTE,
+            ">=" to  PyRequirementRelation.GTE,
+            "~=" to PyRequirementRelation.COMPATIBLE,
+            "!=" to PyRequirementRelation.NE)
+    private val singleRequirementMap: HashMap<String, PyRequirementRelation> = hashMapOf(
+            "<" to PyRequirementRelation.LT,
+            ">" to PyRequirementRelation.GT)
+
     data class SafetyDbRecord(
         val advisory: String,
         val cve: String?,
@@ -71,40 +83,20 @@ class SafetyDbChecker {
     }
 
     private fun parseVersionSpec(versionSpec: String): PyRequirementVersionSpec? {
-        /// Taken from PyRequirementParser, but that function is Private :-(
-        var relation: PyRequirementRelation? = null
-        when {
-            versionSpec.startsWith("===") -> {
-                relation = PyRequirementRelation.STR_EQ
-            }
-            versionSpec.startsWith("==") -> {
-                relation = PyRequirementRelation.EQ
-            }
-            versionSpec.startsWith("<=") -> {
-                relation = PyRequirementRelation.LTE
-            }
-            versionSpec.startsWith(">=") -> {
-                relation = PyRequirementRelation.GTE
-            }
-            versionSpec.startsWith("<") -> {
-                relation = PyRequirementRelation.LT
-            }
-            versionSpec.startsWith(">") -> {
-                relation = PyRequirementRelation.GT
-            }
-            versionSpec.startsWith("~=") -> {
-                relation = PyRequirementRelation.COMPATIBLE
-            }
-            versionSpec.startsWith("!=") -> {
-                relation = PyRequirementRelation.NE
-            }
-        }
-        if (relation != null) {
-            val versionIndex = findFirstNotWhiteSpaceAfter(versionSpec, relation.presentableText.length)
-            return pyRequirementVersionSpec(relation, versionSpec.substring(versionIndex))
-        }
-        return null
+        val relation: PyRequirementRelation?
+        if (tripleRequirementMap.containsKey(versionSpec.substring(0, 3)))
+            relation = tripleRequirementMap[versionSpec.substring(0, 3)]
+        else if (doubleRequirementMap.containsKey(versionSpec.substring(0, 2)))
+            relation = doubleRequirementMap[versionSpec.substring(0, 2)]
+        else if (singleRequirementMap.containsKey(versionSpec.substring(0, 1)))
+            relation = singleRequirementMap[versionSpec.substring(0, 1)]
+        else
+            return null
+
+        val versionIndex = findFirstNotWhiteSpaceAfter(versionSpec, relation!!.presentableText.length)
+        return pyRequirementVersionSpec(relation, versionSpec.substring(versionIndex))
     }
+
     private fun findFirstNotWhiteSpaceAfter(line: String, beginIndex: Int): Int {
         /// Taken from PyRequirementParser, but that function is Private :-(
         for (i in beginIndex until line.length) {
