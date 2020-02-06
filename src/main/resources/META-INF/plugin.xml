@@ -63,7 +63,6 @@
     <actions>
         <action id="Security.CheckSafetyDB" class="security.packaging.SafetyDbCheckerAction" text="Check Python Package Security" description="Check the installed Python packages for any known vulnerabilities." >
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <add-to-group group-id="PyPackagingMenu" anchor="last"/>
         </action>
     </actions>
 </idea-plugin>
