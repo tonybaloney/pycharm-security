@@ -48,6 +48,14 @@ class ImportValidatorsTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test dotted import`(){
+        var code = """
+            import ..
+        """.trimIndent()
+        assertFalse(testHasImport(code, "django"))
+    }
+
+    @Test
     fun `test from import`(){
         var code = """
             from django.db import DbConnection
@@ -93,7 +101,7 @@ class ImportValidatorsTest: SecurityTestTask() {
     private fun testHasImport(code: String, importName: String): Boolean{
         var hasImport: Boolean = false
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             hasImport = hasImportedNamespace(testFile as PyFile, importName)
         }
