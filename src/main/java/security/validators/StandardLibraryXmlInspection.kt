@@ -37,7 +37,7 @@ class StandardLibraryXmlInspection : PyInspection() {
         override fun visitPyImportStatement(node: PyImportStatement) {
             if (node.fullyQualifiedObjectNames.isEmpty()) return
             if (node.fullyQualifiedObjectNames.any { match(it) })
-                holder?.registerProblem(node, Checks.StandardLibraryXmlCheck.getDescription()) }
+                holder?.registerProblem(node, Checks.StandardLibraryXmlCheck.getDescription())
         }
     }
 }
