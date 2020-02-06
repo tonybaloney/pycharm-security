@@ -35,11 +35,10 @@ class DjangoAddMiddlewareFixer(val middleware: String) : LocalQuickFix, Intentio
 
     fun runFix(project: Project, originalElement: PsiElement){
         if (originalElement !is PyListLiteralExpression) return
-        val newEl = getNewExpression(project, originalElement) ?: return
-        originalElement.replace(newEl)
+        originalElement.replace(getNewExpression(project, originalElement))
     }
 
-    fun getNewExpression(project: Project, oldList: PyListLiteralExpression): PyListLiteralExpression? {
+    fun getNewExpression(project: Project, oldList: PyListLiteralExpression): PyListLiteralExpression {
         val elementGenerator = PyElementGenerator.getInstance(project)
         val newList = oldList.copy() as PyListLiteralExpression
         newList.add(elementGenerator.createStringLiteralFromString(this.middleware))
