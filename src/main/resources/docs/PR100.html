@@ -1,0 +1,36 @@
+<h1>PR100</h1>
+<p>Calling <code>subprocess.call</code>, <code>subprocess.run</code>, or <code>subprocess.Popen</code> with <code>shell=True</code> can leave the host shell open to local code execution or remote code execution attacks.</p>
+<h2>Example</h2>
+<p><code>python
+import subprocess
+ret = subprocess.call([&#39;ps&#39;, opt], shell=True)
+</code></p>
+<p><code>python
+import subprocess
+ret = subprocess.run([&#39;ps&#39;, opt], shell=True)
+</code></p>
+<p><code>python
+import subprocess
+ret = subprocess.Popen([&#39;ps&#39;, opt], shell=True)
+</code></p>
+<h2>Notes</h2>
+<ul>
+  <li>String literals are ok</li>
+  <li>Lists of string literals are ok</li>
+  <li>Call expressions or reference expressions are treated as "unsafe" unless escaped</li>
+</ul>
+<h2>Quick Fixes</h2>
+<ul>
+  <li><a href="../fixes/shellescapefixer.html">Shell Escape Fixer</a></li>
+</ul>
+<h2>Fixes</h2>
+<p>Only use <code>shell=True</code> if absolutely required, then use <code>shlex.quote</code> surrounding any input, e.g.</p>
+<p><code>python
+import subprocess
+import shlex
+ret = subprocess.call([&#39;ps&#39;, shlex.quote(opt)], shell=True)
+</code></p>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.python.org/3/library/subprocess.html#security-considerations">Subprocess Security Considerations</a></li>
+</ul>

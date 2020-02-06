@@ -1,0 +1,18 @@
+<h1>HL101</h1>
+<p>MD5, SHA-1, RIPEMD-160, Whirlpool and the SHA-256 / SHA-512 hash algorithms all vulnerable to length-extension attacks and should not be used for obfuscating or protecting data without HMAC.</p>
+<h2>Examples</h2>
+<p>The following examples would raise a warning:</p>
+<p><code>python
+import hashlib
+hashlib.new(&#39;sha256&#39;)
+</code></p>
+<p><code>python
+import hashlib
+hashlib.whirlpool()
+</code></p>
+<h2>Fix</h2>
+<p>Use another hashing algorithm, e.g. blake2</p>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://blog.skullsecurity.org/2012/everything-you-need-to-know-about-hash-length-extension-attacks">About Length Extension Attacks</a></li>
+</ul>

@@ -1,0 +1,17 @@
+<h1>TRY100</h1>
+<p>Use of a <code>try</code> ... <code>except</code> block where the except block does not contain anything other than comments and a <code>pass</code> statement is considered bad security practice.</p>
+<p>Whilst an attacker may be trying to exploit exceptions in your code, you should, at the very least, log these exceptions.</p>
+<h2>Example</h2>
+<p><code>python
+try:
+    do_things
+except ThisBadException:
+    # do nothing!
+    pass
+</code></p>
+<h2>Fixes</h2>
+<ul>
+  <li>Fix the reason why the exception occurs</li>
+  <li>Consider using a <code>raise from</code> statement</li>
+  <li>Add logging to the except blog</li>
+</ul>

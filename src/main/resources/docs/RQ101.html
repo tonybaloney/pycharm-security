@@ -1,0 +1,7 @@
+<h1>RQ101</h1>
+<p>Setting verify=False when using httpx bypasses SSL verification and leaves requests susceptible to MITM attacks.</p>
+<h2>Example</h2>
+<p>```python import httpx</p>
+<p>response = httpx.get(url, verify=False) ```</p>
+<h2>Fixes</h2>
+<p>Leave SSL verification enabled. If you want it disabled for local testing and development purposes, consider a self-signed certificate </p>

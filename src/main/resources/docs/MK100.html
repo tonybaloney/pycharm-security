@@ -1,0 +1,24 @@
+<h1>MK100</h1>
+<p>By default, Mako will not sanitize or escape input to templates.</p>
+<p>This leaves rendered templates open to XSS and other vulnerabilities.</p>
+<p>Mako offers the ability to sanitize with filters. However, no filters are applied by default.</p>
+<h2>Example</h2>
+<p>This flaw applies to templates constructed generically:</p>
+<p><code>python
+from mako.template import Template
+t = Template(&quot;&lt;html&gt;&lt;body&gt; Hello ${ person }&lt;/body&gt;&lt;/html&gt;&quot;)
+t.render(person=&quot;&lt;script type=&#39;javascript&#39;&gt;alert(&#39;I am an XSS flaw!&#39;)&lt;/script&gt;&quot;)
+</code></p>
+<h2>Quick Fixes</h2>
+<ul>
+  <li><a href="../fixes/makohtmlescape.html">Mako HTML escape fixer</a></li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+  <li>Set <code>default_filters=[&#39;h&#39;]</code> on the <code>Template</code> constructor, or</li>
+  <li>Use the <code>${ variable | h }</code> filter inline for every variable</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.makotemplates.org/en/latest/filtering.html">Official Documentation</a></li>
+</ul>

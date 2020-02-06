@@ -1,0 +1,32 @@
+<h1>SQL100</h1>
+<p>Looks for SQL injection by Python string formatting methods. Includes:</p>
+<ul>
+  <li>Use of "f-string"</li>
+  <li>Use for string.format()</li>
+  <li>Use of <code>%</code> formatting</li>
+</ul>
+<p>Will look for formatted string literals that start with:</p>
+<ul>
+  <li><code>INSERT INTO</code></li>
+  <li><code>DELETE FROM</code></li>
+  <li><code>ALTER TABLE</code></li>
+  <li><code>DROP DATABASE</code></li>
+  <li><code>CREATE DATABASE</code></li>
+</ul>
+<p>It will also look for strings that start with <code>SELECT</code> and contain <code>FROM</code>, as well as strings that start with <code>UPDATE</code> and contain <code>SET</code>. </p>
+<p>Check is case-insensitive.</p>
+<p>This check does not verify that the input is sanitized.</p>
+<h2>Examples</h2>
+<p>Each of the following expressions would trigger a warning for this check:</p>
+<p>```python id = get_id() # Could be a SQLi response..</p>
+<p>query1 = f"SELECT * FROM users WHERE id = {id}"</p>
+<p>query2 = "SELECT * FROM users WHERE id = {0}" % id</p>
+<p>query3 = "SELECT * FROM users WHERE id = {0}".format(id)</p>
+<p>query4 = f"UPDATE users SET is_admin = 1 WHERE id = {id}"</p>
+<p>query5 = f"DELETE FROM users WHERE id = {id}"</p>
+<p>query6 = f"INSERT INTO users (id) VALUES ( id = {id} )"</p>
+<p>query7 = f"SELECT * FROM users WHERE id = {id}" ```</p>
+<h2>Fixes</h2>
+<p>Apply input validation and escaping.</p>
+<h2>See Also</h2>
+<p><a href="https://realpython.com/prevent-python-sql-injection/">RealPython.com article on SQL injection</a></p>

@@ -1,0 +1,8 @@
+<h1>OS100</h1>
+<p>Looks for calls to <code>os.chmod()</code> with dangerous POSIX permissions:</p>
+<ul>
+  <li><code>stat.S_IWOTH</code> all users can write</li>
+  <li><code>stat.S_IXOTH</code> all users can execute</li>
+  <li><code>stat.S_IWGRP</code> group users can write</li>
+  <li><code>stat.S_IXGRP</code> group users can execute</li>
+</ul>
