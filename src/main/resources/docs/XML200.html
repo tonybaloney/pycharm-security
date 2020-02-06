@@ -1,0 +1,25 @@
+<h1>XML200</h1>
+<p>Enabling the allow_dotted_names option allows intruders to access your module’s global variables and may allow intruders to execute arbitrary code on your machine. </p>
+<h2>Example</h2>
+<pre><code class="python">from xmlrpc.server import SimpleXMLRPCServer
+
+
+with SimpleXMLRPCServer((&#39;0.0.0.0&#39;, 8000),) as server:
+    class MyFuncs:
+        def mul(self, x, y):
+            return x * y
+
+    server.register_instance(MyFuncs(), allow_dotted_names=True)  # This is bad!
+
+    # Run the server&#39;s main loop
+    server.serve_forever()
+</code></pre>
+<h2>Fixes</h2>
+<ul>
+  <li>Disable this option</li>
+  <li>Only use within a secure, local network</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.python.org/3/library/xmlrpc.server.html#module-xmlrpc.server">Official Documentation</a></li>
+</ul>

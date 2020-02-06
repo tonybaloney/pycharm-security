@@ -1,0 +1,29 @@
+<h1>XML100</h1>
+<p>If your application ever loads and parses XML files, the odds are you are using one of the XML standard library modules. There are a few common attacks through XML. Mostly DoS-style (designed to crash systems instead of exfiltration of data). Those attacks are common, especially if you’re parsing external (ie non-trusted) XML files.</p>
+<p>One of those is called “billion laughs”, because of the payload normally containing a lot (billions) of “lols”. Basically, the idea is that you can do referential entities in XML, so when your unassuming XML parser tries to load this XML file into memory it consumes gigabytes of RAM. Try it out if you don’t believe me :-)</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE lolz [
+  &lt;!ENTITY lol &quot;lol&quot;&gt;
+  &lt;!ENTITY lol2 &quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;&gt;
+  &lt;!ENTITY lol3 &quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;&gt;
+  &lt;!ENTITY lol4 &quot;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&quot;&gt;
+  &lt;!ENTITY lol5 &quot;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&quot;&gt;
+  &lt;!ENTITY lol6 &quot;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&quot;&gt;
+  &lt;!ENTITY lol7 &quot;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&quot;&gt;
+  &lt;!ENTITY lol8 &quot;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&quot;&gt;
+  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
+]&gt;
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;
+</code></pre>
+<p>Another attack uses external entity expansion. XML supports referencing entities from external URLs, the XML parser would typically fetch and load that resource without any qualms. “An attacker can circumvent firewalls and gain access to restricted resources as all the requests are made from an internal and trustworthy IP address, not from the outside.”</p>
+<p>Another situation to consider is 3rd party packages you’re depending on that decode XML, like configuration files, remote APIs. You might not even be aware that one of your dependencies leaves itself open to these types of attacks.</p>
+<p>So what happens in Python? Well, the standard library modules, etree, DOM, xmlrpc are all wide open to these types of attacks. </p>
+<h2>Fix</h2>
+<ul>
+  <li>Use <a href="https://pypi.org/project/defusedxml/">defusedxml</a> as a drop-in replacement for the standard library modules. It adds safe-guards against these types of attacks.</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.python.org/3/library/xml.html#xml-vulnerabilities">Official Documentation on XMl vulnerabilities</a></li>
+  <li><a href="https://pypi.org/project/defusedxml/">defusedxml package on PyPi</a></li>
+</ul>

@@ -1,0 +1,31 @@
+<h1>JJ100</h1>
+<p>By default, Jinja 2 will not sanitize or escape input to templates.</p>
+<p>This leaves rendered templates open to XSS and other vulnerabilities.</p>
+<p>Jinja offers the ability to sanitize with the <code>autoescape</code> argument on the <code>Environment</code> initializer, however this is <code>False</code> by default.</p>
+<h2>Example</h2>
+<p>This flaw applies to templates constructed generically:</p>
+<pre><code class="python">from jinja2 import Template
+t = Template(&quot;&lt;html&gt;&lt;body&gt; Hello {{person}}&lt;/body&gt;&lt;/html&gt;&quot;)
+t.render(person=&quot;&lt;script type=&#39;javascript&#39;&gt;alert(&#39;I am an XSS flaw!&#39;)&lt;/script&gt;&quot;)
+</code></pre>
+<p>And those fetched from an environment:</p>
+<pre><code class="python">from jinja2 import Environment, PackageLoader
+env = Environment(
+    loader=PackageLoader(&#39;yourapplication&#39;, &#39;templates&#39;),
+)
+template = env.get_template(&#39;mytemplate.html&#39;)
+template.render(person=&quot;&lt;script type=&#39;javascript&#39;&gt;alert(&#39;I am an XSS flaw!&#39;)&lt;/script&gt;&quot;)
+</code></pre>
+<h2>Quick Fixes</h2>
+<ul>
+  <li><a href="../fixes/jinja2unconditional.html">Jinja2 unconditional autoescape fixer</a></li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+  <li>Set <code>autoescape=True</code> on the <code>Environment</code> or <code>Template</code> constructor, or</li>
+  <li>Set <code>autoescape=select_autoescape([&#39;html&#39;, &#39;xml&#39;])</code> (or one of <code>html</code>, <code>xml</code>, )</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://jinja.palletsprojects.com/en/2.10.x/api/#autoescaping">Official Documentation</a></li>
+</ul>

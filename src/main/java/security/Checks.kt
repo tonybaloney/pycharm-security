@@ -32,6 +32,8 @@ object Checks {
     val XmlRpcServerDottedNamesCheck = CheckType("XML200", "Using allow_dotted_names option may allow attackers to execute arbitrary code.")
 
     class CheckType(var Code: String, private var Message: String) {
+        private var _staticDescription: String? = null
+
         override fun toString(): String {
             return "$Code: $Message"
         }
@@ -45,7 +47,11 @@ object Checks {
         }
 
         fun getStaticDescription(): String {
-            return this.toString() + " " + this.getLink()
+            if (_staticDescription == null) {
+                val docReader = this.javaClass.classLoader.getResourceAsStream("docs/$Code.html").reader()
+                _staticDescription = docReader.readText() + " <br/>" + this.getLink()
+            }
+            return _staticDescription as String
         }
     }
 }

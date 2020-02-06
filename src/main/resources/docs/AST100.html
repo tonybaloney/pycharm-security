@@ -1,0 +1,13 @@
+<h1>AST100</h1>
+<p>Issues a weak warning by default when an <code>assert</code> statement is used in a file that is not clearly a test.</p>
+<p>In production environments, the <code>python -O</code> optimization flag is often used, which bypasses assert statements.</p>
+<h2>Example</h2>
+<pre><code class="python">def foo(request, user):
+   assert user.is_admin, “user does not have access”
+   # secure code...
+</code></pre>
+<p>If you execute Python with <code>-O</code>, the assert statement will become a noop and the check for permissions will be skipped.</p>
+<h2>Fixes</h2>
+<ul>
+  <li>Do not use asserts for anything other than a debug guide, and if used, they should be within a test</li>
+</ul>

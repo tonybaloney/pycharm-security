@@ -1,0 +1,16 @@
+<h1>HL100</h1>
+<p>MD4, MD5, SHA, and SHA1 hashing algorithms should not be used for obfuscating or protecting data as they are cryptographically weak (have collisions).</p>
+<h2>Examples</h2>
+<p>The following examples would raise a warning:</p>
+<pre><code class="python">import hashlib
+hashlib.new(&#39;sha1&#39;)
+</code></pre>
+<pre><code class="python">import hashlib
+hashlib.sha1()
+</code></pre>
+<h2>Fix</h2>
+<p>Use another hashing algorithm, e.g. blake2</p>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.python.org/3/library/hashlib.html">Hashlib Documentation</a></li>
+</ul>

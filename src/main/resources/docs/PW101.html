@@ -1,0 +1,10 @@
+<h1>PW101</h1>
+<p>Passwords, secrets and keys should not be hardcoded into Python files.</p>
+<p>Python can easily be disassembled in memory and strings can be loaded.</p>
+<h2>Example</h2>
+<pre><code class="python">password = &quot;SUPER_SECRET&quot;
+</code></pre>
+<pre><code class="python">secret = &quot;my super secret key&quot;
+</code></pre>
+<h2>Fix</h2>
+<p>Use a salted or one-way hash for storing passwords and compare against the hash.</p>
