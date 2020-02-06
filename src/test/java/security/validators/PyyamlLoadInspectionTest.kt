@@ -73,7 +73,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
     fun `test yaml load with args and safeloader skips`(){
         var code = """
             import yaml
-            yaml.load(f, loader=yaml.SafeLoader)
+            yaml.load(f, Loader=yaml.SafeLoader)
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.PyyamlUnsafeLoadCheck, "test.py", PyyamlLoadInspection())
     }
@@ -82,7 +82,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
     fun `test yaml load with args and invalid safeloader fires`(){
         var code = """
             import yaml
-            yaml.load(f, loader=None)
+            yaml.load(f, Loader=None)
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.PyyamlUnsafeLoadCheck, "test.py", PyyamlLoadInspection())
     }
@@ -91,7 +91,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
     fun `test yaml load with args and normal loader fires`(){
         var code = """
             import yaml
-            yaml.load(f, loader=yaml.Loader)
+            yaml.load(f, Loader=yaml.Loader)
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.PyyamlUnsafeLoadCheck, "test.py", PyyamlLoadInspection())
     }

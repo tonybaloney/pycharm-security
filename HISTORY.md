@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.1
+
+* Fix on Pyyaml inspector looking for `'loader'` keyword argument instead of `'Loader'`.
+* Fix on plugin XML having wrong standard library short name
+* Fix on pickle not matching aliases imports
+
 ## 1.7.0
 
 * Added pickle load inspection [PIC100](doc/checks/PIC100.md)
