@@ -4,6 +4,7 @@
 
 * Fix on Pyyaml inspector looking for `'loader'` keyword argument instead of `'Loader'`.
 * Fix on plugin XML having wrong standard library short name
+* Fix on pickle not matching aliases imports
 
 ## 1.7.0
 

@@ -22,7 +22,7 @@ class PickleLoadInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val pickleLoadNames = arrayOf("pickle.load", "pickle.loads", "cPickle.load", "cPickle.loads")
+            val pickleLoadNames = arrayOf("pickle.load", "pickle.loads", "cPickle.load", "cPickle.loads", "pickle._load", "pickle._loads", "cPickle._load", "cPickle._loads")
             node.callee?.name ?: return
             val qualifiedName = getQualifiedName(node) ?: return
             if (!listOf(*pickleLoadNames).contains(qualifiedName)) return
