@@ -1,5 +1,10 @@
 # Release History
 
+## 1.8.0
+
+* Inspection descriptions in the IDE (within the Code Inpsection window, Inspection Results and Right-Click on annotation) have full details
+* Docker Image and GitHub action does deeper inspection using packages defined within a project
+
 ## 1.7.1
 
 * Fix on Pyyaml inspector looking for `'loader'` keyword argument instead of `'Loader'`.

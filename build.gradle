@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.7.1'
+version '1.8.0'
 
 repositories {
     mavenCentral()
@@ -37,7 +37,7 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.7.1</h2>
+      <h2>1.8.0</h2>
       <ul>
         <li>Added pickle load inspection [PIC100]</li>
         <li>Added django safe strings inspection [DJG102]</li>

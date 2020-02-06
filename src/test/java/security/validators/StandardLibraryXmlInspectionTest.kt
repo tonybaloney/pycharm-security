@@ -69,7 +69,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
         var code = """
             import xml.etree.ElementTree, xml.dom.minidom
         """.trimIndent()
-        testImportStatement(code, 2, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
+        testImportStatement(code, 1, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
     }
 
     @Test
