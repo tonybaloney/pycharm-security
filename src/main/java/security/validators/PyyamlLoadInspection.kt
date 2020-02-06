@@ -29,7 +29,7 @@ class PyyamlLoadInspection : PyInspection() {
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName != "yaml.load") return
             // Inspect loader kwarg
-            val loaderArg = node.getKeywordArgument("loader")
+            val loaderArg = node.getKeywordArgument("Loader")
             if (loaderArg != null && loaderArg is PyReferenceExpression)
                 if (loaderArg.referencedName == "SafeLoader") return
 
