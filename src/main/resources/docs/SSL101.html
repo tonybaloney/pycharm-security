@@ -1,0 +1,20 @@
+<h1>SSL 101</h1>
+<p>The following SSL protocols are considered insecure. </p>
+<ul>
+  <li><code>PROTCOL_SSLv3</code></li>
+  <li><code>PROTOCOL_SSLv2</code></li>
+  <li><code>PROTOCOL_TLSv1</code></li>
+  <li><code>PROTOCOL_TLSv1_1</code></li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+  <li>Use <code>ssl.create_default_context()</code> instead of trying to do this yourself</li>
+  <li>Do not use version specifiers, use <code>PROTOCOL_TLS</code> with options disallowing the bad protocols</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+  <li>http://heartbleed.com/</li>
+  <li>http://poodlebleed.com/</li>
+  <li>https://www.openssl.org/~bodo/ssl-poodle.pdf</li>
+  <li>https://docs.python.org/3/library/ssl.html#ssl-security</li>
+</ul>

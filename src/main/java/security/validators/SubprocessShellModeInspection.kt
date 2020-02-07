@@ -46,7 +46,10 @@ class SubprocessShellModeInspection : PyInspection() {
             if (node.arguments.first() is PyStringLiteralExpression) return
 
             // If the first argument is a call to shlex.quote, this is ok
-            if (node.arguments.first() is PyCallExpression && node.arguments.first().name?.endsWith("quote") ?: return) return
+            if (node.arguments.first() is PyCallExpression) {
+                if (node.arguments.first().name != null && node.arguments.first().name!!.endsWith("quote"))
+                    return
+            }
 
             // If the first argument is a list of string literals, this is ok.
             if (node.arguments.first() is PyListLiteralExpression) {

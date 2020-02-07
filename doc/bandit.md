@@ -27,7 +27,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | general_hardcoded_password.py                             | Yes                              | [PW101](checks/PW101.md)   |
 | general_hardcoded_tmp.py                                  | Yes                              | [TMP101](checks/TMP101.md) |
 | hashlib_new_insecure_functions.py                         | Yes                              | [HL100](checks/HL100.md)   |
-| injection_paramiko.py                                     | No                               |                            |
+| injection_paramiko.py                                     | Yes                              | [PAR101](checks/PAR101.md) |
 | injection_shell.py                                        | Yes                              | [PR100](checks/PR100.md)   |
 | injection_sql.py                                          | Yes                              | [SQL100](checks/SQL100.md) |
 | injection_wildcard.py                                     | No                               |                            |

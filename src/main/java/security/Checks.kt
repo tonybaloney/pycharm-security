@@ -1,5 +1,7 @@
 package security
 
+import security.validators.ParamikoExecCommandInspection
+
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -25,11 +27,14 @@ object Checks {
     val TryExceptPassCheck = CheckType("TRY100", "Ignoring exceptions without either logging or handling is not considered good security practice.")
     val TryExceptContinueCheck = CheckType("TRY101", "Ignoring exceptions without either logging or handling is not considered good security practice.")
     val ParamikoHostkeyBypassCheck = CheckType("PAR100", "Paramiko set to automatically trust the host key.")
+    val ParamikoExecCommandCheck = CheckType("PAR101", "Possible remote shell injection with unescaped input")
     val BindAllInterfacesCheck = CheckType("NET100", "Possible hardcoded binding to all network interfaces.")
     val ChmodInsecurePermissionsCheck = CheckType("OS100", "Modification of system files to allow execution.")
     val PickleLoadCheck = CheckType("PIC100", "Loading serialized data with the pickle module can expose arbitrary code execution using the __reduce__ method.")
     val StandardLibraryXmlCheck = CheckType("XML100", "The xml modules in the Python standard library are not secure against maliciously constructed data.")
     val XmlRpcServerDottedNamesCheck = CheckType("XML200", "Using allow_dotted_names option may allow attackers to execute arbitrary code.")
+    val SslWrapSocketNoVersionCheck = CheckType("SSL100", "Calling wrap_socket without specifying an ssl_version could use an insecure default.")
+    val SslBadProtocolsCheck = CheckType("SSL101", "Calling wrap_socket with insecure protocols.")
 
     class CheckType(var Code: String, private var Message: String) {
         private var _staticDescription: String? = null

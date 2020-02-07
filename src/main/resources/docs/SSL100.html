@@ -1,0 +1,15 @@
+<h1>SSL 100</h1>
+<p>Using defaults in SSL module can lead to insecure protocol usage.</p>
+<p>Python 3.6 applies <code>PROTOCOL_TLS</code> as the default value, so if no value is specified and your Python version is detected to be 3.6+ this issue won't be shown.</p>
+<h2>Fixes</h2>
+<ul>
+  <li>Use <code>ssl.create_default_context()</code> instead of trying to do this yourself</li>
+  <li>Do not use version specifiers, use <code>PROTOCOL_TLS</code> with options disallowing the bad protocols</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+  <li>http://heartbleed.com/</li>
+  <li>http://poodlebleed.com/</li>
+  <li>https://www.openssl.org/~bodo/ssl-poodle.pdf</li>
+  <li>https://docs.python.org/3/library/ssl.html#ssl-security</li>
+</ul>
