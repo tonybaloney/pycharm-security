@@ -99,6 +99,16 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test subprocess call with other func call`(){
+        var code = """
+            import subprocess
+            import shlex
+            subprocess.call([something(x)], shell=True)
+        """.trimIndent()
+        testCodeCallExpression(code, 1, Checks.SubprocessShellCheck, "test.py", SubprocessShellModeInspection())
+    }
+
+    @Test
     fun `test subprocess Popen with shell mode`(){
         var code = """
             import subprocess
@@ -114,6 +124,42 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
             subprocess.run(shell=True)
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.SubprocessShellCheck, "test.py", SubprocessShellModeInspection())
+    }
+
+    @Test
+    fun `test subprocess run with shell mode off`(){
+        var code = """
+            import subprocess
+            subprocess.run(shell=False)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.SubprocessShellCheck, "test.py", SubprocessShellModeInspection())
+    }
+
+    @Test
+    fun `test subprocess run with shell mode non-bool`(){
+        var code = """
+            import subprocess
+            subprocess.run(shell=is_shell())
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.SubprocessShellCheck, "test.py", SubprocessShellModeInspection())
+    }
+
+    @Test
+    fun `test subprocess run with no shell arg`(){
+        var code = """
+            import subprocess
+            subprocess.run('zxx')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.SubprocessShellCheck, "test.py", SubprocessShellModeInspection())
+    }
+
+    @Test
+    fun `test subprocess other function`(){
+        var code = """
+            import subprocess
+            subprocess.fun('zxx')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.SubprocessShellCheck, "test.py", SubprocessShellModeInspection())
     }
 
     @Test

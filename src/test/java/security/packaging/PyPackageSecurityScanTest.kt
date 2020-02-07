@@ -100,6 +100,23 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test null packages`(){
+        val mockNotification = mock<Notification> {
+            on { notify(any()) } doAnswer {}
+        }
+        val mockNotificationGroup = mock<NotificationGroup> {
+            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>())} doReturn(mockNotification)
+        }
+        val mockPackageManager = mock<PyPackageManager> {
+            on { packages } doReturn(null)
+        }
+        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
+        PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance)
+        verify(mockNotificationGroup, times(1)).createNotification( eq("Could not check Python packages"), anyOrNull(), any(), eq(NotificationType.INFORMATION))
+        verify(mockNotification, times(1)).notify(project)
+    }
+
+    @Test
     fun `test no packages`(){
         val mockNotification = mock<Notification> {
             on { notify(any()) } doAnswer {}

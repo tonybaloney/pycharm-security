@@ -2,9 +2,12 @@ package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.CaretModel
+import com.intellij.openapi.editor.Editor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyListLiteralExpression
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
@@ -15,6 +18,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,6 +46,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
         var result: String = ""
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+
             assertNotNull(testFile)
             val fixer = JinjaAutoinspectUnconditionalFixer()
             var expr = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java).first()
@@ -82,7 +87,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with args and false value`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment(loader=PackageLoader('yourapplication', 'templates'), autoescape=False)
         """.trimIndent()
@@ -92,7 +97,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace template with args`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template("foo")
         """.trimIndent()
@@ -102,7 +107,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace template with args and false value`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template("foo", autoescape=False)
         """.trimIndent()
@@ -113,7 +118,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment()
         """.trimIndent()
@@ -133,5 +138,34 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
                 verify(mockProblemDescriptor, times(2)).psiElement
             }
         }
+    }
+
+    @Test
+    fun `test get expression at caret`(){
+        val code = """
+            import jinja2
+            env = jinja2.Environment()
+        """.trimIndent()
+
+        val mockCaretModel = mock<CaretModel> {
+            on { offset } doReturn 29
+        }
+        val mockEditor = mock<Editor> {
+            on { caretModel } doReturn mockCaretModel
+        }
+
+        ApplicationManager.getApplication().runReadAction {
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val fixer = JinjaAutoinspectUnconditionalFixer()
+            assertTrue(fixer.isAvailable(project, mockEditor, testFile))
+            val el = getPyCallExpressionAtCaret(testFile, mockEditor)
+            assertNotNull(el)
+            assertTrue(el is PyCallExpression)
+            assertTrue(el!!.text.contains("Environment()"))
+        }
+
+        verify(mockEditor, Mockito.times(1)).caretModel
+        verify(mockCaretModel, Mockito.times(1)).offset
     }
 }
