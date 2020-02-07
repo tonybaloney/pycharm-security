@@ -33,7 +33,7 @@ Shell
     :maxdepth: 1
 
     PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
-    PAR100 : Possible shell injection on remote host with paramiko library <PAR101>
+    PAR101 : Possible shell injection on remote host with paramiko library <PAR101>
 
 Passwords and Security
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -91,6 +91,8 @@ SSL and Networking
     PAR100 (`paramiko`) : Host key inspection bypass using the `paramiko` SSH library <PAR100>
     RQ100 (`requests`) : Use of `verify=False` when making HTTP requests using the `requests` package <RQ100>
     RQ101 (`httpx`) : Use of `verify=False` when making HTTP requests using the `httpx` package <RQ101>
+    SSL100 : Use of insecure defaults in `ssl` module <SSL100>
+    SSL101 : Use of insecure SSL versions in `ssl` module <SSL101>
 
 Templating Engines
 ~~~~~~~~~~~~~~~~~~
