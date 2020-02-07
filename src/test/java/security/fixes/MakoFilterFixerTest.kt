@@ -2,6 +2,8 @@ package security.fixes
 
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.CaretModel
+import com.intellij.openapi.editor.Editor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
@@ -73,6 +75,12 @@ class MakoFilterFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix`(){
+        val mockCaretModel = mock<CaretModel> {
+            on { offset } doReturn 29
+        }
+        val mockEditor = mock<Editor> {
+            on { caretModel } doReturn mockCaretModel
+        }
         var code = """
             import mako.template
             env = mako.template.Template('xyz')
@@ -82,6 +90,7 @@ class MakoFilterFixerTest: SecurityTestTask() {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
             assertNotNull(testFile)
             val fixer = MakoFilterFixer()
+            assertTrue(fixer.isAvailable(project, mockEditor, testFile))
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->

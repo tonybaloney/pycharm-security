@@ -4,12 +4,12 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.fixes.JinjaAutoinspectUnconditionalFixer
 import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.SecurityVisitor
 
 class JinjaAutoinspectInspection : PyInspection() {
     val check = Checks.JinjaAutoinspectCheck
@@ -22,7 +22,7 @@ class JinjaAutoinspectInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "Environment" && calleeName != "Template") return
@@ -31,11 +31,11 @@ class JinjaAutoinspectInspection : PyInspection() {
             val autoescapeArgument = node.getKeywordArgument("autoescape")
             if (autoescapeArgument == null)
             {
-                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
+                holder.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
             } else {
                 if (autoescapeArgument !is PyBoolLiteralExpression) return
                 if (autoescapeArgument.value) return
-                holder?.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
+                holder.registerProblem(node, Checks.JinjaAutoinspectCheck.getDescription(), JinjaAutoinspectUnconditionalFixer())
             }
         }
     }

@@ -4,11 +4,11 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.SecurityVisitor
 
 class RequestsNoVerifyInspection : PyInspection() {
     val check = Checks.RequestsNoVerifyCheck
@@ -21,7 +21,7 @@ class RequestsNoVerifyInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             val requestsMethodNames = arrayOf("get", "post", "options", "delete", "put", "patch", "head")
             val calleeName = node.callee?.name ?: return
@@ -31,7 +31,7 @@ class RequestsNoVerifyInspection : PyInspection() {
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return
-            holder?.registerProblem(node, Checks.RequestsNoVerifyCheck.getDescription())
+            holder.registerProblem(node, Checks.RequestsNoVerifyCheck.getDescription())
         }
     }
 }

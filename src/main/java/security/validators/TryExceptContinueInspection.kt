@@ -6,11 +6,11 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyContinueStatement
 import com.jetbrains.python.psi.PyStatementList
 import com.jetbrains.python.psi.PyTryExceptStatement
 import security.Checks
+import security.helpers.SecurityVisitor
 
 class TryExceptContinueInspection : PyInspection() {
     val check = Checks.TryExceptContinueCheck
@@ -23,7 +23,7 @@ class TryExceptContinueInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyTryExceptStatement(node: PyTryExceptStatement) {
             if (node.containingFile.name.contains("test")) return
             if (node.exceptParts.isEmpty()) return
@@ -35,7 +35,7 @@ class TryExceptContinueInspection : PyInspection() {
                 if (statements.isNullOrEmpty()) continue
                 // Check except block contains something other than comments and a continue statement
                 if (statements.first().statements.any{ it !is PyContinueStatement && it !is PsiComment}) continue
-                holder?.registerProblem(part, Checks.TryExceptContinueCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                holder.registerProblem(part, Checks.TryExceptContinueCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
             }
         }
     }

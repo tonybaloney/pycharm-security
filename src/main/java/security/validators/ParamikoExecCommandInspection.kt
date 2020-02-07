@@ -4,13 +4,13 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.fixes.ShellEscapeFixer
 import security.helpers.ImportValidators
+import security.helpers.SecurityVisitor
 
 class ParamikoExecCommandInspection : PyInspection() {
     val check = Checks.ParamikoExecCommandCheck
@@ -23,7 +23,7 @@ class ParamikoExecCommandInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (!ImportValidators.hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
 
@@ -41,7 +41,7 @@ class ParamikoExecCommandInspection : PyInspection() {
                     return
             }
 
-            holder?.registerProblem(node.arguments.first(), Checks.ParamikoExecCommandCheck.getDescription(), ShellEscapeFixer())
+            holder.registerProblem(node.arguments.first(), Checks.ParamikoExecCommandCheck.getDescription(), ShellEscapeFixer())
         }
     }
 }

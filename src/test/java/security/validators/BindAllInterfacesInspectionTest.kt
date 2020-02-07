@@ -33,6 +33,14 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test not bind no args`(){
+        var code = """
+            mind()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
+    }
+
+    @Test
     fun `test 0000 string`(){
         var code = """
             bind("0.0.0.0")

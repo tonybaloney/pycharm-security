@@ -50,7 +50,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
             assertNotNull(testFile)
             val fixer = JinjaAutoinspectUnconditionalFixer()
             var expr = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java).first()
-            result = fixer.runFix(project, testFile, expr)!!.text
+            result = fixer.runFix(project, testFile, expr)?.text ?: ""
         }
         return result.replace(" ","").replace("\n", "")
     }
@@ -115,6 +115,25 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
         TestCase.assertEquals("jinja2.Template(\"foo\",autoescape=True)", newCode)
     }
 
+    @Test
+    fun `replace template with args and no value`(){
+        val code = """
+            import jinja2
+            env = jinja2.Template("foo", autoescape=x())
+        """.trimIndent()
+        val newCode = getNewFileForCode(code)
+        TestCase.assertEquals("", newCode)
+    }
+
+    @Test
+    fun `replace template with args and other value`(){
+        val code = """
+            import jinja2
+            env = jinja2.Template("foo", autoescape=1)
+        """.trimIndent()
+        val newCode = getNewFileForCode(code)
+        TestCase.assertEquals("", newCode)
+    }
 
     @Test
     fun `test batch fix`(){

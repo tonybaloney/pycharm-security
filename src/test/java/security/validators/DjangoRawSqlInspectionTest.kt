@@ -105,4 +105,64 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }
+
+    @Test
+    fun `test model raw with missing quote at beginning`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw(%s'", [lname])
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
+    fun `test model raw with missing quote at end`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw('%s", [lname])
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
+    fun `test model raw with nothing else`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw(%s", [lname])
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
+    fun `test model raw no args`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
+    fun `test model raw not literal`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw(None,())
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
 }

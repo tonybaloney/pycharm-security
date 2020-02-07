@@ -4,12 +4,12 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBinaryExpression
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyNumericLiteralExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
+import security.helpers.SecurityVisitor
 import java.nio.file.attribute.PosixFilePermission
 
 fun getPosixPermissions(permValue: Int): Set<PosixFilePermission>? {
@@ -38,7 +38,7 @@ class OsChmodInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         val badPermissions = setOf(PosixFilePermission.OTHERS_EXECUTE, PosixFilePermission.OTHERS_WRITE, PosixFilePermission.GROUP_WRITE, PosixFilePermission.GROUP_EXECUTE)
         val pythonStatValues: HashMap<String, PosixFilePermission> = hashMapOf(
                 "S_IRUSR" to PosixFilePermission.OWNER_READ,
@@ -84,17 +84,17 @@ class OsChmodInspection : PyInspection() {
             // Reference expression to stat.xxx
             if (modeArg is PyReferenceExpression){
                 if (isBad(modeArg))
-                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
+                    holder.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
             }
             else if (modeArg is PyNumericLiteralExpression) {
                 if (modeArg.longValue == null) return
                 val mode = getPosixPermissions(modeArg.longValue!!.toInt()) ?: return
                 if (mode.union(badPermissions).isNotEmpty())
-                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
+                    holder.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
             } else if (modeArg is PyBinaryExpression){
                 // Convert Python OR'd values into a set...
                 if (hasBad(modeArg))
-                    holder?.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
+                    holder.registerProblem(node, Checks.ChmodInsecurePermissionsCheck.getDescription())
             }
         }
     }

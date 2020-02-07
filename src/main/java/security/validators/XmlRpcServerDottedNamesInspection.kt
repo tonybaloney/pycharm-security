@@ -4,12 +4,12 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyFile
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
+import security.helpers.SecurityVisitor
 
 class XmlRpcServerDottedNamesInspection : PyInspection() {
     val check = Checks.XmlRpcServerDottedNamesCheck
@@ -22,7 +22,7 @@ class XmlRpcServerDottedNamesInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "register_instance") return
@@ -41,7 +41,7 @@ class XmlRpcServerDottedNamesInspection : PyInspection() {
                 if (secondArg !is PyBoolLiteralExpression) return
                 if (secondArg.value.not()) return
             }
-            holder?.registerProblem(node, Checks.XmlRpcServerDottedNamesCheck.getDescription())
+            holder.registerProblem(node, Checks.XmlRpcServerDottedNamesCheck.getDescription())
         }
     }
 }

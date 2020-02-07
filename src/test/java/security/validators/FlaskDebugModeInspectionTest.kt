@@ -93,7 +93,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
     @Test
     fun `test flask not imported`(){
         var code = """
-            from banana import Flask
+            from banana import make
             
             app = Flask()
             blah.run()

@@ -4,12 +4,12 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
+import security.helpers.SecurityVisitor
 
 class ParamikoHostkeyBypassInspection : PyInspection() {
     val check = Checks.ParamikoHostkeyBypassCheck
@@ -22,7 +22,7 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             val badPolicyNames = arrayOf("AutoAddPolicy", "WarningPolicy")
 
@@ -35,7 +35,7 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() !is PyReferenceExpression) return
             if (!listOf(*badPolicyNames).contains(node.arguments.first().name)) return
-            holder?.registerProblem(node, Checks.ParamikoHostkeyBypassCheck.getDescription())
+            holder.registerProblem(node, Checks.ParamikoHostkeyBypassCheck.getDescription())
         }
     }
 }
