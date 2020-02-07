@@ -97,7 +97,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
             assertNotNull(oldEl)
             var el = fixer.getNewExpression(project, oldEl!!)
             assertNotNull(el)
-            assertTrue(el!!.text.contains("test_plum"))
+            assertTrue(el.text.contains("test_plum"))
             assertTrue(el.text.contains("test_banana"))
             assertTrue(el.text.contains("test_apple"))
         }

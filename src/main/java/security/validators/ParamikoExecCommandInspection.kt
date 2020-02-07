@@ -7,12 +7,13 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyFile
-import com.jetbrains.python.psi.PyReferenceExpression
+import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.ImportValidators.hasImportedNamespace
+import security.fixes.ShellEscapeFixer
+import security.helpers.ImportValidators
 
-class ParamikoHostkeyBypassInspection : PyInspection() {
-    val check = Checks.ParamikoHostkeyBypassCheck
+class ParamikoExecCommandInspection : PyInspection() {
+    val check = Checks.ParamikoExecCommandCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -24,18 +25,23 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val badPolicyNames = arrayOf("AutoAddPolicy", "WarningPolicy")
-
-            if (!hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
+            if (!ImportValidators.hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
 
             val calleeName = node.callee?.name ?: return
-            if (calleeName != "set_missing_host_key_policy") return
+            if (calleeName != "exec_command") return
 
-            // Get first arg
             if (node.arguments.isNullOrEmpty()) return
-            if (node.arguments.first() !is PyReferenceExpression) return
-            if (!listOf(*badPolicyNames).contains(node.arguments.first().name)) return
-            holder?.registerProblem(node, Checks.ParamikoHostkeyBypassCheck.getDescription())
+
+            // If the first argument is a single string literal, this is ok.
+            if (node.arguments.first() is PyStringLiteralExpression) return
+
+            // If the first argument is a call to shlex.quote, this is ok
+            if (node.arguments.first() is PyCallExpression) {
+                if (node.arguments.first().name != null && node.arguments.first().name!!.endsWith("quote"))
+                    return
+            }
+
+            holder?.registerProblem(node.arguments.first(), Checks.ParamikoExecCommandCheck.getDescription(), ShellEscapeFixer())
         }
     }
 }
