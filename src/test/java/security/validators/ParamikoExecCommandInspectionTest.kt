@@ -88,8 +88,8 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
     @Test
     fun `test paramiko not imported`(){
         var code = """
-            import blahblah.client
-            client = blahblah.client.SSHClient()
+            import math
+            client = SSHClient()
             client.exec_command('rm -rf / {}'.format(xx))
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.ParamikoExecCommandCheck, "test.py", ParamikoExecCommandInspection())

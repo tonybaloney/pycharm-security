@@ -97,7 +97,7 @@ class SafetyDbChecker {
         return pyRequirementVersionSpec(relation, versionSpec.substring(versionIndex))
     }
 
-    private fun findFirstNotWhiteSpaceAfter(line: String, beginIndex: Int): Int {
+    fun findFirstNotWhiteSpaceAfter(line: String, beginIndex: Int): Int {
         /// Taken from PyRequirementParser, but that function is Private :-(
         for (i in beginIndex until line.length) {
             if (!StringUtil.isWhiteSpace(line[i])) {

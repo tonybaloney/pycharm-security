@@ -214,4 +214,14 @@ internal class SafetyDbCheckerTest {
         assertEquals(matches[0].specs.size, 1)
         assertEquals(matches[0].specs[0], "<0.6.0")
     }
+
+    @Test
+    fun `test whitespace locator`() {
+        assertEquals(instance.findFirstNotWhiteSpaceAfter("   x ", 0), 3)
+    }
+
+    @Test
+    fun `test whitespace locator 2`() {
+        assertEquals(instance.findFirstNotWhiteSpaceAfter("   ", 0), 3)
+    }
 }
