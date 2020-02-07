@@ -18,7 +18,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 |-----------------------------------------------------------|----------------------------------|----------------------------|
 | app_debug.py (Flask Debug)                                | Yes                              | [FLK100](checks/FLK100.md) |
 | asserts.py                                                | Yes                              | [AST100](checks/AST100.md) |
-| crypto_request_no_cert_validation.py (requests no verify) | Yes, for both httpx and requests | [RQ100](checks/RQ100.md)   |
+| crypto_request_no_cert_validation.py (requests no verify) | Yes                              | [RQ100](checks/RQ100.md)   |
 | django_sql_injection.py                                   | Yes                              | [DJG101](checks/DJG101.md) |
 | django_xss.py                                             | Yes                              | [DJG102](checks/DJG102.md) |
 | exec.py                                                   | Yes                              | [EX100](checks/EX100.md)   |
@@ -31,7 +31,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | injection_shell.py                                        | Yes                              | [PR100](checks/PR100.md)   |
 | injection_sql.py                                          | Yes                              | [SQL100](checks/SQL100.md) |
 | injection_wildcard.py                                     | No                               |                            |
-| insecure_ssl_tls.py                                       | No                               |                            |
+| insecure_ssl_tls.py                                       | Yes                              | [SSL100](checks/SSL100.md) |
 | jinja2_templates.py                                       | Yes                              | [JJ100](checks/JJ100.md)   |
 | mako_templates.py                                         | Yes                              | [MK100](checks/MK100.md)   |
 | ssh_no_host_key_verification.py                           | Yes                              | [PAR100](checks/PAR100.md) |
