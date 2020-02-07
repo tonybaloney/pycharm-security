@@ -39,17 +39,11 @@ patchPluginXml {
     changeNotes """
       <h2>1.8.0</h2>
       <ul>
-        <li>Added pickle load inspection [PIC100]</li>
-        <li>Added django safe strings inspection [DJG102]</li>
-        <li>Added hardcoded temp path read or write inspection [TMP101]</li>
-        <li>Added XML std library exploit inspection [XML100]</li>
-        <li>Added XML RPC dotted paths inspection [XML200]</li>
-        <li>Added links to documentation in inspection details</li>
-      </ul>
-      <h2>Minor bug fixes</h2>
-      <ul>
-        <li>Fixed bug on pyyaml inspection raising false positives when Loader=SafeLoader is set</li>
-        <li>Fixed minor bug on plugin XML having wrong short name</li>
+        <li>Inspection descriptions in the IDE (within the Code Inpsection window, Inspection Results and Right-Click on annotation) have full details </li>
+        <li>Docker Image and GitHub action does deeper inspection using packages defined within a project</li>
+        <li>Added paramiko shell injection inspection [PAR101]</li>
+        <li>Added SSL wrap socket with no version check [SSL100]</li>
+        <li>Added SSL wrap socket with insecure protocol check [SSL101]</li>
       </ul>
       """
 }
