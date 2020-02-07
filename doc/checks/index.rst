@@ -11,13 +11,29 @@ General and Best Practice
     EX100 : Use of builtin `exec()` function for non-string literal <EX100>
     OS100 : Calls to `os.chmod()` with dangerous POSIX permissions <OS100>
     PIC100 : Loading serialized data with the pickle module can expose arbitrary code execution using the __reduce__ method. <PIC100>
-    PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
-    SQL100 : Possible SQL injection with Python string formatting <SQL100>
     TMP100 : Use of insecure `tempfile.mktemp` <TMP100>
     TMP101 : Use of hardcoded temporary file path <TMP101>
     TRY100 : Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `pass` statement <TRY100>
     TRY101 : Use of a `try` ... `except` block where the except block does not contain anything other than comments and a `continue` statement <TRY101>
 
+SQL
+~~~
+
+The SQL100 check will cover most SQL injection techniques using Python's multiple string formatting methods.
+
+.. toctree::
+    :maxdepth: 1
+
+    SQL100 : Possible SQL injection with Python string formatting <SQL100>
+
+Shell
+~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
+    PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
+    PAR100 : Possible shell injection on remote host with paramiko library <PAR101>
 
 Passwords and Security
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +100,6 @@ Templating Engines
 
     JJ100 (`jinja2`) : Use of Jinja2 without autoescaped input <JJ100>
     MK100 (`mako`) : Use of Mako template without escaped input <MK100>
-
 
 XML
 ~~~
