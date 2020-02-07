@@ -45,6 +45,26 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test invalid first arg`(){
+        var code = """
+            import paramiko.client
+            client = paramiko.client.SSHClient()
+            client.exec_command(None)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.ParamikoExecCommandCheck, "test.py", ParamikoExecCommandInspection())
+    }
+
+    @Test
+    fun `test call not quote arg`(){
+        var code = """
+            import paramiko.client
+            client = paramiko.client.SSHClient()
+            client.exec_command(meep())
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.ParamikoExecCommandCheck, "test.py", ParamikoExecCommandInspection())
+    }
+
+    @Test
     fun `test shell string format is bad`(){
         var code = """
             import paramiko.client

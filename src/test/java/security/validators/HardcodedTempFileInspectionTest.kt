@@ -48,4 +48,21 @@ class HardcodedTempFileInspectionTest: SecurityTestTask() {
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.HardcodedTempFileCheck, "test.py", HardcodedTempFileInspection())
     }
+
+    @Test
+    fun `test open not builtin`(){
+        var code = """
+            import door
+            door.open()
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.HardcodedTempFileCheck, "test.py", HardcodedTempFileInspection())
+    }
+
+    @Test
+    fun `test open normal path`(){
+        var code = """
+            open('/path/to/normal')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.HardcodedTempFileCheck, "test.py", HardcodedTempFileInspection())
+    }
 }

@@ -1,5 +1,7 @@
 package security.validators
 
+import com.jetbrains.python.PythonLanguage
+import com.jetbrains.python.psi.LanguageLevel
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -25,6 +27,26 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test no wrap socket`() {
+        var code = """
+            import ssl
+            
+            ssl.wrap_pocket(ssl_version=ssl.PROTOCOL_SSLv3)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.SslBadProtocolsCheck, "test.py", SslWrapSocketInspection())
+    }
+
+    @Test
+    fun `test not ssl qn`() {
+        var code = """
+            import banana
+            
+            banana.wrap_socket(ssl_version=ssl.PROTOCOL_SSLv3)
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.SslBadProtocolsCheck, "test.py", SslWrapSocketInspection())
+    }
+
+    @Test
     fun `test bad protocol`() {
         var code = """
             import ssl
@@ -36,6 +58,16 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no default`() {
+        var code = """
+            import ssl
+            
+            ssl.wrap_socket()
+        """.trimIndent()
+        testCodeCallExpression(code, 1, Checks.SslWrapSocketNoVersionCheck, "test.py", SslWrapSocketInspection())
+    }
+
+    @Test
+    fun `test no default old python`() {
         var code = """
             import ssl
             
