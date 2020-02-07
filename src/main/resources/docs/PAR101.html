@@ -1,5 +1,10 @@
 <h1>PAR101</h1>
 <p>Unquoted inputs to paramiko <code>exec_command()</code> can leave the remote host vulnerable to shell injection.</p>
+<p>Applies to :</p>
+<ul>
+  <li><code>SSHClient.exec_command()</code></li>
+  <li><code>Channel.exec_command()</code></li>
+</ul>
 <h2>Notes</h2>
 <ul>
   <li>String literals are ok</li>
