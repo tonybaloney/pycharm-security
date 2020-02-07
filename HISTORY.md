@@ -4,6 +4,9 @@
 
 * Inspection descriptions in the IDE (within the Code Inpsection window, Inspection Results and Right-Click on annotation) have full details
 * Docker Image and GitHub action does deeper inspection using packages defined within a project
+* Added paramiko shell injection inspection [PAR101](doc/checks/PAR101.md)
+* Added SSL wrap socket with no version check [SSL100](doc/checks/SSL100.md)
+* Added SSL wrap socket with insecure protocol check [SSL101](doc/checks/SSL101.md)
 
 ## 1.7.1
 

@@ -58,6 +58,8 @@
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="PIC100: Loading serialized data with the pickle module." shortName="PickleLoadInspection" implementationClass="security.validators.PickleLoadInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="XML100: Usage of xml modules in the Python standard library." shortName="StandardLibraryXmlInspection" implementationClass="security.validators.StandardLibraryXmlInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="XML200: Using SimpleXMLRPCServer with 'allow_dotted_names'." shortName="XmlRpcServerDottedNamesInspection" implementationClass="security.validators.XmlRpcServerDottedNamesInspection" />
+        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="SSL100, SSL101: Using 'ssl.wrap_socket()' with insecure SSL version." shortName="SslWrapSocketInspection" implementationClass="security.validators.SslWrapSocketInspection" />
+
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
     </extensions>

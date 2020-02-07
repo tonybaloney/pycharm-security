@@ -33,6 +33,8 @@ object Checks {
     val PickleLoadCheck = CheckType("PIC100", "Loading serialized data with the pickle module can expose arbitrary code execution using the __reduce__ method.")
     val StandardLibraryXmlCheck = CheckType("XML100", "The xml modules in the Python standard library are not secure against maliciously constructed data.")
     val XmlRpcServerDottedNamesCheck = CheckType("XML200", "Using allow_dotted_names option may allow attackers to execute arbitrary code.")
+    val SslWrapSocketNoVersionCheck = CheckType("SSL100", "Calling wrap_socket without specifying an ssl_version could use an insecure default.")
+    val SslBadProtocolsCheck = CheckType("SSL101", "Calling wrap_socket with insecure protocols.")
 
     class CheckType(var Code: String, private var Message: String) {
         private var _staticDescription: String? = null
