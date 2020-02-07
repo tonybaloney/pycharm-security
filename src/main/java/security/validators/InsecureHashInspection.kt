@@ -4,11 +4,11 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.SecurityVisitor
 
 class InsecureHashInspection : PyInspection() {
     val check = Checks.InsecureHashAlgorithms
@@ -21,7 +21,7 @@ class InsecureHashInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
 
         val badHashAlgorithms = arrayOf("md4", "md5", "sha", "sha1")
         val lengthAttackHashAlgorithms = arrayOf("md5", "sha1", "ripemd160", "sha256", "sha512", "whirlpool")
@@ -43,10 +43,10 @@ class InsecureHashInspection : PyInspection() {
             val firstArg = node.arguments[0]
             if (nameKwArg != null && nameKwArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((nameKwArg).stringValue))
-                    holder?.registerProblem(node, check.getDescription())
+                    holder.registerProblem(node, check.getDescription())
             } else if (firstArg is PyStringLiteralExpression) {
                 if (listOf(*algorithms).contains((firstArg).stringValue))
-                    holder?.registerProblem(node, check.getDescription())
+                    holder.registerProblem(node, check.getDescription())
             }
         }
 
@@ -55,7 +55,7 @@ class InsecureHashInspection : PyInspection() {
             if (listOf(*algorithms).contains(calleeName).not()) return
             val qualifiedName = getQualifiedName(node) ?: return
             if (qualifiedName.startsWith("hashlib."))
-                holder?.registerProblem(node, check.getDescription())
+                holder.registerProblem(node, check.getDescription())
         }
     }
 }

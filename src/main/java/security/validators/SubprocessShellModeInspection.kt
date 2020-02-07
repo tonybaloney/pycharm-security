@@ -4,7 +4,6 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyListLiteralExpression
@@ -12,6 +11,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.fixes.ShellEscapeFixer
 import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.SecurityVisitor
 
 class SubprocessShellModeInspection : PyInspection() {
     val check = Checks.SubprocessShellCheck
@@ -24,7 +24,7 @@ class SubprocessShellModeInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             val shellMethodNames = arrayOf("call", "run", "Popen")
             val qualifiedName = getQualifiedName(node) ?: return
@@ -61,7 +61,7 @@ class SubprocessShellModeInspection : PyInspection() {
                 if (list.elements.any { el -> el is PyCallExpression && (el.callee?.name == "shlex_quote" || el.callee?.name == "quote") }) return
             }
 
-            holder?.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(), ShellEscapeFixer())
+            holder.registerProblem(node.arguments.first(), Checks.SubprocessShellCheck.getDescription(), ShellEscapeFixer())
         }
     }
 }

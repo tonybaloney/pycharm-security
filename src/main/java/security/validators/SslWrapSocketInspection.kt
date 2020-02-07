@@ -3,12 +3,11 @@ package security.validators
 import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
-import com.jetbrains.python.PythonLanguage
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.*
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.SecurityVisitor
 
 class SslWrapSocketInspection : PyInspection() {
     val check = Checks.SslWrapSocketNoVersionCheck
@@ -21,9 +20,8 @@ class SslWrapSocketInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            if (holder==null) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "wrap_socket") return
 
@@ -31,7 +29,7 @@ class SslWrapSocketInspection : PyInspection() {
             if (qualifiedName != "ssl.wrap_socket") return
 
             if (node.arguments.isNullOrEmpty())
-                holder!!.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())
+                holder.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())
 
             val sslVersionArgument = node.getKeywordArgument("ssl_version")
 
@@ -43,15 +41,15 @@ class SslWrapSocketInspection : PyInspection() {
                     hasSecureDefaults = true
 
             if (sslVersionArgument == null && !hasSecureDefaults)
-                holder!!.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())
+                holder.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())
 
             if (sslVersionArgument is PyNoneLiteralExpression)
-                holder!!.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())
+                holder.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())
 
             if (sslVersionArgument is PyReferenceExpression){
                 val qn = sslVersionArgument.asQualifiedName().toString()
                 if (listOf(*BadSSLProtocols).contains(qn))
-                    holder!!.registerProblem(node, Checks.SslBadProtocolsCheck.getDescription())
+                    holder.registerProblem(node, Checks.SslBadProtocolsCheck.getDescription())
             }
         }
     }

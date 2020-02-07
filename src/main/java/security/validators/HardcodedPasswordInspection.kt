@@ -4,11 +4,11 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyAssignmentStatement
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import com.jetbrains.python.psi.PyTargetExpression
 import security.Checks
+import security.helpers.SecurityVisitor
 
 class HardcodedPasswordInspection : PyInspection() {
     val check = Checks.HardcodedPasswordCheck
@@ -21,14 +21,14 @@ class HardcodedPasswordInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
             val left = node.leftHandSideExpression ?: return
             if (left !is PyTargetExpression) return
             if (!listOf(*PasswordVariableNames).contains(left.name)) return
             val right = node.assignedValue ?: return
             if (right !is PyStringLiteralExpression) return
-            holder?.registerProblem(node, Checks.HardcodedPasswordCheck.getDescription())
+            holder.registerProblem(node, Checks.HardcodedPasswordCheck.getDescription())
         }
     }
 }

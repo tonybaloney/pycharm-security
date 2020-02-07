@@ -4,12 +4,12 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
+import security.helpers.SecurityVisitor
 
 class DjangoRawSqlInspection : PyInspection() {
     val check = Checks.DjangoClickjackMiddlewareCheck
@@ -22,7 +22,7 @@ class DjangoRawSqlInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         val methodNames = arrayOf("RawSQL", "raw", "execute")
         override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
@@ -44,7 +44,7 @@ class DjangoRawSqlInspection : PyInspection() {
                     // End or beginning of string, so this SQL injection technique wouldn't be possible.
                     return
                 }
-                holder?.registerProblem(node, Checks.DjangoRawSqlCheck.getDescription())
+                holder.registerProblem(node, Checks.DjangoRawSqlCheck.getDescription())
             }
         }
     }

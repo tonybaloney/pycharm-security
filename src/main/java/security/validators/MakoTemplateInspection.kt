@@ -4,11 +4,11 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.fixes.MakoFilterFixer
 import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.SecurityVisitor
 
 class MakoTemplateInspection : PyInspection() {
     val check = Checks.MakoTemplateFilterCheck
@@ -21,7 +21,7 @@ class MakoTemplateInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             val calleeName = node.callee?.name ?: return
             if (calleeName != "Template") return
@@ -30,7 +30,7 @@ class MakoTemplateInspection : PyInspection() {
             val defaultFiltersArgument = node.getKeywordArgument("default_filters")
             if (defaultFiltersArgument == null)
             {
-                holder?.registerProblem(node, Checks.MakoTemplateFilterCheck.getDescription(), MakoFilterFixer())
+                holder.registerProblem(node, Checks.MakoTemplateFilterCheck.getDescription(), MakoFilterFixer())
             }
         }
     }

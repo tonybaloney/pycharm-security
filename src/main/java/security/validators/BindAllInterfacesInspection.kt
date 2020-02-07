@@ -6,9 +6,12 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
-import com.jetbrains.python.inspections.PyInspectionVisitor
-import com.jetbrains.python.psi.*
+import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyParenthesizedExpression
+import com.jetbrains.python.psi.PyStringLiteralExpression
+import com.jetbrains.python.psi.PyTupleExpression
 import security.Checks
+import security.helpers.SecurityVisitor
 
 class BindAllInterfacesInspection : PyInspection() {
     val check = Checks.BindAllInterfacesCheck
@@ -21,7 +24,7 @@ class BindAllInterfacesInspection : PyInspection() {
                               isOnTheFly: Boolean,
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
-    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : PyInspectionVisitor(holder, session) {
+    private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         val allInterfacesStrings = arrayOf("0.0.0.0", "::", "0:0:0:0:0:0:0:0") // IPv4 and IPv6
 
         private fun isMatch(el: PsiElement): Boolean {
@@ -37,14 +40,14 @@ class BindAllInterfacesInspection : PyInspection() {
 
             // Takes single argument (IP)
             if (isMatch(firstArg))
-                holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                holder.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
 
             if (firstArg is PyParenthesizedExpression){
                 val exp = firstArg.containedExpression ?: return
                 // Takes two arguments as tuple (IP, port), e.g. TCP, UDP
                 if (exp is PyTupleExpression && !exp.isEmpty) {
                     if (isMatch(exp.firstChild))
-                        holder?.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                        holder.registerProblem(node, Checks.BindAllInterfacesCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
                 }
             }
         }
