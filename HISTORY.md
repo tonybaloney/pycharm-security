@@ -3,6 +3,7 @@
 ## 1.8.1
 
 * Updated SafetyDB to the "February 2020" release
+* Extended [PR100](doc/checks/PR100.md) to include older subprocess APIs, "check_call()" and "check_output()"
 
 ## 1.8.0
 
