@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.8.0'
+version '1.8.1'
 
 repositories {
     mavenCentral()
@@ -37,13 +37,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.8.0</h2>
+      <h2>1.8.1</h2>
       <ul>
-        <li>Inspection descriptions in the IDE (within the Code Inpsection window, Inspection Results and Right-Click on annotation) have full details </li>
-        <li>Docker Image and GitHub action does deeper inspection using packages defined within a project</li>
-        <li>Added paramiko shell injection inspection [PAR101]</li>
-        <li>Added SSL wrap socket with no version check [SSL100]</li>
-        <li>Added SSL wrap socket with insecure protocol check [SSL101]</li>
+        <li>Updated SafetyDB to the February 2020 release</li>
+        <li>Extended [PR100] to include older subprocess APIs, "check_call()" and "check_output()"</li>
       </ul>
       """
 }
