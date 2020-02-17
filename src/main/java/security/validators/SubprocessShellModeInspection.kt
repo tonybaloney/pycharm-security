@@ -26,7 +26,7 @@ class SubprocessShellModeInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val shellMethodNames = arrayOf("call", "run", "Popen")
+            val shellMethodNames = arrayOf("call", "run", "Popen", "check_call", "check_output")
             val qualifiedName = getQualifiedName(node) ?: return
 
             // Check this is an import from the subprocess module
