@@ -11,6 +11,7 @@ import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.PyPackageManager
 import com.jetbrains.python.sdk.PythonSdkType
 import com.jetbrains.python.sdk.PythonSdkUtil
+import security.settings.SecuritySettings
 
 object PyPackageSecurityScan {
     var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
@@ -21,8 +22,19 @@ object PyPackageSecurityScan {
             returnError(project)
             return
         }
-        val packageChecker = SafetyDbChecker()
-        checkPackagesInSdks(pythonSdks, project, packageChecker)
+        try {
+            if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Disabled)
+                return
+            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Bundled)
+                checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
+            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Api)
+                checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey, SecuritySettings.instance.pyupApiUrl))
+            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Custom)
+                checkPackagesInSdks(pythonSdks, project, SafetyDbChecker("", SecuritySettings.instance.pyupCustomUrl))
+
+        } catch (ex: SafetyDbLoadException){
+            backendError(project, ex.message)
+        }
     }
 
     fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: SafetyDbChecker) {
@@ -49,6 +61,14 @@ object PyPackageSecurityScan {
             showNoMatchesInformation(project)
         else
             showTotalIssuesWarning(matches, project)
+    }
+
+    private fun backendError(project: Project, message: String?){
+        NOTIFICATION_GROUP
+                .createNotification("Could not check Python packages", null,
+                        "Could not fetch SafetyDB to validate records. Check your API details.\n$message",
+                        NotificationType.ERROR)
+                .notify(project)
     }
 
     private fun returnError(project: Project){

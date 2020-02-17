@@ -13,6 +13,9 @@ public class SecuritySettingsPane implements ItemListener{
     private JRadioButton radioButton1;
     private JRadioButton radioButton2;
     private JRadioButton radioButton3;
+    private JRadioButton radioButton4;
+    private JTextField apiUrlField;
+    private JTextField customUrlField;
 
     private ButtonGroup safetyButtonGroup;
 
@@ -22,16 +25,23 @@ public class SecuritySettingsPane implements ItemListener{
 
     public void storeSettings(SecuritySettings settings) {
         settings.setPyupApiKey(apiKeyField.getText());
+        settings.setPyupApiUrl(apiUrlField.getText());
+        settings.setPyupCustomUrl(customUrlField.getText());
         settings.setSafetyDbMode(getSelectedSafetyDbMode());
     }
 
     public boolean isModified(SecuritySettings settings) {
-        return ! settings.getPyupApiKey().equals(apiKeyField.getText()) || settings.getSafetyDbMode() != getSelectedSafetyDbMode();
+        return !settings.getPyupApiKey().equals(apiKeyField.getText())
+                || settings.getSafetyDbMode() != getSelectedSafetyDbMode()
+                || !settings.getPyupApiUrl().equals(apiUrlField.getText())
+                || !settings.getPyupCustomUrl().equals(customUrlField.getText());
     }
 
 
     public void setData(SecuritySettings settings) {
         apiKeyField.setText(settings.getPyupApiKey());
+        customUrlField.setText(settings.getPyupCustomUrl());
+        apiUrlField.setText(settings.getPyupApiUrl());
         safetyButtonGroup.clearSelection();
         if (settings.getSafetyDbMode() == SecuritySettings.SafetyDbType.Disabled)
             radioButton1.setSelected(true);
@@ -39,6 +49,8 @@ public class SecuritySettingsPane implements ItemListener{
             radioButton2.setSelected(true);
         else if (settings.getSafetyDbMode() == SecuritySettings.SafetyDbType.Api)
             radioButton3.setSelected(true);
+        else if (settings.getSafetyDbMode() == SecuritySettings.SafetyDbType.Custom)
+            radioButton4.setSelected(true);
         else
             radioButton1.setSelected(true);
     }
@@ -50,6 +62,8 @@ public class SecuritySettingsPane implements ItemListener{
             return SecuritySettings.SafetyDbType.Bundled;
         else if (radioButton3.isSelected())
             return SecuritySettings.SafetyDbType.Api;
+        else if (radioButton4.isSelected())
+            return SecuritySettings.SafetyDbType.Custom;
         else
             return SecuritySettings.SafetyDbType.Bundled;
     }
@@ -59,11 +73,23 @@ public class SecuritySettingsPane implements ItemListener{
         if (apiKeyField == null)
             return;
         if (itemEvent.getSource() == radioButton3) {
-            if (itemEvent.getStateChange() == ItemEvent.SELECTED)
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 apiKeyField.setEnabled(true);
+                apiUrlField.setEnabled(true);
+                customUrlField.setEnabled(false);
+            }
         } else if (itemEvent.getSource() == radioButton1 || itemEvent.getSource() == radioButton2) {
-            if (itemEvent.getStateChange() == ItemEvent.SELECTED)
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 apiKeyField.setEnabled(false);
+                apiUrlField.setEnabled(false);
+                customUrlField.setEnabled(false);
+            }
+        } else if (itemEvent.getSource() == radioButton4) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                apiKeyField.setEnabled(false);
+                apiUrlField.setEnabled(false);
+                customUrlField.setEnabled(true);
+            }
         }
     }
 
@@ -74,5 +100,7 @@ public class SecuritySettingsPane implements ItemListener{
         radioButton2.addItemListener(this);
         radioButton3 = new JRadioButton();
         radioButton3.addItemListener(this);
+        radioButton4 = new JRadioButton();
+        radioButton4.addItemListener(this);
     }
 }
