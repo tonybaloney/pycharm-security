@@ -1,0 +1,33 @@
+<h1>SH100</h1>
+<p>Potential shell injection with unescaped input.</p>
+<p>Will inspect the arguments to a standard library function that starts a subshell, and check that it doesn't purely contain string literals, or input escaped from <code>shlex.quote</code></p>
+<h2>APIs</h2>
+<p>Python has many ways to execute local commands, either as a process or using a shell.</p>
+<p>Each of these could be vulnerable to injection techniques if the input is not escaped correctly.</p>
+<ul>
+  <li><code>os.system</code></li>
+  <li><code>os.popen</code></li>
+  <li><code>os.popen2</code></li>
+  <li><code>os.popen3</code></li>
+  <li><code>os.popen4</code></li>
+  <li><code>popen2.popen2</code></li>
+  <li><code>popen2.popen3</code></li>
+  <li><code>popen2.popen4</code></li>
+  <li><code>popen2.Popen3</code></li>
+  <li><code>popen2.Popen4</code></li>
+  <li><code>commands.getoutut</code></li>
+  <li><code>commands.getstatusoutput</code></li>
+</ul>
+<p>Note that many of these APIs are deprecated, but this check will work on older Python scripts.</p>
+<h2>Example</h2>
+<pre><code class="python">import os
+os.system(&quot;ls {0}&quot;.format(x))  # this is bad!
+</code></pre>
+<p>Some APIs accept a list as the first argument, in which case that is inspected</p>
+<pre><code class="python">import popen2
+popen2.popen3([&quot;ls&quot;, x])
+</code></pre>
+<h2>See Also</h2>
+<ul>
+  <li><a href="PR100.html">PR100</a> : Subprocess check</li>
+</ul>

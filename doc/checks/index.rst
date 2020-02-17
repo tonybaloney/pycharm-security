@@ -34,6 +34,7 @@ Shell
 
     PR100 : Use of `shell=True` when running `subprocess.call` from the standard library <PR100>
     PAR101 : Possible shell injection on remote host with paramiko library <PAR101>
+    SH100 : Possible shell injection on local host with standard library functions <SH100>
 
 Passwords and Security
 ~~~~~~~~~~~~~~~~~~~~~~

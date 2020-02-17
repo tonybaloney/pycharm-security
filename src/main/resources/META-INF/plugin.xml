@@ -59,6 +59,8 @@
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="XML100: Usage of xml modules in the Python standard library." shortName="StandardLibraryXmlInspection" implementationClass="security.validators.StandardLibraryXmlInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="XML200: Using SimpleXMLRPCServer with 'allow_dotted_names'." shortName="XmlRpcServerDottedNamesInspection" implementationClass="security.validators.XmlRpcServerDottedNamesInspection" />
         <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="SSL100, SSL101: Using 'ssl.wrap_socket()' with insecure SSL version." shortName="SslWrapSocketInspection" implementationClass="security.validators.SslWrapSocketInspection" />
+        <localInspection language="Python" enabledByDefault="true" groupName="Python Security" hasStaticDescription="true" displayName="SH100: Potential shell injection with unescaped input." shortName="StandardShellInjectionInspection" implementationClass="security.validators.StandardShellInjectionInspection" />
+
         <applicationConfigurable displayName="Python Security" instance="security.settings.SecuritySettingsConfigurable" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettingsConfigurable" groupId="tools"/>
         <applicationService serviceImplementation="security.settings.SecuritySettings" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettings" />
     </extensions>

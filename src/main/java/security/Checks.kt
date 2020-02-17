@@ -1,7 +1,5 @@
 package security
 
-import security.validators.ParamikoExecCommandInspection
-
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -35,6 +33,7 @@ object Checks {
     val XmlRpcServerDottedNamesCheck = CheckType("XML200", "Using allow_dotted_names option may allow attackers to execute arbitrary code.")
     val SslWrapSocketNoVersionCheck = CheckType("SSL100", "Calling wrap_socket without specifying an ssl_version could use an insecure default.")
     val SslBadProtocolsCheck = CheckType("SSL101", "Calling wrap_socket with insecure protocols.")
+    val ShellInjectionCheck = CheckType("SH100", "Potential shell injection with unescaped input.")
 
     class CheckType(var Code: String, private var Message: String) {
         private var _staticDescription: String? = null
