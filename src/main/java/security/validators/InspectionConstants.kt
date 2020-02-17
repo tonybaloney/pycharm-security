@@ -5,7 +5,8 @@ val PasswordVariableNames = arrayOf("password", "PASSWORD", "passwd", "secret", 
 val BadSSLProtocols = arrayOf("ssl.PROTOCOL_SSLv23", "ssl.PROTOCOL_SSLv2", "ssl.PROTOCOL_SSLv3", "ssl.PROTOCOL_TLSv1", "ssl.PROTOCOL_TLSv1_1")
 
 val ShellApis = arrayOf(
-        "os.system",
+        "os.system", "posix.system",
+        "posix.popen", "posix.popen2", "posix.popen3", "posix.popen4",
         "os.popen", "os.popen2", "os.popen3", "os.popen4",
         "popen2.popen2", "popen2.popen3", "popen2.popen4", "popen2.Popen3", "popen2.Popen4",
         "commands.getoutut", "commands.getstatusoutput")
