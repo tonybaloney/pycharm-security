@@ -1,5 +1,10 @@
 # Release History
 
+## 1.9.0
+
+* Added a configuration panel to customise how your packages are checked\
+* Enabled support for PyUp.io subscriptions via an API key
+
 ## 1.8.1
 
 * Updated SafetyDB to the "February 2020" release

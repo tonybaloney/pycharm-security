@@ -7,7 +7,9 @@ import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.pyRequirementVersionSpec
 import com.jetbrains.python.packaging.requirement.PyRequirementRelation
 import com.jetbrains.python.packaging.requirement.PyRequirementVersionSpec
+import java.io.IOException
 import java.io.Reader
+import java.net.URL
 import java.util.stream.Collectors
 import java.util.stream.StreamSupport
 
@@ -41,6 +43,26 @@ class SafetyDbChecker {
             this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json").reader(),
             this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json").reader())
     }
+
+    constructor(apiKey: String, baseUrl: String) {
+        val fullUrl = URL("$baseUrl/insecure_full.json")
+        val indexUrl = URL("$baseUrl/insecure.json")
+        val fullConnection = fullUrl.openConnection()
+        val indexConnection = indexUrl.openConnection()
+        fullConnection.setRequestProperty("X-Api-Key", apiKey)
+        indexConnection.setRequestProperty("X-Api-Key", apiKey)
+        try {
+            val fullReader = fullConnection.getInputStream().reader()
+            val indexReader = indexConnection.getInputStream().reader()
+            load(fullReader, indexReader)
+        } catch (io: IOException){
+            if (io.message.isNullOrEmpty().not())
+                throw SafetyDbLoadException(io.message!!)
+            else
+                throw SafetyDbLoadException("Could not load data from SafetyDB API")
+        }
+    }
+
     constructor (databaseReader: Reader, lookupReader: Reader ) {
         load(databaseReader, lookupReader)
     }
