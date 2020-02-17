@@ -1,8 +1,12 @@
 # Release History
 
+## 1.8.1
+
+* Updated SafetyDB to the "February 2020" release
+
 ## 1.8.0
 
-* Inspection descriptions in the IDE (within the Code Inpsection window, Inspection Results and Right-Click on annotation) have full details
+* Inspection descriptions in the IDE (within the Code Inspection window, Inspection Results and Right-Click on annotation) have full details
 * Docker Image and GitHub action does deeper inspection using packages defined within a project
 * Added paramiko shell injection inspection [PAR101](doc/checks/PAR101.md)
 * Added SSL wrap socket with no version check [SSL100](doc/checks/SSL100.md)
