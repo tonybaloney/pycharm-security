@@ -9,7 +9,7 @@ import java.awt.event.ItemListener;
 public class SecuritySettingsPane implements ItemListener{
     private JPanel settingsPanel;
     private JPanel apiKeyPanel;
-    private JBTextField apiKeyField;
+    private JTextField apiKeyField;
     private JRadioButton radioButton1;
     private JRadioButton radioButton2;
     private JRadioButton radioButton3;
