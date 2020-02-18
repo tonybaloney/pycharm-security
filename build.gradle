@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.9.0'
+version '1.10.0'
 
 repositories {
     mavenCentral()
@@ -37,12 +37,9 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.9.0</h2>
+      <h2>1.10.0</h2>
       <ul>
-        <li>Added a configuration panel to customise how your packages are checked</li>
-        <li>Enabled support for PyUp.io subscriptions via an API key</li>
-        <li>Updated SafetyDB to the February 2020 release</li>
-        <li>Extended [PR100] to include older subprocess APIs, "check_call()" and "check_output()"</li>
+        <li>Added [SH100] to check for 17 potential shell injection commands</li>
       </ul>
       """
 }

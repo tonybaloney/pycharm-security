@@ -1,5 +1,9 @@
 # Release History
 
+## 1.10.0
+
+* Added [SH100](doc/checks/SH100.md) to check for 17 potential shell injection commands
+
 ## 1.9.0
 
 * Added a configuration panel to customise how your packages are checked\
