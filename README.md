@@ -31,11 +31,11 @@ This plugin will check the installed packages in your Python projects against th
 
 ## Current checks
 
-See [Supported Checks](doc/checks/index.rst) for a current list.
+See [Supported Checks](https://pycharm-security.readthedocs.io/en/latest/checks/index.html) for a current list.
 
 ## Current quick fixes
 
-See [Fixes](doc/fixes/index.rst) for a current list.
+See [Fixes](https://pycharm-security.readthedocs.io/en/latest/fixes/index.html) for a current list.
 
 ## Release History
 
@@ -43,7 +43,7 @@ See [Release History](HISTORY.md) for the release history.
 
 ## Contributing
 
-If you would like to alter or add new checks and fixes, see the [Development](doc/development.rst) page.
+If you would like to alter or add new checks and fixes, see the [Development](https://pycharm-security.readthedocs.io/en/latest/development.html) page.
 
 ## License
 
@@ -51,4 +51,5 @@ This project is [MIT Licensed](LICENSE).
 
 ## Credits
 
-Credit to the PyUp.io team for the SafetyDB. This project uses SafetyDB to scan packages.
+Credit to the [PyUp.io](https://pyup.io/) team for the SafetyDB. This project uses [SafetyDB](https://github.com/pyupio/safety-db) to scan packages, SafetyDB is licensed under ["Attribution-NonCommercial 4.0 International" license](src/main/java/resources/safety-db/LICENSE.txt).
+
