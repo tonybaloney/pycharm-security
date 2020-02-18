@@ -37,7 +37,8 @@ class StandardShellInjectionInspection : PyInspection() {
 
             // If the first argument is a call to shlex.quote, this is ok
             if (node.arguments.first() is PyCallExpression) {
-                if (node.arguments.first().name != null && node.arguments.first().name!!.endsWith("quote"))
+                val callee = (node.arguments.first() as PyCallExpression).callee?.name ?: return
+                if (callee.endsWith("quote"))
                     return
             }
 
