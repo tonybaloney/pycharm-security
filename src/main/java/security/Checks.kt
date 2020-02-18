@@ -34,6 +34,7 @@ object Checks {
     val SslWrapSocketNoVersionCheck = CheckType("SSL100", "Calling wrap_socket without specifying an ssl_version could use an insecure default.")
     val SslBadProtocolsCheck = CheckType("SSL101", "Calling wrap_socket with insecure protocols.")
     val ShellInjectionCheck = CheckType("SH100", "Potential shell injection with unescaped input.")
+    val SpawnShellInjectionCheck = CheckType("SH101", "Potentially risky call to spawned process. Check inputs for validation.")
 
     class CheckType(var Code: String, private var Message: String) {
         private var _staticDescription: String? = null

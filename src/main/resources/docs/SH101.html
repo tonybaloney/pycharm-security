@@ -1,0 +1,6 @@
+<h1>SH101</h1>
+<p>Call to risky spawned process function.</p>
+<p>This is a <strong>weak warning</strong>, to add additional verification. If this warning was raised within a 3rd party library, check the parameters.</p>
+<h2>APIs</h2>
+<p>Python has many ways to execute local commands, either as a process or using a shell.</p>
+<p>This check will look for: <code>os.execl</code>, <code>os.execle</code>, <code>os.execlp</code>, <code>os.execlpe</code>, <code>os.execv</code>, <code>os.execve</code>, <code>os.execvp</code>, <code>os.execvpe</code>,  <code>os.spawnl</code>, <code>os.spawnle</code>, <code>os.spawnlp</code>, <code>os.spawnlpe</code>, <code>os.spawnv</code>, <code>os.spawnve</code>, <code>os.spawnvp</code>, <code>os.spawnvpe</code></p>

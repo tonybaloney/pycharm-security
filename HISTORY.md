@@ -3,6 +3,7 @@
 ## 1.10.0
 
 * Added [SH100](doc/checks/SH100.md) to check for 17 potential shell injection commands
+* Added [SH101](doc/checks/SH101.md) to check for 16 potentially risky spawned process commands
 
 ## 1.9.0
 

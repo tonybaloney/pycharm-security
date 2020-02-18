@@ -10,3 +10,8 @@ val ShellApis = arrayOf(
         "os.popen", "os.popen2", "os.popen3", "os.popen4",
         "popen2.popen2", "popen2.popen3", "popen2.popen4", "popen2.Popen3", "popen2.Popen4",
         "commands.getoutut", "commands.getstatusoutput")
+
+val SpawnShellApis = arrayOf(
+        "os.execl", "os.execle", "os.execlp", "os.execlpe", "os.execv", "os.execve", "os.execvp", "os.execvpe",
+        "os.spawnl", "os.spawnle", "os.spawnlp", "os.spawnlpe", "os.spawnv", "os.spawnve", "os.spawnvp", "os.spawnvpe"
+)
