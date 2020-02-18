@@ -30,7 +30,7 @@ List of bandit plugins that have equivalent checks in pycharm-security:
 | injection_paramiko.py                                     | Yes                              | [PAR101](checks/PAR101.md) |
 | injection_shell.py                                        | Yes                              | [PR100](checks/PR100.md)   |
 | injection_sql.py                                          | Yes                              | [SQL100](checks/SQL100.md) |
-| injection_wildcard.py                                     | No                               |                            |
+| injection_wildcard.py                                     | Yes                              | [PR100](checks/PR100.md)   |
 | insecure_ssl_tls.py                                       | Yes                              | [SSL100](checks/SSL100.md) |
 | jinja2_templates.py                                       | Yes                              | [JJ100](checks/JJ100.md)   |
 | mako_templates.py                                         | Yes                              | [MK100](checks/MK100.md)   |
