@@ -40,6 +40,7 @@ patchPluginXml {
       <h2>1.10.0</h2>
       <ul>
         <li>Added [SH100] to check for 17 potential shell injection commands</li>
+        <li>Added [SH101] to check for 16 potentially risky spawned process commands</li>
       </ul>
       """
 }
