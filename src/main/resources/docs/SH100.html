@@ -10,6 +10,8 @@
   <li><code>os.popen2</code></li>
   <li><code>os.popen3</code></li>
   <li><code>os.popen4</code></li>
+  <li><code>posix.system</code></li>
+  <li><code>posix.popen</code> ...</li>
   <li><code>popen2.popen2</code></li>
   <li><code>popen2.popen3</code></li>
   <li><code>popen2.popen4</code></li>
@@ -27,6 +29,16 @@ os.system(&quot;ls {0}&quot;.format(x))  # this is bad!
 <pre><code class="python">import popen2
 popen2.popen3([&quot;ls&quot;, x])
 </code></pre>
+<h2>Notes</h2>
+<ul>
+  <li>String literals are ok</li>
+  <li>Lists of string literals are ok</li>
+  <li>Call expressions or reference expressions are treated as "unsafe" unless escaped</li>
+</ul>
+<h2>Quick Fixes</h2>
+<ul>
+  <li><a href="../fixes/shellescapefixer.html">Shell Escape Fixer</a></li>
+</ul>
 <h2>See Also</h2>
 <ul>
   <li><a href="PR100.html">PR100</a> : Subprocess check</li>
