@@ -11,6 +11,7 @@ import security.Checks
 import security.fixes.ShellEscapeFixer
 import security.helpers.ImportValidators
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class ParamikoExecCommandInspection : PyInspection() {
     val check = Checks.ParamikoExecCommandCheck
@@ -25,6 +26,8 @@ class ParamikoExecCommandInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
+
             if (!ImportValidators.hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
 
             val calleeName = node.callee?.name ?: return

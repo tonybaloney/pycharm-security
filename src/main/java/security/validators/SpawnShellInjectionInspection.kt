@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class SpawnShellInjectionInspection : PyInspection() {
     val check = Checks.SpawnShellInjectionCheck
@@ -23,6 +24,7 @@ class SpawnShellInjectionInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val qualifiedName = getQualifiedName(node) ?: return
 
             // Check this is one of the possible shell APIs

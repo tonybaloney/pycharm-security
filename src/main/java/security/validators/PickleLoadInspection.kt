@@ -8,6 +8,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class PickleLoadInspection : PyInspection() {
     val check = Checks.PickleLoadCheck
@@ -22,6 +23,7 @@ class PickleLoadInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val pickleLoadNames = arrayOf("pickle.load", "pickle.loads", "cPickle.load", "cPickle.loads", "pickle._load", "pickle._loads", "cPickle._load", "cPickle._loads")
             node.callee?.name ?: return
             val qualifiedName = getQualifiedName(node) ?: return

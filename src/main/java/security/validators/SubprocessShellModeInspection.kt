@@ -12,6 +12,7 @@ import security.Checks
 import security.fixes.ShellEscapeFixer
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class SubprocessShellModeInspection : PyInspection() {
     val check = Checks.SubprocessShellCheck
@@ -26,6 +27,8 @@ class SubprocessShellModeInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
+
             val shellMethodNames = arrayOf("call", "run", "Popen", "check_call", "check_output")
             val qualifiedName = getQualifiedName(node) ?: return
 

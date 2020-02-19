@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class InsecureHashInspection : PyInspection() {
     val check = Checks.InsecureHashAlgorithms
@@ -27,6 +28,7 @@ class InsecureHashInspection : PyInspection() {
         val lengthAttackHashAlgorithms = arrayOf("md5", "sha1", "ripemd160", "sha256", "sha512", "whirlpool")
 
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             checkHashAlgorithmsByNew(node, badHashAlgorithms, Checks.InsecureHashAlgorithms)
             checkHashAlgorithmsByNew(node, lengthAttackHashAlgorithms, Checks.LengthAttackHashAlgorithms)
             checkHashAlgorithmsByImport(node, badHashAlgorithms, Checks.InsecureHashAlgorithms)

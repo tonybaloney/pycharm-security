@@ -10,6 +10,7 @@ import security.Checks
 import security.fixes.JinjaAutoinspectUnconditionalFixer
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class JinjaAutoinspectInspection : PyInspection() {
     val check = Checks.JinjaAutoinspectCheck
@@ -24,6 +25,7 @@ class JinjaAutoinspectInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "Environment" && calleeName != "Template") return
             val qualifiedName = getQualifiedName(node) ?: return

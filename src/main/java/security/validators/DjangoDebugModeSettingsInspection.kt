@@ -7,6 +7,7 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyAssignmentStatement
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class DjangoDebugModeSettingsInspection : PyInspection() {
     val check = Checks.DjangoDebugModeCheck
@@ -21,6 +22,7 @@ class DjangoDebugModeSettingsInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
+            if (skipDocstring(node)) return
             if (node.containingFile?.name != "settings.py") return
             val leftExpression = node.leftHandSideExpression?.text ?: return
             if (leftExpression != "DEBUG") return

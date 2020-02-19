@@ -12,6 +12,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import com.jetbrains.python.psi.PyTupleExpression
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class BindAllInterfacesInspection : PyInspection() {
     val check = Checks.BindAllInterfacesCheck
@@ -33,6 +34,7 @@ class BindAllInterfacesInspection : PyInspection() {
         }
 
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "bind") return
             if (node.arguments.isNullOrEmpty()) return

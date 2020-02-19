@@ -11,6 +11,7 @@ import security.Checks
 import security.fixes.ShellEscapeFixer
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class StandardShellInjectionInspection : PyInspection() {
     val check = Checks.ShellInjectionCheck
@@ -25,6 +26,8 @@ class StandardShellInjectionInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
+
             val qualifiedName = getQualifiedName(node) ?: return
 
             // Check this is one of the possible shell APIs

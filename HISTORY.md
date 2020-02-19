@@ -1,5 +1,9 @@
 # Release History
 
+## 1.11.0
+
+* Added configuration option to ignore code inside docstrings (enabled by default)
+
 ## 1.10.0
 
 * Added [SH100](doc/checks/SH100.md) to check for 17 potential shell injection commands

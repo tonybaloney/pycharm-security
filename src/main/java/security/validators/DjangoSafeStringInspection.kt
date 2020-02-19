@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.helpers.QualifiedNames
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class DjangoSafeStringInspection : PyInspection() {
     val check = Checks.DjangoSafeStringCheck
@@ -24,6 +25,7 @@ class DjangoSafeStringInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText")
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (!listOf(*methodNames).contains(calleeName)) return
             val qualifiedName = QualifiedNames.getQualifiedName(node) ?: return

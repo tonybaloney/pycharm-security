@@ -10,6 +10,7 @@ import com.jetbrains.python.psi.PyNumericLiteralExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 import java.nio.file.attribute.PosixFilePermission
 
 fun getPosixPermissions(permValue: Int): Set<PosixFilePermission>? {
@@ -73,6 +74,7 @@ class OsChmodInspection : PyInspection() {
         }
 
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "chmod") return
 

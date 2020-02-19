@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class BuiltinExecInspection : PyInspection() {
     val check = Checks.BuiltinExecCheck
@@ -23,6 +24,7 @@ class BuiltinExecInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "exec") return
             val qualifiedName = getQualifiedName(node) ?: return

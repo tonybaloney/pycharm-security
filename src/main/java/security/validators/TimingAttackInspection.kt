@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.fixes.UseCompareDigestFixer
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class TimingAttackInspection : PyInspection() {
     val check = Checks.TimingAttackCheck
@@ -23,6 +24,8 @@ class TimingAttackInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyBinaryExpression(node: PyBinaryExpression) {
+            if (skipDocstring(node)) return
+
             val rightExpression = node.rightExpression ?: return
             val leftExpression = node.leftExpression ?: return
             if (!node.isOperator("==") && !node.isOperator("!=")) return

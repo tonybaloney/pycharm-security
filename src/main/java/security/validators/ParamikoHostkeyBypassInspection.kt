@@ -10,6 +10,7 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class ParamikoHostkeyBypassInspection : PyInspection() {
     val check = Checks.ParamikoHostkeyBypassCheck
@@ -24,6 +25,8 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
+
             val badPolicyNames = arrayOf("AutoAddPolicy", "WarningPolicy")
 
             if (!hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return

@@ -10,6 +10,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.fixes.DjangoAddMiddlewareFixer
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class DjangoMiddlewareInspection : PyInspection() {
     val check = Checks.DjangoClickjackMiddlewareCheck
@@ -24,6 +25,7 @@ class DjangoMiddlewareInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
+            if (skipDocstring(node)) return
             if (node.containingFile?.name != "settings.py") return
             val leftExpression = node.leftHandSideExpression?.text ?: return
             if (leftExpression != "MIDDLEWARE") return

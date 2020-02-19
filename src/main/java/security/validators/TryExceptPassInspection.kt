@@ -11,6 +11,7 @@ import com.jetbrains.python.psi.PyStatementList
 import com.jetbrains.python.psi.PyTryExceptStatement
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class TryExceptPassInspection : PyInspection() {
     val check = Checks.TryExceptPassCheck
@@ -25,6 +26,8 @@ class TryExceptPassInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyTryExceptStatement(node: PyTryExceptStatement) {
+            if (skipDocstring(node)) return
+
             if (node.containingFile.name.contains("test")) return
             if (node.exceptParts.isEmpty()) return
 

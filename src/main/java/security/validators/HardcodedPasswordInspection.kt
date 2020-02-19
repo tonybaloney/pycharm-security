@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import com.jetbrains.python.psi.PyTargetExpression
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class HardcodedPasswordInspection : PyInspection() {
     val check = Checks.HardcodedPasswordCheck
@@ -23,6 +24,7 @@ class HardcodedPasswordInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyAssignmentStatement(node: PyAssignmentStatement) {
+            if (skipDocstring(node)) return
             val left = node.leftHandSideExpression ?: return
             if (left !is PyTargetExpression) return
             if (!listOf(*PasswordVariableNames).contains(left.name)) return

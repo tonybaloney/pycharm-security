@@ -9,6 +9,7 @@ import security.Checks
 import security.fixes.TempfileMksFixer
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class TempfileMktempInspection : PyInspection() {
     val check = Checks.TempfileMktempCheck
@@ -23,6 +24,8 @@ class TempfileMktempInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
+
             val calleeName = node.callee?.name ?: return
             if (calleeName != "mktemp") return
             val qualifiedName = getQualifiedName(node) ?: return

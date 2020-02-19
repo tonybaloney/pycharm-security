@@ -8,6 +8,7 @@ import com.jetbrains.python.psi.*
 import security.Checks
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class SslWrapSocketInspection : PyInspection() {
     val check = Checks.SslWrapSocketNoVersionCheck
@@ -22,6 +23,8 @@ class SslWrapSocketInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
+
             val calleeName = node.callee?.name ?: return
             if (calleeName != "wrap_socket") return
 

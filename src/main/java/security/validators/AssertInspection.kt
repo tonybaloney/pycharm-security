@@ -8,6 +8,7 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyAssertStatement
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class AssertInspection : PyInspection() {
     val check = Checks.AssertCheck
@@ -22,6 +23,7 @@ class AssertInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyAssertStatement(node: PyAssertStatement) {
+            if (skipDocstring(node)) return
             if (node.containingFile.name.contains("test"))
                 return
             holder.registerProblem(node, Checks.AssertCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)

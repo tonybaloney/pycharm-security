@@ -9,6 +9,7 @@ import security.Checks
 import security.fixes.MakoFilterFixer
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class MakoTemplateInspection : PyInspection() {
     val check = Checks.MakoTemplateFilterCheck
@@ -23,6 +24,7 @@ class MakoTemplateInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "Template") return
             val qualifiedName = getQualifiedName(node) ?: return

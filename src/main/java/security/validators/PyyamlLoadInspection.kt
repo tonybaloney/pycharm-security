@@ -10,6 +10,7 @@ import security.Checks
 import security.fixes.PyyamlSafeLoadFixer
 import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class PyyamlLoadInspection : PyInspection() {
     val check = Checks.PyyamlUnsafeLoadCheck
@@ -24,6 +25,7 @@ class PyyamlLoadInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val calleeName = node.callee?.name ?: return
             if (calleeName != "load") return
             val qualifiedName = getQualifiedName(node) ?: return
