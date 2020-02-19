@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.10.0'
+version '1.11.0'
 
 repositories {
     mavenCentral()
@@ -37,10 +37,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.10.0</h2>
+      <h2>1.11.0</h2>
       <ul>
-        <li>Added [SH100] to check for 17 potential shell injection commands</li>
-        <li>Added [SH101] to check for 16 potentially risky spawned process commands</li>
+        <li>Added configuration option to ignore code inside docstrings (enabled by default)</li>
+        <li>Fix matching bug for packages which were installed with mixed-case names</li>
       </ul>
       """
 }
