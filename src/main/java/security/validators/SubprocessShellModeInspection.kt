@@ -10,8 +10,9 @@ import com.jetbrains.python.psi.PyListLiteralExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.fixes.ShellEscapeFixer
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameStartsWith
 import security.helpers.skipDocstring
 
 class SubprocessShellModeInspection : PyInspection() {
@@ -30,15 +31,13 @@ class SubprocessShellModeInspection : PyInspection() {
             if (skipDocstring(node)) return
 
             val shellMethodNames = arrayOf("call", "run", "Popen", "check_call", "check_output")
-            val qualifiedName = getQualifiedName(node) ?: return
 
             // Check this is an import from the subprocess module
-            if (qualifiedName.startsWith("subprocess.").not()) return
-            val calleeName = node.callee?.name ?: return
+            if (!qualifiedNameStartsWith(node, "subprocess.")) return
             if (node.arguments.isNullOrEmpty()) return
 
             // Match the method name against one of shellMethodNames
-            if (!listOf(*shellMethodNames).contains(calleeName)) return
+            if (!calleeMatches(node, shellMethodNames)) return
 
             // Look for the shell=True argument
             val shellArgument = node.getKeywordArgument("shell") ?: return

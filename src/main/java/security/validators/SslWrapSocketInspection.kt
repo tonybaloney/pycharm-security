@@ -6,8 +6,9 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.*
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameMatches
 import security.helpers.skipDocstring
 
 class SslWrapSocketInspection : PyInspection() {
@@ -24,12 +25,8 @@ class SslWrapSocketInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
-
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "wrap_socket") return
-
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName != "ssl.wrap_socket") return
+            if (!calleeMatches(node, "wrap_socket")) return
+            if (!qualifiedNameMatches(node, "ssl.wrap_socket")) return
 
             if (node.arguments.isNullOrEmpty())
                 holder.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())

@@ -11,6 +11,7 @@ import security.Checks
 import security.fixes.ShellEscapeFixer
 import security.helpers.ImportValidators
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
 import security.helpers.skipDocstring
 
 class ParamikoExecCommandInspection : PyInspection() {
@@ -30,8 +31,7 @@ class ParamikoExecCommandInspection : PyInspection() {
 
             if (!ImportValidators.hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
 
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "exec_command") return
+            if (!calleeMatches(node, "exec_command")) return
 
             if (node.arguments.isNullOrEmpty()) return
 

@@ -7,8 +7,9 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameMatches
 import security.helpers.skipDocstring
 
 class BuiltinExecInspection : PyInspection() {
@@ -25,10 +26,8 @@ class BuiltinExecInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "exec") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName != "exec") return
+            if (!calleeMatches(node, "exec")) return
+            if (!qualifiedNameMatches(node, "exec")) return
 
             // First argument as a string literal is ok
             if (node.arguments.isNullOrEmpty()) return

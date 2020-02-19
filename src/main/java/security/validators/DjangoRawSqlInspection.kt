@@ -10,6 +10,7 @@ import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
 import security.helpers.skipDocstring
 
 class DjangoRawSqlInspection : PyInspection() {
@@ -27,8 +28,7 @@ class DjangoRawSqlInspection : PyInspection() {
         val methodNames = arrayOf("RawSQL", "raw", "execute")
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
-            val calleeName = node.callee?.name ?: return
-            if (!listOf(*methodNames).contains(calleeName)) return
+            if (!calleeMatches(node, methodNames)) return
 
             if (node.containingFile !is PyFile) return
             if (!hasImportedNamespace(node.containingFile as PyFile, "django")) return

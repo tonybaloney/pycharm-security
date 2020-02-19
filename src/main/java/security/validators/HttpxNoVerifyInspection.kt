@@ -7,8 +7,9 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameStartsWith
 import security.helpers.skipDocstring
 
 class HttpxNoVerifyInspection : PyInspection() {
@@ -26,10 +27,8 @@ class HttpxNoVerifyInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             val requestsMethodNames = arrayOf("get", "post", "options", "delete", "put", "patch", "head")
-            val calleeName = node.callee?.name ?: return
-            if (!listOf(*requestsMethodNames).contains(calleeName)) return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (!qualifiedName.startsWith("httpx.")) return
+            if (!calleeMatches(node, requestsMethodNames)) return
+            if (!qualifiedNameStartsWith(node, "httpx.")) return
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return

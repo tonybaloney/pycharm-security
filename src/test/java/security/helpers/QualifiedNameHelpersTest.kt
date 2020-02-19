@@ -5,9 +5,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
-import com.jetbrains.python.nameResolver.NameResolverTools
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.impl.PyTypeProvider
 import com.jetbrains.python.psi.resolve.PyResolveContext
 import com.jetbrains.python.psi.types.TypeEvalContext
 import org.jetbrains.annotations.NotNull
@@ -18,7 +16,7 @@ import org.junit.jupiter.api.TestInstance
 import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class QualifiedNamesTest: SecurityTestTask() {
+class QualifiedNameHelpersTest: SecurityTestTask() {
     lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
@@ -126,13 +124,13 @@ class QualifiedNamesTest: SecurityTestTask() {
 
             if (resolveContext){
                 val typeEvalContext = TypeEvalContext.codeCompletion(this.project, testFile)
-                QualifiedNames.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+                QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
             }
 
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
-                name = QualifiedNames.getQualifiedName(e)
+                name = QualifiedNameHelpers.getQualifiedName(e)
             }
         }
         return name

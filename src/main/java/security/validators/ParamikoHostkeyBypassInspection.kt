@@ -10,6 +10,7 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
 import security.helpers.skipDocstring
 
 class ParamikoHostkeyBypassInspection : PyInspection() {
@@ -30,9 +31,7 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
             val badPolicyNames = arrayOf("AutoAddPolicy", "WarningPolicy")
 
             if (!hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
-
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "set_missing_host_key_policy") return
+            if (!calleeMatches(node, "set_missing_host_key_policy")) return
 
             // Get first arg
             if (node.arguments.isNullOrEmpty()) return

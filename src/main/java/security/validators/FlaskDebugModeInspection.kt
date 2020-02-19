@@ -11,6 +11,7 @@ import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
 import security.helpers.skipDocstring
 
 class FlaskDebugModeInspection : PyInspection() {
@@ -27,8 +28,7 @@ class FlaskDebugModeInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "run") return
+            if (!calleeMatches(node, "run")) return
             if (node.containingFile !is PyFile) return
             if (!hasImportedNamespace(node.containingFile as PyFile, "flask")) return
             if (node.firstChild !is PyReferenceExpression) return

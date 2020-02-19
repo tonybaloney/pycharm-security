@@ -9,8 +9,8 @@ import com.jetbrains.python.psi.PyListLiteralExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.fixes.ShellEscapeFixer
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.qualifiedNameMatches
 import security.helpers.skipDocstring
 
 class StandardShellInjectionInspection : PyInspection() {
@@ -28,10 +28,7 @@ class StandardShellInjectionInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
 
-            val qualifiedName = getQualifiedName(node) ?: return
-
-            // Check this is one of the possible shell APIs
-            if (listOf(*ShellApis).contains(qualifiedName).not()) return
+            if (!qualifiedNameMatches(node, ShellApis)) return
 
             if (node.arguments.isNullOrEmpty()) return
 

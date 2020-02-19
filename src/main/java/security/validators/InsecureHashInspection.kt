@@ -7,8 +7,9 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameStartsWith
 import security.helpers.skipDocstring
 
 class InsecureHashInspection : PyInspection() {
@@ -36,10 +37,8 @@ class InsecureHashInspection : PyInspection() {
         }
 
         fun checkHashAlgorithmsByNew(node: PyCallExpression, algorithms: Array<String>, check: Checks.CheckType) {
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "new") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName.startsWith("hashlib.").not()) return
+            if (!calleeMatches(node, "new")) return
+            if (!qualifiedNameStartsWith(node, "hashlib.")) return
             if (node.arguments.isEmpty()) return
             val nameKwArg = node.getKeywordArgument("name")
             val firstArg = node.arguments[0]
@@ -53,10 +52,8 @@ class InsecureHashInspection : PyInspection() {
         }
 
         fun checkHashAlgorithmsByImport(node: PyCallExpression, algorithms: Array<String>, check: Checks.CheckType) {
-            val calleeName = node.callee?.name ?: return
-            if (listOf(*algorithms).contains(calleeName).not()) return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName.startsWith("hashlib."))
+            if (!calleeMatches(node, algorithms)) return
+            if (qualifiedNameStartsWith(node, "hashlib."))
                 holder.registerProblem(node, check.getDescription())
         }
     }

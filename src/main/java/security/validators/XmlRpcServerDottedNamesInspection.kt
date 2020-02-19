@@ -10,6 +10,7 @@ import com.jetbrains.python.psi.PyFile
 import security.Checks
 import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
 import security.helpers.skipDocstring
 
 class XmlRpcServerDottedNamesInspection : PyInspection() {
@@ -27,8 +28,7 @@ class XmlRpcServerDottedNamesInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
 
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "register_instance") return
+            if (!calleeMatches(node,"register_instance")) return
             if (node.containingFile !is PyFile) return
             if (hasImportedNamespace(node.containingFile as PyFile, "xmlrpc.server").not()) return
 

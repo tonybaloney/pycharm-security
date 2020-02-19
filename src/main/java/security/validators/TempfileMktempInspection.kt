@@ -7,8 +7,9 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.fixes.TempfileMksFixer
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameMatches
 import security.helpers.skipDocstring
 
 class TempfileMktempInspection : PyInspection() {
@@ -26,10 +27,8 @@ class TempfileMktempInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
 
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "mktemp") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName != "tempfile.mktemp") return
+            if (!calleeMatches(node, "mktemp")) return
+            if (!qualifiedNameMatches(node, "tempfile.mktemp")) return
             holder.registerProblem(node, Checks.TempfileMktempCheck.getDescription(), TempfileMksFixer())
         }
     }

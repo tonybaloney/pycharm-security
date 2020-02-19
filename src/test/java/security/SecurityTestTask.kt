@@ -4,7 +4,6 @@ import com.intellij.codeInspection.LocalInspectionToolSession
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.lang.Language
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
@@ -19,7 +18,7 @@ import com.nhaarman.mockitokotlin2.*
 import org.jetbrains.annotations.NotNull
 import org.mockito.ArgumentMatchers.contains
 import org.mockito.Mockito
-import security.helpers.QualifiedNames
+import security.helpers.QualifiedNameHelpers
 
 open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
@@ -58,7 +57,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
 
             val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
-            QualifiedNames.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
 
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
