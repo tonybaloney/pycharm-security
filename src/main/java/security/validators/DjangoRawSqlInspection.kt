@@ -5,12 +5,11 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
 import security.helpers.calleeMatches
+import security.helpers.hasImportedNamespace
 import security.helpers.skipDocstring
 
 class DjangoRawSqlInspection : PyInspection() {
@@ -29,9 +28,7 @@ class DjangoRawSqlInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, methodNames)) return
-
-            if (node.containingFile !is PyFile) return
-            if (!hasImportedNamespace(node.containingFile as PyFile, "django")) return
+            if (!hasImportedNamespace(node.containingFile, "django")) return
 
             if (node.arguments.isNullOrEmpty()) return
             val sqlStatement = node.arguments.first() ?: return

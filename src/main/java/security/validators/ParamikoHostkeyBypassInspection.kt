@@ -5,12 +5,11 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
-import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
 import security.helpers.calleeMatches
+import security.helpers.hasImportedNamespace
 import security.helpers.skipDocstring
 
 class ParamikoHostkeyBypassInspection : PyInspection() {
@@ -25,12 +24,11 @@ class ParamikoHostkeyBypassInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
+        val badPolicyNames = arrayOf("AutoAddPolicy", "WarningPolicy")
+
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
-
-            val badPolicyNames = arrayOf("AutoAddPolicy", "WarningPolicy")
-
-            if (!hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
+            if (!hasImportedNamespace(node.containingFile, "paramiko")) return
             if (!calleeMatches(node, "set_missing_host_key_policy")) return
 
             // Get first arg
