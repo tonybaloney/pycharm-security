@@ -47,6 +47,9 @@ internal class SafetyDbCheckerTest {
               ],
               "invalid": [
                 "!!22"
+              ],
+              "django": [
+                "==0.1.0"
               ]
             }
         """.trimIndent()
@@ -191,6 +194,16 @@ internal class SafetyDbCheckerTest {
             on { version } doReturn "0.1.0"
         }
         assertFalse(instance.hasMatch(testPackage))
+        verify(testPackage, times(1)).name
+    }
+
+    @Test
+    fun `test capitalized`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "Django"
+            on { version } doReturn "0.1.0"
+        }
+        assertTrue(instance.hasMatch(testPackage))
         verify(testPackage, times(1)).name
     }
 

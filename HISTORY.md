@@ -3,6 +3,7 @@
 ## 1.11.0
 
 * Added configuration option to ignore code inside docstrings (enabled by default)
+* Fix matching bug for packages which were installed with mixed-case names
 
 ## 1.10.0
 

@@ -76,7 +76,7 @@ class SafetyDbChecker {
     }
 
     fun hasMatch(pythonPackage: PyPackage): Boolean{
-        for (record in lookup[pythonPackage.name] ?: return false){
+        for (record in lookup[pythonPackage.name.toLowerCase()] ?: return false){
             val specs = parseVersionSpecs(record) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
                 return true
@@ -87,7 +87,7 @@ class SafetyDbChecker {
     fun getMatches (pythonPackage: PyPackage): List<SafetyDbRecord> {
         /// Kotlin rewrite of PyRequirementParser.getMatches taking advantage of predicates
         val records: ArrayList<SafetyDbRecord> = ArrayList()
-        for (record in database[pythonPackage.name] ?: error("Package not in database")){
+        for (record in database[pythonPackage.name.toLowerCase()] ?: error("Package not in database")){
             val specs = parseVersionSpecs(record.v) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
                 records.add(record)
