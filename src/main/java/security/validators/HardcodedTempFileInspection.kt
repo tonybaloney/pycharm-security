@@ -7,8 +7,10 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameMatches
+import security.helpers.skipDocstring
 
 class HardcodedTempFileInspection : PyInspection() {
     val check = Checks.HardcodedTempFileCheck;
@@ -23,11 +25,10 @@ class HardcodedTempFileInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (skipDocstring(node)) return
             val possibleTempPaths = arrayOf("/tmp", "/var/tmp", "/dev/shm")
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "open") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName != "open") return
+            if (!calleeMatches(node, "open")) return
+            if (!qualifiedNameMatches(node, "open")) return
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() !is PyStringLiteralExpression) return
             val path = (node.arguments.first() as PyStringLiteralExpression).stringValue

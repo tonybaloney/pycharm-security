@@ -1,7 +1,6 @@
 package security.settings;
 
 import javax.swing.*;
-import com.intellij.ui.components.*;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -16,6 +15,7 @@ public class SecuritySettingsPane implements ItemListener{
     private JRadioButton radioButton4;
     private JTextField apiUrlField;
     private JTextField customUrlField;
+    private JCheckBox ignoreDocstringCheckbox;
 
     private ButtonGroup safetyButtonGroup;
 
@@ -28,13 +28,15 @@ public class SecuritySettingsPane implements ItemListener{
         settings.setPyupApiUrl(apiUrlField.getText());
         settings.setPyupCustomUrl(customUrlField.getText());
         settings.setSafetyDbMode(getSelectedSafetyDbMode());
+        settings.setIgnoreDocstrings(ignoreDocstringCheckbox.isSelected());
     }
 
     public boolean isModified(SecuritySettings settings) {
         return !settings.getPyupApiKey().equals(apiKeyField.getText())
                 || settings.getSafetyDbMode() != getSelectedSafetyDbMode()
                 || !settings.getPyupApiUrl().equals(apiUrlField.getText())
-                || !settings.getPyupCustomUrl().equals(customUrlField.getText());
+                || !settings.getPyupCustomUrl().equals(customUrlField.getText())
+                || settings.getIgnoreDocstrings() != ignoreDocstringCheckbox.isSelected();
     }
 
 
@@ -42,6 +44,7 @@ public class SecuritySettingsPane implements ItemListener{
         apiKeyField.setText(settings.getPyupApiKey());
         customUrlField.setText(settings.getPyupCustomUrl());
         apiUrlField.setText(settings.getPyupApiUrl());
+        ignoreDocstringCheckbox.setSelected(settings.getIgnoreDocstrings());
         safetyButtonGroup.clearSelection();
         if (settings.getSafetyDbMode() == SecuritySettings.SafetyDbType.Disabled)
             radioButton1.setSelected(true);

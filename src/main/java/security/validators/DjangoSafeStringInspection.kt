@@ -7,8 +7,10 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
-import security.helpers.QualifiedNames
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameStartsWith
+import security.helpers.skipDocstring
 
 class DjangoSafeStringInspection : PyInspection() {
     val check = Checks.DjangoSafeStringCheck
@@ -24,10 +26,9 @@ class DjangoSafeStringInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText")
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val calleeName = node.callee?.name ?: return
-            if (!listOf(*methodNames).contains(calleeName)) return
-            val qualifiedName = QualifiedNames.getQualifiedName(node) ?: return
-            if (!qualifiedName.startsWith("django.utils.safestring")) return
+            if (skipDocstring(node)) return
+            if (!calleeMatches(node, methodNames)) return
+            if (!qualifiedNameStartsWith(node, "django.utils.safestring")) return
             holder.registerProblem(node, Checks.DjangoSafeStringCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }
     }

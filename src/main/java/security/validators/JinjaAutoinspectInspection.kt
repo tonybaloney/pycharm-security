@@ -8,8 +8,10 @@ import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.fixes.JinjaAutoinspectUnconditionalFixer
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameStartsWith
+import security.helpers.skipDocstring
 
 class JinjaAutoinspectInspection : PyInspection() {
     val check = Checks.JinjaAutoinspectCheck
@@ -24,10 +26,9 @@ class JinjaAutoinspectInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "Environment" && calleeName != "Template") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (!qualifiedName.startsWith("jinja2.")) return
+            if (skipDocstring(node)) return
+            if (!calleeMatches(node, arrayOf("Environment", "Template"))) return
+            if (!qualifiedNameStartsWith(node, "jinja2.")) return
             val autoescapeArgument = node.getKeywordArgument("autoescape")
             if (autoescapeArgument == null)
             {

@@ -6,10 +6,11 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyBoolLiteralExpression
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyFile
 import security.Checks
-import security.helpers.ImportValidators.hasImportedNamespace
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.hasImportedNamespace
+import security.helpers.skipDocstring
 
 class XmlRpcServerDottedNamesInspection : PyInspection() {
     val check = Checks.XmlRpcServerDottedNamesCheck
@@ -24,10 +25,9 @@ class XmlRpcServerDottedNamesInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "register_instance") return
-            if (node.containingFile !is PyFile) return
-            if (hasImportedNamespace(node.containingFile as PyFile, "xmlrpc.server").not()) return
+            if (skipDocstring(node)) return
+            if (!calleeMatches(node,"register_instance")) return
+            if (!hasImportedNamespace(node.containingFile, "xmlrpc.server")) return
 
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.size == 1) return

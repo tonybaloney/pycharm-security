@@ -11,7 +11,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.IncorrectOperationException
 import com.jetbrains.python.psi.*
-import security.helpers.QualifiedNames.getQualifiedName
+import security.helpers.QualifiedNameHelpers.getQualifiedName
 
 
 class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {

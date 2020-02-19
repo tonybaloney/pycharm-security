@@ -7,8 +7,9 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.qualifiedNameMatches
+import security.helpers.skipDocstring
 
 class SpawnShellInjectionInspection : PyInspection() {
     val check = Checks.SpawnShellInjectionCheck
@@ -23,13 +24,9 @@ class SpawnShellInjectionInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val qualifiedName = getQualifiedName(node) ?: return
-
-            // Check this is one of the possible shell APIs
-            if (listOf(*SpawnShellApis).contains(qualifiedName).not()) return
-
+            if (skipDocstring(node)) return
+            if (!qualifiedNameMatches(node, SpawnShellApis)) return
             if (node.arguments.isNullOrEmpty()) return
-
             holder.registerProblem(node, Checks.SpawnShellInjectionCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }
     }

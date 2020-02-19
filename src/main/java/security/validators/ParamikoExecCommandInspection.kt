@@ -5,12 +5,13 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyFile
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.fixes.ShellEscapeFixer
-import security.helpers.ImportValidators
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.hasImportedNamespace
+import security.helpers.skipDocstring
 
 class ParamikoExecCommandInspection : PyInspection() {
     val check = Checks.ParamikoExecCommandCheck
@@ -25,10 +26,9 @@ class ParamikoExecCommandInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            if (!ImportValidators.hasImportedNamespace(node.containingFile as PyFile, "paramiko")) return
-
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "exec_command") return
+            if (skipDocstring(node)) return
+            if (!hasImportedNamespace(node.containingFile, "paramiko")) return
+            if (!calleeMatches(node, "exec_command")) return
 
             if (node.arguments.isNullOrEmpty()) return
 

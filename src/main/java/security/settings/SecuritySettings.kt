@@ -31,6 +31,12 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
             state.SAFETY_DB_MODE = value
         }
 
+    var ignoreDocstrings: Boolean
+        get() = state.IGNORE_DOCSTRINGS
+        set(value) {
+            state.IGNORE_DOCSTRINGS = value
+        }
+
     override fun getState(): State = state
 
     override fun loadState(state: State) {
@@ -44,6 +50,7 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
         var PYUP_API_URL: String = "https://pyup.io/api/v1/safety/"
         var PYUP_CUSTOM_URL: String = "https://raw.githubusercontent.com/pyupio/safety-db/master/data/"
         var SAFETY_DB_MODE: SafetyDbType = SafetyDbType.Bundled
+        var IGNORE_DOCSTRINGS: Boolean = true
     }
 
     enum class SafetyDbType {

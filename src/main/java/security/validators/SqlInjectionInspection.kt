@@ -7,6 +7,7 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.*
 import security.Checks
 import security.helpers.SecurityVisitor
+import security.helpers.skipDocstring
 
 class SqlInjectionInspection : PyInspection() {
     val check = Checks.SqlInjectionCheck
@@ -38,12 +39,16 @@ class SqlInjectionInspection : PyInspection() {
         }
 
         override fun visitPyFormattedStringElement(node: PyFormattedStringElement) {
+            if (skipDocstring(node)) return
+
             // F-string
             if (!looksLikeSql(node.content)) return
             holder.registerProblem(node, Checks.SqlInjectionCheck.getDescription())
         }
 
         override fun visitPyStringLiteralExpression(node: PyStringLiteralExpression) {
+            if (skipDocstring(node)) return
+
             if (!looksLikeSql(node.stringValue)) return
 
             // .Format() string

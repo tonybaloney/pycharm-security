@@ -8,8 +8,10 @@ import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import security.Checks
 import security.fixes.PyyamlSafeLoadFixer
-import security.helpers.QualifiedNames.getQualifiedName
 import security.helpers.SecurityVisitor
+import security.helpers.calleeMatches
+import security.helpers.qualifiedNameMatches
+import security.helpers.skipDocstring
 
 class PyyamlLoadInspection : PyInspection() {
     val check = Checks.PyyamlUnsafeLoadCheck
@@ -24,10 +26,9 @@ class PyyamlLoadInspection : PyInspection() {
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
-            val calleeName = node.callee?.name ?: return
-            if (calleeName != "load") return
-            val qualifiedName = getQualifiedName(node) ?: return
-            if (qualifiedName != "yaml.load") return
+            if (skipDocstring(node)) return
+            if (!calleeMatches(node, "load")) return
+            if (!qualifiedNameMatches(node, "yaml.load")) return
             // Inspect loader kwarg
             val loaderArg = node.getKeywordArgument("Loader")
             if (loaderArg != null && loaderArg is PyReferenceExpression)

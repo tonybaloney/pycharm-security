@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import security.SecurityTestTask
-import security.helpers.ImportValidators.hasImportedNamespace
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImportValidatorsTest: SecurityTestTask() {
