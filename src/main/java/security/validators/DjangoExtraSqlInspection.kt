@@ -9,6 +9,7 @@ import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 import security.Checks
 import security.helpers.*
+import security.registerProblem
 
 class DjangoExtraSqlInspection : PyInspection() {
     val check = Checks.DjangoExtraSqlCheck
@@ -34,7 +35,7 @@ class DjangoExtraSqlInspection : PyInspection() {
                     .map { PsiTreeUtil.findChildrenOfType(it, PyStringLiteralExpression::class.java) }
                     .forEach { strings ->
                         strings.forEach {
-                            inspectStatement(it, holder, Checks.DjangoExtraSqlCheck)
+                            if (inspectStatement(it)) holder.registerProblem(it, Checks.DjangoExtraSqlCheck)
                         }
                     }
         }

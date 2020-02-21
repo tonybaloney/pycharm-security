@@ -1,5 +1,8 @@
 package security
 
+import com.intellij.codeInspection.ProblemsHolder
+import com.jetbrains.python.psi.PyExpression
+
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
     val FlaskDebugModeCheck = CheckType("FLK100", "Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.")
@@ -60,4 +63,8 @@ object Checks {
             return _staticDescription as String
         }
     }
+}
+
+fun ProblemsHolder.registerProblem(expression: PyExpression, check: Checks.CheckType) {
+    this.registerProblem(expression, check.getDescription())
 }

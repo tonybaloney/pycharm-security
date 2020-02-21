@@ -7,6 +7,7 @@ import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
 import security.Checks
 import security.helpers.*
+import security.registerProblem
 
 class DjangoRawSqlInspection : PyInspection() {
     val check = Checks.DjangoRawSqlCheck
@@ -28,7 +29,8 @@ class DjangoRawSqlInspection : PyInspection() {
 
             if (node.arguments.isNullOrEmpty()) return
             val sqlStatement = node.arguments.first() ?: return
-            inspectStatement(sqlStatement, holder, Checks.DjangoRawSqlCheck)
+            if (inspectStatement(sqlStatement))
+                holder.registerProblem(sqlStatement, Checks.DjangoRawSqlCheck)
         }
     }
 }
