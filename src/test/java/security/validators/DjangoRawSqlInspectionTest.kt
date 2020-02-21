@@ -113,7 +113,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
             from .models import User
 
             def my_view(self):
-                User.objects.raw(%s'", [lname])
+                User.objects.raw("%s'", [lname])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }
@@ -125,7 +125,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
             from .models import User
 
             def my_view(self):
-                User.objects.raw('%s", [lname])
+                User.objects.raw("'%s", [lname])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }
@@ -137,7 +137,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
             from .models import User
 
             def my_view(self):
-                User.objects.raw(%s", [lname])
+                User.objects.raw("%s", [lname])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }
