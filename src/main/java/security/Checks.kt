@@ -11,6 +11,7 @@ object Checks {
     val DjangoDebugModeCheck = CheckType("DJG100", "Running Django in Debug mode is highly insecure and should only be used for local development purposes.")
     val DjangoRawSqlCheck = CheckType("DJG101", "Using quoted, parametrized literal will bypass Django SQL Injection protection.")
     val DjangoSafeStringCheck = CheckType("DJG102", "Using safe strings bypasses the Django XSS protection.")
+    val DjangoExtraSqlCheck = CheckType("DJG103", "Using quoted, parametrized literal in extra() arguments will bypass Django SQL Injection protection.")
     val DjangoCsrfMiddlewareCheck = CheckType("DJG200", "Django middleware is missing CsrfViewMiddleware, which blocks cross-site request forgery.")
     val DjangoClickjackMiddlewareCheck = CheckType("DJG201", "Django middleware is missing XFrameOptionsMiddleware, which blocks clickjacking.")
     val InsecureHashAlgorithms = CheckType("HL100", "MD4, MD5, SHA, and SHA1 hashing algorithms have cryptographically weak algorithms and should not be used for obfuscating or protecting data.")

@@ -5,11 +5,12 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyDictLiteralExpression
 import security.Checks
 import security.helpers.*
 
-class DjangoRawSqlInspection : PyInspection() {
-    val check = Checks.DjangoRawSqlCheck
+class DjangoExtraSqlInspection : PyInspection() {
+    val check = Checks.DjangoExtraSqlCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -20,15 +21,21 @@ class DjangoRawSqlInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
-        val methodNames = arrayOf("RawSQL", "raw", "execute")
+        val methodNames = arrayOf("extra")
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, methodNames)) return
             if (!hasImportedNamespace(node.containingFile, "django")) return
 
-            if (node.arguments.isNullOrEmpty()) return
-            val sqlStatement = node.arguments.first() ?: return
-            inspectStatement(sqlStatement, holder, Checks.DjangoRawSqlCheck)
+            // Look at the where argument
+            if (node.getKeywordArgument("where") != null){
+                val whereArg = node.getKeywordArgument("where")
+                if (whereArg is PyDictLiteralExpression) {
+                    whereArg.elements
+                            .filter { it.value != null }
+                            .forEach { inspectStatement(it.value!!, holder, Checks.DjangoExtraSqlCheck) }
+                }
+            }
         }
     }
 }
