@@ -35,6 +35,16 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test double quoted string`(){
+        var code = """
+            import django.db.models.expressions
+            x = "injectable string"
+            django.db.models.expressions.RawSQL('SELECT * FROM foo WHERE ID = "%s"', (x,))
+        """.trimIndent()
+        testCodeCallExpression(code, 1, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
     fun `test format non quoted string`(){
         var code = """
             import django.db.models.expressions
@@ -113,7 +123,19 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
             from .models import User
 
             def my_view(self):
-                User.objects.raw(%s'", [lname])
+                User.objects.raw("%s'", [lname])
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
+    fun `test model raw with missing double quote at beginning`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw('%s"', [lname])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }
@@ -125,7 +147,19 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
             from .models import User
 
             def my_view(self):
-                User.objects.raw('%s", [lname])
+                User.objects.raw("'%s", [lname])
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
+    }
+
+    @Test
+    fun `test model raw with missing double quote at end`(){
+        var code = """
+            from django.db import connection
+            from .models import User
+
+            def my_view(self):
+                User.objects.raw('"%s', [lname])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }
@@ -137,7 +171,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
             from .models import User
 
             def my_view(self):
-                User.objects.raw(%s", [lname])
+                User.objects.raw("%s", [lname])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
     }

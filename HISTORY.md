@@ -1,5 +1,10 @@
 # Release History
 
+## 1.12.0
+
+* Added [DJG103](doc/checks/DJG103.md) to look for use of the Django `extra()` API on a query set with quoted parameters.
+* Extended [DJG102](doc/checks/DJG101.md) to include quoted templated variable names, e.g. `'%(variable)s'`
+
 ## 1.11.0
 
 * Added configuration option to ignore code inside docstrings (enabled by default)
@@ -12,7 +17,7 @@
 
 ## 1.9.0
 
-* Added a configuration panel to customise how your packages are checked\
+* Added a configuration panel to customise how your packages are checked
 * Enabled support for PyUp.io subscriptions via an API key
 
 ## 1.8.1

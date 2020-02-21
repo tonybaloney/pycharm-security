@@ -85,7 +85,6 @@ class SafetyDbChecker {
     }
 
     fun getMatches (pythonPackage: PyPackage): List<SafetyDbRecord> {
-        /// Kotlin rewrite of PyRequirementParser.getMatches taking advantage of predicates
         val records: ArrayList<SafetyDbRecord> = ArrayList()
         for (record in database[pythonPackage.name.toLowerCase()] ?: error("Package not in database")){
             val specs = parseVersionSpecs(record.v) ?: continue
@@ -96,7 +95,6 @@ class SafetyDbChecker {
     }
 
     private fun parseVersionSpecs(versionSpecs: String): List<PyRequirementVersionSpec?>? {
-        /// Taken from PyRequirementParser, but that function is Private :-(
         return StreamSupport
                 .stream(StringUtil.tokenize(versionSpecs, ",").spliterator(), false)
                 .map { obj: String -> obj.trim { it <= ' ' } }
