@@ -35,7 +35,7 @@ class DjangoExtraSqlInspection : PyInspection() {
                     .map { PsiTreeUtil.findChildrenOfType(it, PyStringLiteralExpression::class.java) }
                     .forEach { strings ->
                         strings.forEach {
-                            if (inspectStatement(it)) holder.registerProblem(it, Checks.DjangoExtraSqlCheck)
+                            if (inspectDjangoSqlTemplate(it)) holder.registerProblem(it, Checks.DjangoExtraSqlCheck)
                         }
                     }
         }

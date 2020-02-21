@@ -3,10 +3,9 @@ package security.helpers
 import com.jetbrains.python.psi.PyExpression
 import com.jetbrains.python.psi.PyStringLiteralExpression
 
-fun inspectStatement(sqlStatement: PyExpression) : Boolean{
+fun inspectDjangoSqlTemplate(sqlStatement: PyExpression) : Boolean{
     if (sqlStatement !is PyStringLiteralExpression) return false
-    val param = Regex("%s")
-    val paramMatches = param.findAll(sqlStatement.stringValue)
+    val paramMatches = Regex("%s").findAll(sqlStatement.stringValue) + Regex("%\\([a-zA-Z0-9_]*\\)s").findAll(sqlStatement.stringValue)
     for (match in paramMatches){
         try {
             if (sqlStatement.stringValue.substring(match.range.first - 1, match.range.first) == "'" && sqlStatement.stringValue.substring(match.range.last + 1, match.range.last + 2) == "'")

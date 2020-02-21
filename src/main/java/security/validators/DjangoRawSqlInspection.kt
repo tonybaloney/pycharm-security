@@ -29,7 +29,7 @@ class DjangoRawSqlInspection : PyInspection() {
 
             if (node.arguments.isNullOrEmpty()) return
             val sqlStatement = node.arguments.first() ?: return
-            if (inspectStatement(sqlStatement))
+            if (inspectDjangoSqlTemplate(sqlStatement))
                 holder.registerProblem(sqlStatement, Checks.DjangoRawSqlCheck)
         }
     }

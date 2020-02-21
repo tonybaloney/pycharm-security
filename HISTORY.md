@@ -3,6 +3,7 @@
 ## 1.12.0
 
 * Added [DJG103](doc/checks/DJG103.md) to look for use of the Django `extra()` API on a query set with quoted parameters.
+* Extended [DJG102](doc/checks/DJG101.md) to include quoted templated variable names, e.g. `'%(variable)s'`
 
 ## 1.11.0
 
