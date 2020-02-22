@@ -41,6 +41,8 @@ patchPluginXml {
       <ul>
         <li>Added [DJG103] to look for use of the Django `extra()` API on a query set with quoted parameters.</li>
         <li>Extended [DJG102] to include quoted templated variable names, e.g. `'%(variable)s'`</li>
+        <li>Added [DJG104] to inspect usage of the Django Expression APIs with dangerous templates vulnerable to SQL injection.</li>
+        <li>Modified [TRY100] to only verify `Exception` and no exception specified.</li>
       </ul>
       """
 }

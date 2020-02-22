@@ -6,8 +6,9 @@
   <li><code>django.db.models.Aggregate</code></li>
   <li><code>django.db.models.Window</code></li>
   <li><code>django.db.models.Expression</code></li>
+  <li><code>django.db.models.lookups.Transform</code></li>
 </ul>
-<p>It will also look at calls to <code>super().as_sql()</code>, or <code>self.as_sql()</code> in classes which inherit from these tyoes.</p>
+<p>It will also look at calls to <code>super().as_sql()</code>, or <code>self.as_sql()</code> in classes which inherit from these types.</p>
 <p>New classes to any of these types will also have their <code>template</code> attributes inspected.</p>
 <h2>Examples</h2>
 <pre><code class="python">from django.db.models import F, Func
