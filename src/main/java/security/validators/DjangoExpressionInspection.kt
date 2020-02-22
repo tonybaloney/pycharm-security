@@ -25,7 +25,7 @@ class DjangoExpressionInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
-        val expressionTypes = arrayOf("Func", "Aggregate", "Window", "Expression")
+        val expressionTypes = arrayOf("Func", "Aggregate", "Window", "Expression", "Transform")
         val extraMethods = arrayOf("as_sql")
         val namespace = "django.db.models"
 
@@ -44,6 +44,7 @@ class DjangoExpressionInspection : PyInspection() {
         override fun visitPyClass(node: PyClass) {
             val typeContext = TypeEvalContext.codeAnalysis(node.project, node.containingFile)
             val superClasses= node.getSuperClasses(typeContext)
+            // See if it inherits from any of the expression types APIs
             if (!superClasses.filter { it.qualifiedName != null }
                             .filter { it.qualifiedName!!.startsWith(namespace) }
                             .any { expressionTypes.contains(it.name) })
