@@ -4,6 +4,7 @@
 
 * Added [DJG103](doc/checks/DJG103.md) to look for use of the Django `extra()` API on a query set with quoted parameters.
 * Extended [DJG102](doc/checks/DJG101.md) to include quoted templated variable names, e.g. `'%(variable)s'`
+* Added [DJG104](doc/checks/DJG104.md) to inspect usage of the Django Expression APIs with dangerous templates vulnerable to SQL injection.
 
 ## 1.11.0
 

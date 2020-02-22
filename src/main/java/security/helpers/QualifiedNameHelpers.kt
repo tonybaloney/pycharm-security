@@ -34,3 +34,8 @@ fun qualifiedNameStartsWith(node: PyCallExpression, potential: String) : Boolean
     val qualifiedName = QualifiedNameHelpers.getQualifiedName(node) ?: return false
     return (qualifiedName.startsWith(potential))
 }
+
+fun qualifiedNameStartsWith(node: PyCallExpression, potential: Array<String>) : Boolean {
+    val qualifiedName = QualifiedNameHelpers.getQualifiedName(node) ?: return false
+    return potential.any { qualifiedName.startsWith(it) }
+}

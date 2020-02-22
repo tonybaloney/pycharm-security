@@ -24,11 +24,11 @@ class DjangoSafeStringInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
-        val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText")
+        val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText", "do_mark_safe")
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, methodNames)) return
-            if (!qualifiedNameStartsWith(node, "django.utils.safestring")) return
+            if (!qualifiedNameStartsWith(node, arrayOf("django.utils.safestring", "jinja2.filters"))) return
             holder.registerProblem(node, Checks.DjangoSafeStringCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }
     }
