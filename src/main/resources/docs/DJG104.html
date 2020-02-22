@@ -1,0 +1,43 @@
+<h1>DJG104</h1>
+<p>Instantiating Django expressions with a dangerous template string literal.</p>
+<p>This check looks at direct instantiations of the :</p>
+<ul>
+  <li><code>django.db.models.Func</code></li>
+  <li><code>django.db.models.Aggregate</code></li>
+  <li><code>django.db.models.Window</code></li>
+  <li><code>django.db.models.Expression</code></li>
+</ul>
+<p>It will also look at calls to <code>super().as_sql()</code>, or <code>self.as_sql()</code> in classes which inherit from these tyoes.</p>
+<p>New classes to any of these types will also have their <code>template</code> attributes inspected.</p>
+<h2>Examples</h2>
+<pre><code class="python">from django.db.models import F, Func
+
+queryset.annotate(field_lower=Func(F(&#39;field&#39;), function=&#39;LOWER&#39;, template=&quot;&#39;%(function)s&#39;(%(expressions)s)&quot;))
+</code></pre>
+<p>This inheritance example would also raise a warning:</p>
+<pre><code class="python">class ConcatPair(Func):
+    function = &#39;CONCAT&#39;
+
+    def as_mysql(self, compiler, connection, **extra_context):
+        return super().as_sql(
+            compiler, connection,
+            function=&#39;CONCAT_WS&#39;,
+            template=&quot;&#39;%s&#39;&quot;,
+            **extra_context
+        )
+</code></pre>
+<p>This child class would also raise a warning</p>
+<pre><code class="python">class Example(Expression):
+    function = &#39;EXAMPLE&#39;
+    template = &quot;%(function)(&#39;%(special)s&#39;)&quot;
+</code></pre>
+<h2>Fixes</h2>
+<p>Remove the quotations from the expressions:</p>
+<pre><code class="python">from django.db.models import F, Func
+
+queryset.annotate(field_lower=Func(F(&#39;field&#39;), function=&#39;LOWER&#39;, template=&quot;%(function)s(%(expressions)s)&quot;))
+</code></pre>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.djangoproject.com/en/3.0/ref/models/expressions/#avoiding-sql-injection">Official Documentation</a></li>
+</ul>

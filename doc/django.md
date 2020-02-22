@@ -122,6 +122,55 @@ MyDataModel.objects.extra(where=['headline="%s"'], params=['Lennon'])
 
 * [Official Documentation](https://docs.djangoproject.com/en/3.0/ref/models/querysets/#extra)
 
+### Bypassing SQL injection with a dangerous template in an expression
+
+[DJG104](checks/DJG104.md) looks at Django "expressions" with a dangerous template string literal.
+
+This check looks at direct instantiations of the :
+
+- `django.db.models.Func` 
+- `django.db.models.Aggregate` 
+- `django.db.models.Window`
+- `django.db.models.Expression`
+
+It will also look at calls to `super().as_sql()`, or `self.as_sql()` in classes which inherit from these tyoes.
+
+It will also inspect classes to any of these types, and have their `template` attributes inspected.
+
+![Django 104 exameple](_static/django-104.png)
+
+#### Examples
+
+```python
+from django.db.models import F, Func
+
+queryset.annotate(field_lower=Func(F('field'), function='LOWER', template="'%(function)s'(%(expressions)s)"))
+```
+
+This inheritance example would also raise a warning:
+
+```python
+class ConcatPair(Func):
+    function = 'CONCAT'
+
+    def as_mysql(self, compiler, connection, **extra_context):
+        return super().as_sql(
+            compiler, connection,
+            function='CONCAT_WS',
+            template="'%s'",
+            **extra_context
+        )
+```
+
+This child class would also raise a warning
+
+```python
+class Example(Expression):
+    function = 'EXAMPLE'
+    template = "%(function)('%(special)s')"
+```
+
+
 ### General SQL injection detection
 
 Aside from the specific Django APIs, there is also a generic SQL injection check, [SQL100](checks/SQL100.md).

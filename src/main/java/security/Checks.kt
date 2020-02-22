@@ -2,6 +2,7 @@ package security
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.jetbrains.python.psi.PyExpression
+import com.jetbrains.python.psi.PyStatement
 
 object Checks {
     val PyyamlUnsafeLoadCheck = CheckType("YML100", "Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().")
@@ -15,6 +16,7 @@ object Checks {
     val DjangoRawSqlCheck = CheckType("DJG101", "Using quoted, parametrized literal will bypass Django SQL Injection protection.")
     val DjangoSafeStringCheck = CheckType("DJG102", "Using safe strings bypasses the Django XSS protection.")
     val DjangoExtraSqlCheck = CheckType("DJG103", "Using quoted, parametrized literal in extra() arguments will bypass Django SQL Injection protection.")
+    val DjangoExpressionCheck = CheckType("DJG104", "Instantiating Django Func expressions with a dangerous template.")
     val DjangoCsrfMiddlewareCheck = CheckType("DJG200", "Django middleware is missing CsrfViewMiddleware, which blocks cross-site request forgery.")
     val DjangoClickjackMiddlewareCheck = CheckType("DJG201", "Django middleware is missing XFrameOptionsMiddleware, which blocks clickjacking.")
     val InsecureHashAlgorithms = CheckType("HL100", "MD4, MD5, SHA, and SHA1 hashing algorithms have cryptographically weak algorithms and should not be used for obfuscating or protecting data.")
@@ -67,4 +69,8 @@ object Checks {
 
 fun ProblemsHolder.registerProblem(expression: PyExpression, check: Checks.CheckType) {
     this.registerProblem(expression, check.getDescription())
+}
+
+fun ProblemsHolder.registerProblem(statement: PyStatement, check: Checks.CheckType) {
+    this.registerProblem(statement, check.getDescription())
 }
