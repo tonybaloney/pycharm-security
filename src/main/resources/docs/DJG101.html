@@ -7,6 +7,7 @@
   <li>Use of <code>raw()</code> on a <code>Manager</code> instance</li>
 </ul>
 <p>Whilst the methods support parametrized queries, if the <code>%s</code> value is quoted with single-quotes, the value is still vulnerable to SQL injection.</p>
+<p>This also applies to parametrized arguments, where it includes a substitute reference, e.g. <code>&#39;%(variable)s&#39;</code>.</p>
 <h2>Example</h2>
 <p>The first example is using the RawSQL constructor directly and annotating a query set:</p>
 <pre><code class="python">from django.db.models.expressions import RawSQL

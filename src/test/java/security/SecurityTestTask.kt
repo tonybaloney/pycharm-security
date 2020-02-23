@@ -79,6 +79,37 @@ open class SecurityTestTask: BasePlatformTestCase() {
         }
     }
 
+    fun <inspector: PyInspection>testCodeClass(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
+        ApplicationManager.getApplication().runReadAction {
+            val mockHolder = mock<ProblemsHolder> {
+                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
+            }
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+
+            val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
+            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+
+            val mockLocalSession = mock<LocalInspectionToolSession> {
+                on { file } doReturn (testFile)
+            }
+            assertNotNull(testFile)
+            val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
+
+            val expr: @NotNull MutableCollection<PyClass> = PsiTreeUtil.findChildrenOfType(testFile, PyClass::class.java)
+            assertNotNull(expr)
+            expr.forEach { e ->
+                testVisitor.visitPyClass(e)
+            }
+            try {
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            } catch (a: AssertionError){
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
+            }
+            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+        }
+    }
+
     fun <inspector: PyInspection>testBinaryExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {

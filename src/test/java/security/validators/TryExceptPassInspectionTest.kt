@@ -76,7 +76,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
             except Exception:
                 pass
         """.trimIndent()
-        testTryExceptStatement(code, 2, Checks.TryExceptPassCheck, "my_file.py", TryExceptPassInspection())
+        testTryExceptStatement(code, 1, Checks.TryExceptPassCheck, "my_file.py", TryExceptPassInspection())
     }
 
     @Test
@@ -84,7 +84,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
         var code = """
             try:
                 x = 1
-            except RuntimeException:
+            except Exception:
                 # do nothing
                 pass
         """.trimIndent()
@@ -96,7 +96,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
         var code = """
             try:
                 x = 1
-            except RuntimeException:
+            except Exception:
                 x = 2
                 pass
         """.trimIndent()

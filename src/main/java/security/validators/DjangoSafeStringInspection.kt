@@ -26,13 +26,12 @@ class DjangoSafeStringInspection : PyInspection() {
                               session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
 
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
-        val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText")
+        val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText", "do_mark_safe")
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (node.arguments.isEmpty()) return
             if (skipDocstring(node)) return
             if (!calleeMatches(node, methodNames)) return
-            if (!qualifiedNameStartsWith(node, "django.utils.safestring")) return
-
+            if (!qualifiedNameStartsWith(node, arrayOf("django.utils.safestring", "jinja2.filters"))) return
             var arg = node.arguments[0]
             if (arg is PyKeywordArgumentImpl) arg = arg.valueExpression
             if (arg is PyStringLiteralExpression) return

@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.11.0'
+version '1.12.0'
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ test {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version 'PC-2019.3.1'
+    version 'PC-2019.3.3'
     type 'PC'
     plugins 'python-ce', 'yaml'
     updateSinceUntilBuild false
@@ -37,10 +37,12 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-      <h2>1.11.0</h2>
+      <h2>1.12.0</h2>
       <ul>
-        <li>Added configuration option to ignore code inside docstrings (enabled by default)</li>
-        <li>Fix matching bug for packages which were installed with mixed-case names</li>
+        <li>Added [DJG103] to look for use of the Django `extra()` API on a query set with quoted parameters.</li>
+        <li>Extended [DJG102] to include quoted templated variable names, e.g. `'%(variable)s'`</li>
+        <li>Added [DJG104] to inspect usage of the Django Expression APIs with dangerous templates vulnerable to SQL injection.</li>
+        <li>Modified [TRY100] to only verify `Exception` and no exception specified.</li>
       </ul>
       """
 }

@@ -1,0 +1,24 @@
+<h1>DJG103</h1>
+<p>This check looks for ways that Django SQL Injection protection is being bypassed in the <code>extra()</code> query set function, by using quoted parameters.</p>
+<p>This check will inspect any string literal within the keyword-arguments:</p>
+<ul>
+  <li>"where", "select", "tables", "order_by", "params"</li>
+</ul>
+<h2>Example</h2>
+<p>In this example, the value of the othercol is vulnerable to SQL injection:</p>
+<pre><code class="python">qs.extra(
+    select={&#39;val&#39;: &quot;select col from sometable where othercol = &#39;%s&#39;&quot;},
+    select_params=(someparam,),
+)
+</code></pre>
+<p>This would also apply to the where argument:</p>
+<pre><code class="python">MyDataModel.objects.extra(where=[&#39;headline=&quot;%s&quot;&#39;], params=[&#39;Lennon&#39;])
+</code></pre>
+<h2>Fixes</h2>
+<p>Remove the quotations from the string values:</p>
+<pre><code class="python">MyDataModel.objects.extra(where=[&#39;headline=%s&#39;], params=[&#39;Lennon&#39;])
+</code></pre>
+<h2>See Also</h2>
+<ul>
+  <li><a href="https://docs.djangoproject.com/en/3.0/ref/models/querysets/#extra">Official Documentation</a></li>
+</ul>

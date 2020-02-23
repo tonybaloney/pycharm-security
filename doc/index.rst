@@ -35,6 +35,7 @@ The plugin looks at your Python code for common security vulnerabilities and sug
    fixes/index
    development
    bandit
+   django
 
 Features
 ~~~~~~~~
