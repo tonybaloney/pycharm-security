@@ -6,6 +6,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.psi.PyCallExpression
+import com.jetbrains.python.psi.PyStringLiteralExpression
+import com.jetbrains.python.psi.impl.PyKeywordArgumentImpl
 import security.Checks
 import security.helpers.SecurityVisitor
 import security.helpers.calleeMatches
@@ -26,9 +28,14 @@ class DjangoSafeStringInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         val methodNames = arrayOf("SafeString", "mark_safe", "SafeBytes", "SafeUnicode", "SafeText")
         override fun visitPyCallExpression(node: PyCallExpression) {
+            if (node.arguments.isEmpty()) return
             if (skipDocstring(node)) return
             if (!calleeMatches(node, methodNames)) return
             if (!qualifiedNameStartsWith(node, "django.utils.safestring")) return
+
+            var arg = node.arguments[0]
+            if (arg is PyKeywordArgumentImpl) arg = arg.valueExpression
+            if (arg is PyStringLiteralExpression) return
             holder.registerProblem(node, Checks.DjangoSafeStringCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }
     }

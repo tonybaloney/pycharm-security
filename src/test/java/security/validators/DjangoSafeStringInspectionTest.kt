@@ -36,6 +36,26 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test mark_safe falsePositiveString`(){
+        var code = """
+            import django.utils.safestring
+
+            mystr = django.utils.safestring.mark_safe('<b>Hello World</b>')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoSafeStringCheck, "test.py", DjangoSafeStringInspection())
+    }
+
+    @Test
+    fun `test mark_safe kwargsFalsePositiveString`(){
+        var code = """
+            import django.utils.safestring
+
+            mystr = django.utils.safestring.mark_safe(s='<b>Hello World</b>')
+        """.trimIndent()
+        testCodeCallExpression(code, 0, Checks.DjangoSafeStringCheck, "test.py", DjangoSafeStringInspection())
+    }
+
+    @Test
     fun `test SafeString string`(){
         var code = """
             import django.utils.safestring
