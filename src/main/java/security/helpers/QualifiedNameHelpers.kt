@@ -8,15 +8,15 @@ object QualifiedNameHelpers {
     var resolveContext: PyResolveContext = PyResolveContext.defaultContext()
 
     fun getQualifiedName(callExpression: PyCallExpression): String? {
-        val callableTypes = callExpression.multiResolveCallee(resolveContext)
-        if (callableTypes.isEmpty()) {
+        val markedCallees = callExpression.multiResolveCallee(resolveContext)
+        if (markedCallees.isEmpty()) {
             val firstChild = callExpression.firstChild ?: return null
             if (firstChild !is PyReferenceExpression) return null
             val qualifiedName = (firstChild).asQualifiedName() ?: return null
             return qualifiedName.toString()
         }
         else
-            return callableTypes[0].callable?.qualifiedName ?: callableTypes[0].callable?.name
+            return markedCallees[0].element?.qualifiedName ?: markedCallees[0].element?.name
     }
 }
 
