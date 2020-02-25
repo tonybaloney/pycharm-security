@@ -1,5 +1,9 @@
 # Release History
 
+## 1.13.0 (master)
+
+* Extended the behaviour of [DJG102](doc/checks/DJG102.md) to not raise a warning when the safe string input is a string literal [pull#87](pull/87)
+
 ## 1.12.0
 
 * Added [DJG103](doc/checks/DJG103.md) to look for use of the Django `extra()` API on a query set with quoted parameters.

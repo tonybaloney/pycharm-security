@@ -49,11 +49,9 @@ patchPluginXml {
       """
 }
 
-/*
 publishPlugin {
     token intellijPublishToken
 }
-// */
 
 jacocoTestReport {
     reports {
