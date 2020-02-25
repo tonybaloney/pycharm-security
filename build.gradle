@@ -29,11 +29,13 @@ test {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version 'PC-2019.3.3'
     type 'PC'
     plugins 'python-ce', 'yaml'
     updateSinceUntilBuild false
 }
+// Make the intellij version overridable on the command line to support multiple build versions..
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : 'PC-2019.3'
+
 
 patchPluginXml {
     changeNotes """
