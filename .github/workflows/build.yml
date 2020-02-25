@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        pycharm-version: ['PC-2019.3.3', '201.5616-EAP-CANDIDATE-SNAPSHOT']
+        pycharm-version: ['PC-2019.3.3', '201.5616-EAP-CANDIDATE-SNAPSHOT', '201-EAP-SNAPSHOT']
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
