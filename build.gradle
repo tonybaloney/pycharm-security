@@ -34,7 +34,7 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '201.5616-EAP-CANDIDATE-SNAPSHOT'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2019.3'
 
 
 patchPluginXml {

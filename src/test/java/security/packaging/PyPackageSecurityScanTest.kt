@@ -1,12 +1,12 @@
 package security.packaging
 
-import com.intellij.notification.Notification
-import com.intellij.notification.NotificationGroup
-import com.intellij.notification.NotificationType
 import com.intellij.openapi.projectRoots.Sdk
 import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.PyPackageManager
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -69,78 +69,36 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
 
     @Test
     fun `test no python sdk raises info message`(){
-        val mockNotification = mock<Notification> {
-            on { notify(any()) } doAnswer {}
-        }
-        val mockNotificationGroup = mock<NotificationGroup> {
-            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>(), anyOrNull())} doReturn(mockNotification)
-        }
-        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
-        PyPackageSecurityScan.checkPackages(project)
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Could not check Python packages"), anyOrNull(), any(), eq(NotificationType.INFORMATION), anyOrNull())
-        verify(mockNotification, times(1)).notify(project)
+        assertNull(PyPackageSecurityScan.checkPackages(project))
     }
 
     @Test
     fun `test check packages`(){
-        val mockNotification = mock<Notification> {
-            on { notify(any()) } doAnswer {}
-        }
-        val mockNotificationGroup = mock<NotificationGroup> {
-            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>(), anyOrNull())} doReturn(mockNotification)
-        }
         val mockSdk = mock<Sdk> {
             on { name } doReturn ("test")
             on { homePath } doReturn (".")
         }
-        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
-        PyPackageSecurityScan.checkPackagesInSdks(setOf(mockSdk), project, instance)
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Completed checking packages"), anyOrNull(), any(), eq(NotificationType.INFORMATION), anyOrNull())
-        verify(mockNotification, times(1)).notify(project)
+        assertEquals(PyPackageSecurityScan.checkPackagesInSdks(setOf(mockSdk), project, instance), 0)
     }
 
     @Test
     fun `test null packages`(){
-        val mockNotification = mock<Notification> {
-            on { notify(any()) } doAnswer {}
-        }
-        val mockNotificationGroup = mock<NotificationGroup> {
-            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>(), anyOrNull())} doReturn(mockNotification)
-        }
         val mockPackageManager = mock<PyPackageManager> {
             on { packages } doReturn(null)
         }
-        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
-        PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance)
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Could not check Python packages"), anyOrNull(), any(), eq(NotificationType.INFORMATION), anyOrNull())
-        verify(mockNotification, times(1)).notify(project)
+        assertNull(PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance))
     }
 
     @Test
     fun `test no packages`(){
-        val mockNotification = mock<Notification> {
-            on { notify(any()) } doAnswer {}
-        }
-        val mockNotificationGroup = mock<NotificationGroup> {
-            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>(), anyOrNull())} doReturn(mockNotification)
-        }
         val mockPackageManager = mock<PyPackageManager> {
             on { packages } doReturn(listOf())
         }
-        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
-        PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance)
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Completed checking packages"), anyOrNull(), any(), eq(NotificationType.INFORMATION), anyOrNull())
-        verify(mockNotification, times(1)).notify(project)
+        assertEquals(PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance), 0)
     }
 
     @Test
     fun `test ok packages`(){
-        val mockNotification = mock<Notification> {
-            on { notify(any()) } doAnswer {}
-        }
-        val mockNotificationGroup = mock<NotificationGroup> {
-            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>(), anyOrNull())} doReturn(mockNotification)
-        }
         val testPackage1 = mock<PyPackage> {
             on { name } doReturn "good"
             on { version } doReturn "0.4.0"
@@ -148,23 +106,13 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
         val mockPackageManager = mock<PyPackageManager> {
             on { packages } doReturn(listOf(testPackage1))
         }
-        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
-        PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance)
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Completed checking packages"), anyOrNull(), any(), eq(NotificationType.INFORMATION), anyOrNull())
-        verify(mockNotification, times(1)).notify(project)
+        assertEquals(PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance), 0)
         verify(testPackage1, times(1)).name
         verify(mockPackageManager, times(2)).packages
     }
 
     @Test
     fun `test bad packages`(){
-        val mockNotification = mock<Notification> {
-            on { notify(any()) } doAnswer {}
-        }
-        val mockNotificationGroup = mock<NotificationGroup> {
-            on { createNotification( any(), anyOrNull(), any(), any<NotificationType>(), anyOrNull())} doReturn(mockNotification)
-            on { createNotification( any(), anyOrNull(), any(), any(), any())} doReturn(mockNotification)
-        }
         val testPackage1 = mock<PyPackage> {
             on { name } doReturn "apples"
             on { toString() } doReturn "apples"
@@ -178,12 +126,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
         val mockPackageManager = mock<PyPackageManager> {
             on { packages } doReturn(listOf(testPackage1, testPackage2))
         }
-        PyPackageSecurityScan.NOTIFICATION_GROUP = mockNotificationGroup
-        PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance)
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Completed checking packages"), anyOrNull(), any(), eq(NotificationType.WARNING), anyOrNull())
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Found Security Vulnerability in apples package"), anyOrNull(), any(), eq(NotificationType.WARNING), any())
-        verify(mockNotificationGroup, times(1)).createNotification( eq("Found Security Vulnerability in bananas package"), anyOrNull(), any(), eq(NotificationType.WARNING), any())
-        verify(mockNotification, times(3)).notify(project)
+        assertEquals(PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance), 2)
         verify(testPackage1, times(2)).name
         verify(mockPackageManager, times(2)).packages
     }
