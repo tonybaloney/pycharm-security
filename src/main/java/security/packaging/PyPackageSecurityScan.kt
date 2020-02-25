@@ -16,40 +16,43 @@ import security.settings.SecuritySettings
 object PyPackageSecurityScan {
     var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
 
-    fun checkPackages(project: Project){
+    fun checkPackages(project: Project): Boolean?{
         val pythonSdks = getPythonSdks(project)
         if (pythonSdks.isEmpty()){
             returnError(project)
-            return
+            return null
         }
         try {
             if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Disabled)
-                return
+                return false
             else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Bundled)
                 checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
             else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Api)
                 checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey, SecuritySettings.instance.pyupApiUrl))
             else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Custom)
                 checkPackagesInSdks(pythonSdks, project, SafetyDbChecker("", SecuritySettings.instance.pyupCustomUrl))
-
+            return true
         } catch (ex: SafetyDbLoadException){
             backendError(project, ex.message)
+            return null
         }
     }
 
-    fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: SafetyDbChecker) {
+    fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: SafetyDbChecker): Int {
+        var total = 0
         for (sdk in pythonSdks) {
             val packageManager = PyPackageManager.getInstance(sdk)
             packageManager.refreshAndGetPackages(true)
-            inspectLocalPackages(packageManager, project, packageChecker)
+            total += inspectLocalPackages(packageManager, project, packageChecker) ?: 0
         }
+        return total
     }
 
-    fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: SafetyDbChecker) {
+    fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: SafetyDbChecker): Int? {
         var matches = 0
         if (packageManager.packages == null) {
             returnError(project)
-            return
+            return null
         }
         packageManager.packages!!.filter { packageChecker.hasMatch(it) }.forEach { pack ->
             packageChecker.getMatches(pack).forEach { issue ->
@@ -57,10 +60,12 @@ object PyPackageSecurityScan {
                 showFoundIssueWarning(pack, issue, project)
             }
         }
-        if (matches == 0)
+        if (matches == 0) {
             showNoMatchesInformation(project)
-        else
-            showTotalIssuesWarning(matches, project)
+            return 0
+        }
+        showTotalIssuesWarning(matches, project)
+        return matches
     }
 
     private fun backendError(project: Project, message: String?){
