@@ -13,23 +13,14 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Build PC-2019.3.3
-      uses: eskatos/gradle-command-action@v1
-      with:
-        arguments: build -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-2019.3.3
     - name: Test PC-2019.3.3
       uses: eskatos/gradle-command-action@v1
       with:
         arguments: test -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-2019.3.3
-    - name: Build PC-201.5616-EAP-CANDIDATE-SNAPSHOT
-      uses: eskatos/gradle-command-action@v1
-      with:
-        arguments: build -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-201.5616-EAP-CANDIDATE-SNAPSHOT
     - name: Test 201.5616-EAP-CANDIDATE-SNAPSHOT
       uses: eskatos/gradle-command-action@v1
       with:
         arguments: test -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-201.5616-EAP-CANDIDATE-SNAPSHOT
-
     - uses: eskatos/gradle-command-action@v1
       with:
         arguments: jacocoTestReport -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-2019.3.3
