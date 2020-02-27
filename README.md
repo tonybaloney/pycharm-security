@@ -17,11 +17,9 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 
 ## Demo
 
-Check out the webinar for a full demo of the functionality in this plugin
+Check out the webinar for a full demo of the functionality in this plugin:
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
-<iframe src="//www.youtube.com/embed/zVIfH89oWno" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-</div>
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/zVIfH89oWno/0.jpg)](https://www.youtube.com/watch?v=zVIfH89oWno)
 
 ## Documentation
 
