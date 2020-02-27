@@ -70,7 +70,7 @@
     <extensions defaultExtensionNs="Pythonid">
     </extensions>
     <actions>
-        <action id="Security.CheckSafetyDB" class="security.packaging.SafetyDbCheckerAction" text="Check Python Package Security" description="Check the installed Python packages for any known vulnerabilities." >
+        <action id="Security.CheckSafetyDB" class="security.packaging.PackageCheckerAction" text="Check Python Package Security" description="Check the installed Python packages for any known vulnerabilities." >
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>

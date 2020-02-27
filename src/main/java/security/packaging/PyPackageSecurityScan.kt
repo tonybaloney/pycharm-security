@@ -31,14 +31,16 @@ object PyPackageSecurityScan {
                 checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey, SecuritySettings.instance.pyupApiUrl))
             else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Custom)
                 checkPackagesInSdks(pythonSdks, project, SafetyDbChecker("", SecuritySettings.instance.pyupCustomUrl))
+            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Snyk)
+                checkPackagesInSdks(pythonSdks, project, SnykChecker(SecuritySettings.instance.snykApiKey, SecuritySettings.instance.snykOrgId))
             return true
-        } catch (ex: SafetyDbLoadException){
+        } catch (ex: PackageCheckerLoadException){
             backendError(project, ex.message)
             return null
         }
     }
 
-    fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: SafetyDbChecker): Int {
+    fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: PackageChecker): Int {
         var total = 0
         for (sdk in pythonSdks) {
             val packageManager = PyPackageManager.getInstance(sdk)
@@ -48,7 +50,7 @@ object PyPackageSecurityScan {
         return total
     }
 
-    fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: SafetyDbChecker): Int? {
+    fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: PackageChecker): Int? {
         var matches = 0
         if (packageManager.packages == null) {
             returnError(project)
@@ -71,7 +73,7 @@ object PyPackageSecurityScan {
     private fun backendError(project: Project, message: String?){
         NOTIFICATION_GROUP
                 .createNotification("Could not check Python packages", null,
-                        "Could not fetch SafetyDB to validate records. Check your API details.\n$message",
+                        "Could not fetch API to validate records. Check your API details.\n$message",
                         NotificationType.ERROR)
                 .notify(project)
     }
@@ -100,21 +102,13 @@ object PyPackageSecurityScan {
                 .notify(project)
     }
 
-    private fun showFoundIssueWarning(pack: PyPackage?, issue: SafetyDbChecker.SafetyDbRecord, project: Project) {
+    private fun showFoundIssueWarning(pack: PyPackage?, issue: PackageIssue, project: Project) {
         NOTIFICATION_GROUP
                 .createNotification("Found Security Vulnerability in $pack package", null,
-                        renderMessage(issue),
+                        issue.getMessage(),
                         NotificationType.WARNING,
                         NotificationListener.URL_OPENING_LISTENER
                 ).notify(project)
-    }
-
-    fun renderMessage(issue: SafetyDbChecker.SafetyDbRecord) : String {
-        return if (issue.cve.isNullOrEmpty()){
-            issue.advisory
-        } else {
-            "${issue.advisory}<br>See <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=${issue.cve}'>${issue.cve}</a>"
-        }
     }
 
     fun getPythonSdks(project: Project): Set<Sdk> {

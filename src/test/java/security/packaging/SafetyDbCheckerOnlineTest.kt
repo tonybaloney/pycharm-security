@@ -15,6 +15,6 @@ class SafetyDbCheckerOnlineTest {
 
     @Test
     fun `test online resource bad URL`(){
-        assertThrows(SafetyDbLoadException::class.java) { SafetyDbChecker("key", "https://bad.bad/bad/") }
+        assertThrows(PackageCheckerLoadException::class.java) { SafetyDbChecker("key", "https://bad.bad/bad/") }
     }
 }

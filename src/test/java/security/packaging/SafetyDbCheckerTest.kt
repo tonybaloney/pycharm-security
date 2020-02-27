@@ -220,12 +220,13 @@ internal class SafetyDbCheckerTest {
         verify(testPackage, times(2)).version
 
         assertEquals(matches.size, 1)
-        assertEquals(matches[0].v, "<0.6.0")
-        assertEquals(matches[0].advisory, "aiocouchdb 0.6.0 now correctly set members for database security.")
-        assertNull(matches[0].cve)
-        assertEquals(matches[0].id, "pyup.io-25612")
-        assertEquals(matches[0].specs.size, 1)
-        assertEquals(matches[0].specs[0], "<0.6.0")
+        assertEquals(matches[0].record.v, "<0.6.0")
+        assertEquals(matches[0].record.advisory, "aiocouchdb 0.6.0 now correctly set members for database security.")
+        assertNull(matches[0].record.cve)
+        assertEquals(matches[0].record.id, "pyup.io-25612")
+        assertEquals(matches[0].record.specs.size, 1)
+        assertEquals(matches[0].record.specs[0], "<0.6.0")
+        assertTrue(matches[0].getMessage().isNotBlank())
     }
 
     @Test

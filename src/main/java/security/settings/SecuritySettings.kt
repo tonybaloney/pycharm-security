@@ -1,6 +1,9 @@
 package security.settings
 
-import com.intellij.openapi.components.*
+import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.components.State
+import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 
 @State(name = "PythonSecuritySettings", storages = [Storage("python-security.xml")])
@@ -23,6 +26,18 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
         get() = state.PYUP_CUSTOM_URL
         set(value) {
             state.PYUP_CUSTOM_URL = value
+        }
+
+    var snykApiKey: String
+        get() = state.SNYK_API_KEY
+        set(value) {
+            state.SNYK_API_KEY = value
+        }
+
+    var snykOrgId: String
+        get() = state.SNYK_ORG_ID
+        set(value) {
+            state.SNYK_ORG_ID = value
         }
 
     var safetyDbMode: SafetyDbType
@@ -51,13 +66,16 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
         var PYUP_CUSTOM_URL: String = "https://raw.githubusercontent.com/pyupio/safety-db/master/data/"
         var SAFETY_DB_MODE: SafetyDbType = SafetyDbType.Bundled
         var IGNORE_DOCSTRINGS: Boolean = true
+        var SNYK_API_KEY: String = ""
+        var SNYK_ORG_ID: String = ""
     }
 
     enum class SafetyDbType {
         Disabled,
         Bundled,
         Api,
-        Custom
+        Custom,
+        Snyk
     }
 
     companion object {
