@@ -15,6 +15,14 @@ A plugin to run security checks for common flaws in Python code and suggest quic
 * Available as a GitHub Action for your CI/CD workflow [on the GitHub Marketplace](https://github.com/marketplace/actions/pycharm-python-security-scanner).
 * Available as a standalone container image [on the Docker Hub](https://hub.docker.com/r/anthonypjshaw/pycharm-security)
 
+## Demo
+
+Check out the webinar for a full demo of the functionality in this plugin
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+<iframe src="//www.youtube.com/embed/zVIfH89oWno" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div>
+
 ## Documentation
 
 Documentation is available on [pycharm-security.readthedocs.io](https://pycharm-security.readthedocs.io/en/latest/?badge=latest), including examples and explanations for all the checks.
