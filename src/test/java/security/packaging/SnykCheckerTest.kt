@@ -24,7 +24,7 @@ internal class SnykCheckerTest {
         checker.baseUrl = testUrl
         assertTrue(checker.hasMatch(testPackage))
         val match = checker.getMatches(testPackage)
-        assertEquals(match.first().record.id, "FOO")
+        assertEquals(match.first().record.id, "SNYK-PYTHON-RSA-40541")
         assertTrue(match.first().getMessage().isNotBlank())
     }
 }

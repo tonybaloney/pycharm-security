@@ -133,15 +133,15 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
 
     @Test
     fun `test render renderMessage with null cve record`(){
-        val record = SafetyDbChecker.SafetyDbRecord("Test is bad", null, "xyz", listOf("<= 1.0.0"), "<= 1.0.0")
-        val message = PyPackageSecurityScan.renderMessage(record)
+        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord("Test is bad", null, "xyz", listOf("<= 1.0.0"), "<= 1.0.0"))
+        val message = record.getMessage()
         assertFalse(message.isEmpty())
     }
 
     @Test
     fun `test render renderMessage with valid cve record`(){
-        val record = SafetyDbChecker.SafetyDbRecord("Test is bad", "CVE-2020-123.3", "xyz", listOf("<= 1.0.0"), "<= 1.0.0")
-        val message = PyPackageSecurityScan.renderMessage(record)
+        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord("Test is bad", "CVE-2020-123.3", "xyz", listOf("<= 1.0.0"), "<= 1.0.0"))
+        val message = record.getMessage()
         assertFalse(message.isEmpty())
     }
 }
