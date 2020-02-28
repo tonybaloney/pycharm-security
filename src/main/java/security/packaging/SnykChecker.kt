@@ -17,7 +17,7 @@ class SnykChecker (val apiKey: String, val orgId: String ): BasePackageChecker()
 
     class SnykIssue (val record: SnykRecord): PackageIssue {
         override fun getMessage(): String {
-            return "${record.title} (${record.severity} severity) found in ${record.`package`}. <br/>See <a href='${record.url}'>${record.id}</a>"
+            return "${record.title} (${record.severity} severity) found in ${record.`package`} impacting version ${record.version}. <br/>See <a href='${record.url}'>${record.id}</a> for details"
         }
     }
 

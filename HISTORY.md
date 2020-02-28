@@ -3,6 +3,7 @@
 ## 1.13.0 (master)
 
 * Extended the behaviour of [DJG102](doc/checks/DJG102.md) to not raise a warning when the safe string input is a string literal [pull#87](pull/87)
+* Added support for [snyk.io](https://snyk.io) as the vulnerability database. Snyk offers an up to date and in-depth database of Python package issues.
 
 ## 1.12.0
 

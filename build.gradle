@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.12.0'
+version '1.13.0'
 
 repositories {
     mavenCentral()
@@ -39,12 +39,10 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.12.0</h2>
+      <h2>1.13.0</h2>
       <ul>
-        <li>Added [DJG103] to look for use of the Django `extra()` API on a query set with quoted parameters.</li>
-        <li>Extended [DJG102] to include quoted templated variable names, e.g. `'%(variable)s'`</li>
-        <li>Added [DJG104] to inspect usage of the Django Expression APIs with dangerous templates vulnerable to SQL injection.</li>
-        <li>Modified [TRY100] to only verify `Exception` and no exception specified.</li>
+        <li>Extended the behaviour of [DJG102] to not raise a warning when the safe string input is a string literal</li>
+        <li>Added support for <a href="https://snyk.io">snyk.io</a> as the vulnerability database. Snyk offers an up to date and indepth database of Python package issues.</li>
       </ul>
       """
 }
