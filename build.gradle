@@ -49,7 +49,7 @@ patchPluginXml {
 
 publishPlugin {
     token intellijPublishToken
-    channels 'beta'
+    // channels 'beta'
 }
 
 jacocoTestReport {
