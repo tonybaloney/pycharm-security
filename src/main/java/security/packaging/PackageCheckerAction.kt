@@ -6,7 +6,7 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 
-class SafetyDbCheckerAction: AnAction() {
+class PackageCheckerAction: AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         if (e.project?.isDisposed!!) return
         ProgressManager.getInstance().run(object : Task.Backgroundable(e.project, "Checking Python packages for known CVEs", false) {

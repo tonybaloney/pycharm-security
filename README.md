@@ -29,7 +29,14 @@ Documentation is available on [pycharm-security.readthedocs.io](https://pycharm-
 
 Documentation for the GitHub action is [on the documentation site](https://pycharm-security.readthedocs.io/en/latest/github.html).
 
-## SafetyDB
+## Snyk Support
+
+Plugin has support for [snyk.io](https://snyk.io) as the vulnerability database. Snyk offers an up to date and in-depth database of Python package issues.
+Your installed packages will be checked against a live database of PyPi issues (subscription required.)
+
+![](doc/_static/snyk-screenshot.png)
+
+## Bundled SafetyDB
 
 This plugin will check the installed packages in your Python projects against the SafetyDB and raise a warning for any vulnerabilities.
 

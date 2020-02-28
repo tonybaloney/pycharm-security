@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class SafetyDbCheckerActionTest : BasePlatformTestCase() {
+internal class PackageCheckerActionTest : BasePlatformTestCase() {
 
     @BeforeAll
     override fun setUp() {
@@ -23,7 +23,7 @@ internal class SafetyDbCheckerActionTest : BasePlatformTestCase() {
 
     @Test
     fun `test action loaded`() {
-        var action = SafetyDbCheckerAction()
+        var action = PackageCheckerAction()
         action.actionPerformed(TestActionEvent())
         TestCase.assertTrue(true)
     }

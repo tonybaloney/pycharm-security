@@ -1,0 +1,30 @@
+package security.packaging
+
+import com.jetbrains.python.packaging.PyPackage
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+
+internal class SnykCheckerTest {
+    val testPackage = PyPackage("rsa", "3.4.0", null, listOf())
+    val testUrl = "https://private-anon-c1f72ebc65-snyk.apiary-mock.com/api/v1"
+
+    @Test
+    fun `test rsa package has match on test API`() {
+        val checker = SnykChecker("test", "test")
+        // Use the mock API
+        checker.baseUrl = testUrl
+        assertTrue(checker.hasMatch(testPackage))
+    }
+
+    @Test
+    fun `test single match`() {
+        val checker = SnykChecker("test", "test")
+        // Use the mock API
+        checker.baseUrl = testUrl
+        assertTrue(checker.hasMatch(testPackage))
+        val match = checker.getMatches(testPackage)
+        assertEquals(match.first().record.id, "SNYK-PYTHON-RSA-40541")
+        assertTrue(match.first().getMessage().isNotBlank())
+    }
+}
