@@ -39,6 +39,7 @@ object Checks {
     val XmlRpcServerDottedNamesCheck = CheckType("XML200", "Using allow_dotted_names option may allow attackers to execute arbitrary code.")
     val SslWrapSocketNoVersionCheck = CheckType("SSL100", "Calling wrap_socket without specifying an ssl_version could use an insecure default.")
     val SslBadProtocolsCheck = CheckType("SSL101", "Calling wrap_socket with insecure protocols.")
+    val StrFormatInspectionCheck = CheckType("STR100", "Calling format with insecure string.")
     val ShellInjectionCheck = CheckType("SH100", "Potential shell injection with unescaped input.")
     val SpawnShellInjectionCheck = CheckType("SH101", "Potentially risky call to spawned process. Check inputs for validation.")
 
