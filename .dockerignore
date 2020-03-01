@@ -1,0 +1,4 @@
+# Ignore files
+.git*
+.idea/*
+build/*
