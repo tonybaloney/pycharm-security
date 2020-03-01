@@ -76,7 +76,7 @@ class TryExceptContinueInspectionTest: SecurityTestTask() {
             except Exception:
                 continue
         """.trimIndent()
-        testTryExceptStatement(code, 2, Checks.TryExceptContinueCheck, "my_file.py", TryExceptContinueInspection())
+        testTryExceptStatement(code, 1, Checks.TryExceptContinueCheck, "my_file.py", TryExceptContinueInspection())
     }
 
     @Test
@@ -84,7 +84,7 @@ class TryExceptContinueInspectionTest: SecurityTestTask() {
         var code = """
             try:
                 x = 1
-            except RuntimeException:
+            except Exception:
                 # do nothing
                 continue
         """.trimIndent()
@@ -96,7 +96,7 @@ class TryExceptContinueInspectionTest: SecurityTestTask() {
         var code = """
             try:
                 x = 1
-            except RuntimeException:
+            except Exception:
                 x = 2
                 continue
         """.trimIndent()
