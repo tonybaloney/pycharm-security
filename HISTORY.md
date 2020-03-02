@@ -1,6 +1,11 @@
 # Release History
 
-## 1.13.0 (master)
+## 1.14.0 (master)
+
+* Reduced size of Docker image [pull#98](pull/98)
+* Bugfix on TRY100 raising false-positives. Fixes [issues#88](issues/88) - [pull#97](pull/97)
+
+## 1.13.0
 
 * Extended the behaviour of [DJG102](doc/checks/DJG102.md) to not raise a warning when the safe string input is a string literal [pull#87](pull/87)
 * Added support for [snyk.io](https://snyk.io) as the vulnerability database. Snyk offers an up to date and in-depth database of Python package issues.
