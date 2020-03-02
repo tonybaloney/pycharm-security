@@ -38,7 +38,8 @@ class TryExceptContinueInspection : PyInspection() {
                 if (statements.isNullOrEmpty()) continue
                 // Check except block contains something other than comments and a continue statement
                 if (statements.first().statements.any{ it !is PyContinueStatement && it !is PsiComment}) continue
-                holder.registerProblem(part, Checks.TryExceptContinueCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
+                if (part.exceptClass == null || part.exceptClass!!.text == "Exception")
+                    holder.registerProblem(part, Checks.TryExceptContinueCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
             }
         }
     }
