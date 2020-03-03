@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.13.0'
+version '1.13.0-EAP'
 
 repositories {
     mavenCentral()
@@ -34,7 +34,7 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2019.3.3'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '201-EAP-SNAPSHOT'
 
 
 patchPluginXml {
