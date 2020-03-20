@@ -39,10 +39,10 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.13.0</h2>
+      <h2>1.14.0</h2>
       <ul>
-        <li>Extended the behaviour of [DJG102] to not raise a warning when the safe string input is a string literal</li>
-        <li>Added support for <a href="https://snyk.io">snyk.io</a> as the vulnerability database. Snyk offers an up to date and indepth database of Python package issues.</li>
+        <li>Added [STR100] for insecure format strings</li>
+        <li>Bugfix on TRY100 raising false-positives</li>
       </ul>
       """
 }

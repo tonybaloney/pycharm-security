@@ -54,8 +54,11 @@ object Checks {
             return "<a href='https://pycharm-security.readthedocs.io/en/latest/checks/$Code.html'>See $Code documentation</a>"
         }
 
-        fun getDescription(): String {
-            return "$this Found in '#ref'."
+        fun getDescription(includeLine: Boolean = true): String {
+            if (includeLine)
+                return "$this Found in '#ref'."
+            else
+                return "$this."
         }
 
         fun getStaticDescription(): String {
