@@ -1,9 +1,10 @@
 # Release History
 
-## 1.14.0 (master)
+## 1.14.0
 
 * Reduced size of Docker image [pull#98](pull/98)
 * Bugfix on TRY100 raising false-positives. Fixes [issues#88](issues/88) - [pull#97](pull/97)
+* Added [STR100] for insecure format strings
 
 ## 1.13.0
 
