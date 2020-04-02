@@ -1,8 +1,9 @@
 <h1>STR100</h1>
 <p>String format function allows access to protected attributes, is someone are able to manage the format string can access to sensible information.</p>
 <h2>Example</h2>
-<pre><code class="python">CONFIG = {
-    &#39;SECRET_KEY&#39;: &#39;super secret key&#39;
+<pre><code class="python">
+CONFIG = {
+    'SECRET_KEY': 'super secret key'
 }
 
 class Event(object):
@@ -14,7 +15,7 @@ class Event(object):
 def format_event(format_string, event):
     return format_string.format(event=event)
 </code></pre>
-<p>If <code>format_event</code> is executed with <code>format_string = &quot;{event.__init__.__globals__[CONFIG][SECRET_KEY]}&quot;</code>, the secret_key will be read</p>
+<p>If <code>format_event</code> is executed with <code>format_string = "{event.__init__.__globals__[CONFIG][SECRET_KEY]}"</code>, the secret_key will be read</p>
 <h2>Fixes</h2>
 <ul>
   <li>Replace using string.Template</li>
@@ -22,6 +23,6 @@ def format_event(format_string, event):
 </ul>
 <h2>See Also</h2>
 <ul>
-  <li><a href="https://lucumr.pocoo.org/2016/12/29/careful-with-str-format/">Be Careful with Python's New-Style String Format</a></li>
-  <li><a href="https://palletsprojects.com/blog/jinja-281-released/">Jinja 2.8.1 Security Release</a></li>
+    <li><a href="https://lucumr.pocoo.org/2016/12/29/careful-with-str-format/">Be Careful with Python's New-Style String Format</a></li>
+    <li><a href="https://palletsprojects.com/blog/jinja-281-released/">Jinja 2.8.1 Security Release</a>
 </ul>
