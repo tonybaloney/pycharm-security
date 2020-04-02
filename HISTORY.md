@@ -1,5 +1,9 @@
 # Release History
 
+## 1.15.0
+
+* Updated SafetyDB to latest version (April 2020)
+
 ## 1.14.0
 
 * Reduced size of Docker image [pull#98](pull/98)
