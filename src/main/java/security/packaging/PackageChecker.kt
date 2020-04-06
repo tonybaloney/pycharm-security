@@ -40,11 +40,11 @@ abstract class BasePackageChecker: PackageChecker {
 
     private fun parseVersionSpec(versionSpec: String): PyRequirementVersionSpec? {
         val relation: PyRequirementRelation?
-        if (tripleRequirementMap.containsKey(versionSpec.substring(0, 3)))
+        if (versionSpec.length >= 3 && tripleRequirementMap.containsKey(versionSpec.substring(0, 3)))
             relation = tripleRequirementMap[versionSpec.substring(0, 3)]
-        else if (doubleRequirementMap.containsKey(versionSpec.substring(0, 2)))
+        else if (versionSpec.length >= 2 && doubleRequirementMap.containsKey(versionSpec.substring(0, 2)))
             relation = doubleRequirementMap[versionSpec.substring(0, 2)]
-        else if (singleRequirementMap.containsKey(versionSpec.substring(0, 1)))
+        else if (versionSpec.length >= 1 && singleRequirementMap.containsKey(versionSpec.substring(0, 1)))
             relation = singleRequirementMap[versionSpec.substring(0, 1)]
         else
             return null

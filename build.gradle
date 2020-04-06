@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.15.0-EAP'
+version '1.15.1-EAP'
 
 repositories {
     mavenCentral()
@@ -34,14 +34,14 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '201.6668-EAP-CANDIDATE-SNAPSHOT'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2019.3.3'
 
 
 patchPluginXml {
     changeNotes """
-      <h2>1.15.0</h2>
+      <h2>1.15.1</h2>
       <ul>
-        <li>Updated SafetyDB to latest version (April 2020).</li>
+        <li>Fix bug causing plugin to crash when scanning packages.</li>
       </ul>
       """
 }
