@@ -1,5 +1,9 @@
 # Release History
 
+## 1.15.1
+
+* Fix crash on scanning package security [issues#105(issues/105)
+
 ## 1.15.0
 
 * Updated SafetyDB to latest version (April 2020)

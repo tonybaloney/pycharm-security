@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.15.0'
+version '1.15.1'
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.15.0</h2>
+      <h2>1.15.1</h2>
       <ul>
-        <li>Updated SafetyDB to latest version (April 2020)</li>
+        <li>Fix crash on checking package security</li>
       </ul>
       """
 }
