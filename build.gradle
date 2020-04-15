@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.15.1'
+version '1.16.0'
 
 repositories {
     mavenCentral()
@@ -34,14 +34,14 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2019.3.3'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2020.1'
 
 
 patchPluginXml {
     changeNotes """
-      <h2>1.15.1</h2>
+      <h2>1.16.0</h2>
       <ul>
-        <li>Fix crash on checking package security</li>
+        <li>Primary suport for 2020 IDEs.</li>
       </ul>
       """
 }

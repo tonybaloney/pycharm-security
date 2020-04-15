@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        pycharm-version: ['PC-2019.3.3']
+        pycharm-version: ['2020.1']
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
@@ -27,7 +27,7 @@ jobs:
         java-version: 11
     - uses: eskatos/gradle-command-action@v1
       with:
-        arguments: jacocoTestReport -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-2019.3.3
+        arguments: jacocoTestReport -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=PC-2020.1
     - name: Codecov
       uses: codecov/codecov-action@v1.0.5
       with:
