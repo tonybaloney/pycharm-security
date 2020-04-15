@@ -1,5 +1,9 @@
 # Release History
 
+## 1.16.0
+
+* Use PyCharm 2020 as the primary build target
+
 ## 1.15.1
 
 * Fix crash on scanning package security [issues#105(issues/105)
