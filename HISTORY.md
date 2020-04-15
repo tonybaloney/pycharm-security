@@ -2,7 +2,7 @@
 
 ## 1.15.1
 
-* Fix bug in safetydb scan [issues#105](issues/105)
+* Fix crash on scanning package security [issues#105(issues/105)
 
 ## 1.15.0
 
