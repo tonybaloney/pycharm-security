@@ -4,6 +4,7 @@ echo "Scanning $1 with profile $2"
 /opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 2> errors.log
 
 set -e
+echo "::set-output name=result::out/"
 HASWARNINGS=0
 for i in $(find out -name "*.json"); do
     RUNHASWARNINGS=0
@@ -11,7 +12,6 @@ for i in $(find out -name "*.json"); do
     if [ $RUNHASWARNINGS -ne 0 ]; then
         HASWARNINGS=1
     fi
-    echo "::set-output name=result::$i"
 done
 
 if [ $HASWARNINGS -ne 0 ]; then
