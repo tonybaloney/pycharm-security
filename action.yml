@@ -14,9 +14,6 @@ inputs:
     description: 'Fail the task if warnings were found in the code'
     required: false
     default: "no"
-  exclude:
-    description: 'Exclude path from scan'
-    required: false
 outputs:
   result:
     description: 'Results from the scan'
@@ -27,7 +24,6 @@ runs:
     - ${{ inputs.path }}
     - ${{ inputs.profile }}
     - ${{ inputs.fail_on_warnings }}
-    - ${{ inputs.exclude }}
 branding:
   icon: 'lock'
   color: 'blue'

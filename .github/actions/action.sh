@@ -1,13 +1,7 @@
 #!/bin/sh -l
 cd /github/workspace
 echo "Scanning $1 with profile $2"
-if ["$4" != ""]; then
-  EXCLUDE="-e \"$4\""
-else
-  EXCLUDE=""
-fi
-mkdir out
-/opt/pycharm-community/bin/inspect.sh -d "$1" -profilePath "$2" out/ -format json -v0 $EXCLUDE 2> errors.log
+/opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 2> errors.log
 
 set -e
 HASWARNINGS=0
