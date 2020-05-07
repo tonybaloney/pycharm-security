@@ -1,7 +1,8 @@
 #!/bin/sh -l
 cd /github/workspace
 echo "Scanning $1 with profile $2"
-/opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 2> errors.log
+python3 -m venv "$1/venv/"
+/opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 -d "$4" 2> errors.log
 
 set -e
 echo "::set-output name=result::out/"

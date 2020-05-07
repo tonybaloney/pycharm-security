@@ -3,7 +3,7 @@ author: 'Anthony Shaw'
 description: 'Scan your Python Code for security issues'
 inputs:
   path:
-    description: 'Subdirectory to scan within workdir'
+    description: 'Project Directory'
     required: false
     default: '.'
   profile:
@@ -14,6 +14,10 @@ inputs:
     description: 'Fail the task if warnings were found in the code'
     required: false
     default: "no"
+  source:
+    description: 'Subdirectory within path containing Python source'
+    required: false
+    default: '.'
 outputs:
   result:
     description: 'Results from the scan'
@@ -24,6 +28,7 @@ runs:
     - ${{ inputs.path }}
     - ${{ inputs.profile }}
     - ${{ inputs.fail_on_warnings }}
+    - ${{ inputs.source }}
 branding:
   icon: 'lock'
   color: 'blue'
