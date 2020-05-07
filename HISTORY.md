@@ -1,5 +1,10 @@
 # Release History
 
+## 1.17.0 
+
+* Added a source path argument to the GitHub action
+* Added a result output to the GitHub action
+
 ## 1.16.0
 
 * Use PyCharm 2020 as the primary build target
