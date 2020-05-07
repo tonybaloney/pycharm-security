@@ -6,7 +6,7 @@ if ["$4" != ""]; then
 else
   EXCLUDE=""
 fi
-/opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 $EXCLUDE 2> errors.log
+/opt/pycharm-community/bin/inspect.sh -d "$1" -profilePath "$2" out/ -format json -v0 $EXCLUDE 2> errors.log
 
 set -e
 HASWARNINGS=0
