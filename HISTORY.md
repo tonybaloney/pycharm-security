@@ -1,5 +1,9 @@
 # Release History
 
+## 1.18.0
+
+* Added [SQL200](doc/checks/SQL200.md) for inspection of insecure SQLalchemy method calls
+
 ## 1.17.0 
 
 * Added a source path argument to the GitHub action
@@ -21,7 +25,7 @@
 
 * Reduced size of Docker image [pull#98](pull/98)
 * Bugfix on TRY100 raising false-positives. Fixes [issues#88](issues/88) - [pull#97](pull/97)
-* Added [STR100] for insecure format strings
+* Added [STR100](doc/checks/STR100.md) for insecure format strings
 
 ## 1.13.0
 

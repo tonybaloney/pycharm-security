@@ -1,0 +1,34 @@
+<h1>SQL200</h1>
+<p>Looks for SQL injection in the SQLalchemy library.</p>
+<ul>
+  <li>Use of <code>text()</code> function to construct parameters on non-literal input</li>
+  <li>Use of the <code>.suffix_with()</code> and <code>.prefix_with()</code> methods on a query object with unsafe input</li>
+</ul>
+<h2>Examples</h2>
+<p>Use of the SQLalchemy with a <code>text()</code> fragment can expose the constructed query to SQL injection.</p>
+<p>For example, this query should generate </p>
+<pre><code class="python">part = f&quot;age&lt;{age}&quot;  # exploitable, can override the original filter.
+_x = session.query(User).filter(User.username == user).filter(text(part)).all()
+</code></pre>
+<p>With an input of <code>age = 224</code>:</p>
+<pre><code class="sql">SELECT users.id AS users_id, users.name AS users_name, users.fullname AS users_fullname FROM users WHERE users.id = ? AND age &lt; 224 OR 1=1
+</code></pre>
+<p>If the <code>age</code> argument was <code>224 OR 1=1</code>, the query would bypass the filter:</p>
+<pre><code class="sql">SELECT users.id AS users_id, users.name AS users_name, users.fullname AS users_fullname FROM users WHERE users.id = ? AND id&lt;224 OR 1=1
+</code></pre>
+<p>Both the <code>.suffix_with()</code> and <code>.prefix_with()</code> methods are vulnerable to unsafe input.</p>
+<pre><code class="python">suffix = &quot; OR 1=1&quot;  # Example exploiting suffix to add/change WHERE clause
+prefix = &quot; *,&quot;  # Example exploiting query to get all fields
+stmt = select([users.c.name]).where(users.c.id == 1).suffix_with(suffix, dialect=&quot;sqlite&quot;)
+conn.execute(stmt)
+
+stmt2 = select([addresses]).prefix_with(prefix)  # can be chained
+conn.execute(stmt2)
+</code></pre>
+<p>Direct execution of vulnerable queries will be caught by SQL100:</p>
+<pre><code class="python">connection.execute(&quot;SELECT email_address FROM addresses WHERE email_address = \&#39;{}\&#39;&quot;.format(unsafe_input))
+</code></pre>
+<h2>Fixes</h2>
+<p>Replace with native SQLalchemy queries using the API instead of creating direct SQL.</p>
+<h2>See Also</h2>
+<p><a href="https://realpython.com/prevent-python-sql-injection/">RealPython.com article on SQL injection</a></p>
