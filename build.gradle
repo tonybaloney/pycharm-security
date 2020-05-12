@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.16.0'
+version '1.18.0'
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.16.0</h2>
+      <h2>1.18.0</h2>
       <ul>
-        <li>Primary suport for 2020 IDEs.</li>
+        <li>Added [SQL200] for inspection of insecure SQLalchemy method calls</li>
       </ul>
       """
 }

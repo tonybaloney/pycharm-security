@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 internal class SnykCheckerTest {
     val testPackage = PyPackage("rsa", "3.4.0", null, listOf())
-    val testUrl = "https://private-anon-c1f72ebc65-snyk.apiary-mock.com/api/v1"
+    val testUrl = "https://private-anon-fb110a8acb-snyk.apiary-mock.com/api/v1"
 
     @Test
     fun `test rsa package has match on test API`() {
