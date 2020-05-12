@@ -42,6 +42,8 @@ object Checks {
     val StrFormatInspectionCheck = CheckType("STR100", "Calling format with insecure string.")
     val ShellInjectionCheck = CheckType("SH100", "Potential shell injection with unescaped input.")
     val SpawnShellInjectionCheck = CheckType("SH101", "Potentially risky call to spawned process. Check inputs for validation.")
+    val SqlAlchemyUnsafeQueryCheck = CheckType("SQL200", "Possible SQL injection through SQLAlchemy API")
+
 
     class CheckType(var Code: String, private var Message: String) {
         private var _staticDescription: String? = null
