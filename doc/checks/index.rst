@@ -25,6 +25,7 @@ The SQL100 check will cover most SQL injection techniques using Python's multipl
     :maxdepth: 1
 
     SQL100 : Possible SQL injection with Python string formatting <SQL100>
+    SQL200 : Possible SQL injection with SQLalchemy <SQL200>
 
 Shell
 ~~~~~
