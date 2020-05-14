@@ -19,6 +19,8 @@ object Checks {
     val DjangoExpressionCheck = CheckType("DJG104", "Instantiating Django Func expressions with a dangerous template.")
     val DjangoCsrfMiddlewareCheck = CheckType("DJG200", "Django middleware is missing CsrfViewMiddleware, which blocks cross-site request forgery.")
     val DjangoClickjackMiddlewareCheck = CheckType("DJG201", "Django middleware is missing XFrameOptionsMiddleware, which blocks clickjacking.")
+    val DjangoPermissionRequiredMixinCheck = CheckType("DJG300", "PermissionRequiredMixin missing either permission_required property or has_permission method.")
+    val DjangoPermissionRequiredMixinOrderCheck = CheckType("DJG301", "PermissionRequiredMixin must be the first inherited class.")
     val InsecureHashAlgorithms = CheckType("HL100", "MD4, MD5, SHA, and SHA1 hashing algorithms have cryptographically weak algorithms and should not be used for obfuscating or protecting data.")
     val LengthAttackHashAlgorithms = CheckType("HL101", "MD5, SHA-1, RIPEMD-160, Whirlpool, and the SHA-256 / SHA-512 hash algorithms are all vulnerable to length-extension attacks and should not be used for obfuscating or protecting data. Use within a HMAC is not vulnerable.")
     val TimingAttackCheck = CheckType("PW100", "Matching inputs, secrets or tokens using the == operator is vulnerable to timing attacks. Use compare_digest() instead.")
