@@ -44,7 +44,7 @@ class MakoFilterFixer: LocalQuickFix, IntentionAction, HighPriorityAction {
         if (autoescapeArgument != null) return null
         val elementGenerator = PyElementGenerator.getInstance(project)
         val newArg = elementGenerator.createKeywordArgument(file.languageLevel, "default_filters", "['h']")
-        newEl.argumentList?.addArgument(newArg)
+        addKeywordArgument(newEl, newArg)
         originalElement.replace(newEl)
         return newEl
     }
