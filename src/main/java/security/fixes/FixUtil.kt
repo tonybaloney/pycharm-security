@@ -12,7 +12,7 @@ fun getPyExpressionAtCaret(file: PsiFile, editor: Editor): PyExpression? {
 }
 
 fun getPyCallExpressionAtCaret(file: PsiFile, editor: Editor): PyCallExpression? {
-    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java) ?: return null
+    return PsiTreeUtil.getTopmostParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java) ?: return null
 }
 
 fun getListLiteralExpressionAtCaret(file: PsiFile, editor: Editor): PyListLiteralExpression? {
@@ -50,5 +50,14 @@ fun importFrom(file: PyFile, project: Project, target: String, component: String
             file.addAfter(newImportFrom, lastImport)
     } else {
         file.addBefore(newImportFrom, file.statements.first())
+    }
+}
+
+fun addKeywordArgument(pyCallExpression: PyCallExpression, pyKeywordArgument: PyKeywordArgument) {
+    val lastArgument = pyCallExpression.arguments.lastOrNull()
+    if (lastArgument == null) {
+        pyCallExpression.argumentList?.addArgument(pyKeywordArgument)
+    } else {
+        pyCallExpression.argumentList?.addArgumentAfter(pyKeywordArgument, lastArgument)
     }
 }

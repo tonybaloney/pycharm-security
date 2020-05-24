@@ -86,6 +86,16 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
     }
 
     @Test
+    fun `replace environment with nested keyword args`(){
+        var code = """
+            import jinja2
+            env = jinja2.Environment(loader=PackageLoader(package_path='yourapplication',package_name='templates'))
+        """.trimIndent()
+        val newCode = getNewFileForCode(code)
+        TestCase.assertEquals("jinja2.Environment(loader=PackageLoader(package_path='yourapplication',package_name='templates'),autoescape=True)", newCode)
+    }
+
+    @Test
     fun `replace environment with args and false value`(){
         val code = """
             import jinja2
@@ -182,6 +192,35 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
             assertNotNull(el)
             assertTrue(el is PyCallExpression)
             assertTrue(el!!.text.contains("Environment()"))
+        }
+
+        verify(mockEditor, Mockito.times(1)).caretModel
+        verify(mockCaretModel, Mockito.times(1)).offset
+    }
+
+    @Test
+    fun `test get top most expression at caret`(){
+        val code = """
+            import jinja2
+            env = jinja2.Environment(loader=PackageLoader(package_path='yourapplication',package_name='templates'))
+        """.trimIndent()
+
+        val mockCaretModel = mock<CaretModel> {
+            on { offset } doReturn 53
+        }
+        val mockEditor = mock<Editor> {
+            on { caretModel } doReturn mockCaretModel
+        }
+
+        ApplicationManager.getApplication().runReadAction {
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            assertNotNull(testFile)
+            val fixer = JinjaAutoinspectUnconditionalFixer()
+            assertTrue(fixer.isAvailable(project, mockEditor, testFile))
+            val el = getPyCallExpressionAtCaret(testFile, mockEditor)
+            assertNotNull(el)
+            assertTrue(el is PyCallExpression)
+            assertTrue(el!!.text.contains("Environment("))
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel

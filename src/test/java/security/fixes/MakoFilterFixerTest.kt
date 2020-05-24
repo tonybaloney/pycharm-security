@@ -63,6 +63,16 @@ class MakoFilterFixerTest: SecurityTestTask() {
     }
 
     @Test
+    fun `replace environment with nested keyword args`(){
+        var code = """
+            import mako.template
+            env = mako.template.Template(str(value='xyz'))
+        """.trimIndent()
+        val newCode = getNewFileForCode(code)
+        TestCase.assertEquals("mako.template.Template(str(value='xyz'),default_filters=['h'])", newCode)
+    }
+
+    @Test
     fun `replace environment with existing arg`(){
         var code = """
             import mako.template

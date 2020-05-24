@@ -43,9 +43,8 @@ class JinjaAutoinspectUnconditionalFixer : LocalQuickFix, IntentionAction, HighP
         val autoescapeArgument = newEl.getKeywordArgument("autoescape")
         val elementGenerator = PyElementGenerator.getInstance(project)
         val newArg = elementGenerator.createKeywordArgument(file.languageLevel, "autoescape", "True")
-        if (autoescapeArgument == null)
-        {
-            newEl.argumentList?.addArgument(newArg)
+        if (autoescapeArgument == null) {
+            addKeywordArgument(newEl, newArg)
         } else {
             if (autoescapeArgument is PyCallExpression) return null
             if (autoescapeArgument !is PyBoolLiteralExpression) return null
