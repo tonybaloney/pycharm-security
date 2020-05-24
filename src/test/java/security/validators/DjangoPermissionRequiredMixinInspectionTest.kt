@@ -1,9 +1,6 @@
 package security.validators
 
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 import security.Checks
 import security.SecurityTestTask
 
@@ -38,6 +35,7 @@ class DjangoPermissionRequiredMixinInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    @Disabled("Resolver doesn't work in unit tests, see https://github.com/tonybaloney/pycharm-security/issues/120")
     fun `test invalid order mixin`(){
         var code = """
             from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -51,6 +49,7 @@ class DjangoPermissionRequiredMixinInspectionTest: SecurityTestTask() {
     }
 
     @Test
+    @Disabled("Resolver doesn't work in unit tests, see https://github.com/tonybaloney/pycharm-security/issues/120")
     fun `test missing property mixin`(){
         var code = """
             from django.contrib.auth.mixins import PermissionRequiredMixin
