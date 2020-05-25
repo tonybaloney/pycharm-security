@@ -1,0 +1,18 @@
+<h1>DJG301</h1>
+<p>Django permission required mixin for a class-based-view must be the <strong>first</strong> base class. If not, the logic can silently be bypassed.</p>
+<h2>Fixes</h2>
+<p>Good :</p>
+<pre><code class="python">class MyView(PermissionRequiredMixin, View):
+    permission_required = &#39;polls.add_choice&#39;
+
+</code></pre>
+<p>Bad :</p>
+<pre><code class="python">class MyView(View, PermissionRequiredMixin):
+    permission_required = &#39;polls.add_choice&#39;
+
+</code></pre>
+<h2>See Also</h2>
+<ul>
+  <li><a href="DJG300.html">DJG300</a></li>
+  <li><a href="https://docs.djangoproject.com/en/3.0/topics/auth/default/#the-permissionrequiredmixin-mixin">documentation</a></li>
+</ul>

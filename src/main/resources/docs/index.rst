@@ -25,6 +25,7 @@ The SQL100 check will cover most SQL injection techniques using Python's multipl
     :maxdepth: 1
 
     SQL100 : Possible SQL injection with Python string formatting <SQL100>
+    SQL200 : Possible SQL injection with SQLalchemy <SQL200>
 
 Shell
 ~~~~~
@@ -67,6 +68,8 @@ Django Web Framework
     DJG103 : Using quoted, parametrized literal in the query set `extra()` function will bypass Django SQL Injection protection <DJG103>
     DJG200 : Django middleware is missing `CsrfViewMiddleware`, which blocks cross-site request forgery <DJG200>
     DJG201 : Django middleware is missing `XFrameOptionsMiddleware`, which blocks clickjacking. <DJG201>
+    DJG300 : Django PermissionRequiredMixin missing properties <DJG300>
+    DJG301 : Django PermissionRequiredMixin inherited incorrectly <DJG301>
 
 Deserialization
 ~~~~~~~~~~~~~~~
