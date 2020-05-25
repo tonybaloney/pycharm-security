@@ -1,5 +1,10 @@
 # Release History
 
+## 1.19.0 (master)
+
+* Added (DJG300) and (DJG301) for inspection of Django authorization mixins in class-based views.
+* Fixed #118 : Fixers don't work for Mako and Jinja2 in edge case (@koxudaxi)
+
 ## 1.18.0
 
 * Added [SQL200](doc/checks/SQL200.md) for inspection of insecure SQLalchemy method calls
