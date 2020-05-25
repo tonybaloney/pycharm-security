@@ -1,0 +1,14 @@
+<h1>DJG300</h1>
+<p>Django permission required mixin for a class-based-view must have either a class property <code>permission_required</code>, or a method <code>has_permission()</code>.</p>
+<p>If neither exist, the view will (silently) allow anyone to access it.</p>
+<h2>Fixes</h2>
+<p>Add either property or method to the view:</p>
+<pre><code class="python">class MyView(PermissionRequiredMixin, View):
+    permission_required = &#39;polls.add_choice&#39;
+
+</code></pre>
+<h2>See Also</h2>
+<ul>
+  <li><a href="DJG301.html">DJG301</a></li>
+  <li><a href="https://docs.djangoproject.com/en/3.0/topics/auth/default/#the-permissionrequiredmixin-mixin">documentation</a></li>
+</ul>

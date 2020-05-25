@@ -68,6 +68,8 @@ Django Web Framework
     DJG103 : Using quoted, parametrized literal in the query set `extra()` function will bypass Django SQL Injection protection <DJG103>
     DJG200 : Django middleware is missing `CsrfViewMiddleware`, which blocks cross-site request forgery <DJG200>
     DJG201 : Django middleware is missing `XFrameOptionsMiddleware`, which blocks clickjacking. <DJG201>
+    DJG300 : Django PermissionRequiredMixin missing properties <DJG300>
+    DJG301 : Django PermissionRequiredMixin inherited incorrectly <DJG301>
 
 Deserialization
 ~~~~~~~~~~~~~~~
