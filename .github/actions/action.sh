@@ -1,5 +1,7 @@
 #!/bin/sh -l
 cd /github/workspace
+mkdir -p .idea/
+mv /code/project.iml .idea/project.iml
 echo "Scanning $1 with profile $2"
 
 /opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 -d "$4" 2> errors.log

@@ -1,0 +1,31 @@
+<application>
+    <component name="ProjectJdkTable">
+        <jdk version="2">
+            <name value="Python 3.6" />
+            <type value="Python SDK" />
+            <version value="Python 3.6.9" />
+            <homePath value="/usr/bin/python3" />
+            <roots>
+                <classPath>
+                    <root type="composite">
+                        <root url="file:///usr/lib/python3.6" type="simple" />
+                        <root url="file:///usr/lib/python3.6/lib-dynload" type="simple" />
+                        <root url="file:///usr/local/lib/python3.6/dist-packages" type="simple" />
+                        <root url="file:///usr/lib/python3/dist-packages" type="simple" />
+                        <root url="file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2020.1/python_stubs/-1506223722" type="simple" />
+                        <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/python-skeletons" type="simple" />
+                        <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/stdlib/3.6" type="simple" />
+                        <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/stdlib/3" type="simple" />
+                        <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/stdlib/2and3" type="simple" />
+                        <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/third_party/3" type="simple" />
+                        <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/third_party/2and3" type="simple" />
+                    </root>
+                </classPath>
+                <sourcePath>
+                    <root type="composite" />
+                </sourcePath>
+            </roots>
+            <additional ASSOCIATED_PROJECT_PATH="/github/workspace" />
+        </jdk>
+    </component>
+</application>
