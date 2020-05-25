@@ -4,6 +4,11 @@ mkdir -p .idea/
 mv /code/project.iml .idea/project.iml
 echo "Scanning $1 with profile $2"
 
+if [ -f "$5" ]; then
+    echo "Installing extra dependencies from $5"
+    python3 -m pip install -r "$5"
+fi
+
 /opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 -d "$4" 2> errors.log
 
 set -e

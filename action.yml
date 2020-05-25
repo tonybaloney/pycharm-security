@@ -18,6 +18,10 @@ inputs:
     description: 'Subdirectory within path containing Python source'
     required: false
     default: '.'
+  requirements:
+    description: 'File containing a list of Python packages to be installed before scanning'
+    required: false
+    default: 'requirements.txt'
 outputs:
   result:
     description: 'Results from the scan'
@@ -29,6 +33,7 @@ runs:
     - ${{ inputs.profile }}
     - ${{ inputs.fail_on_warnings }}
     - ${{ inputs.source }}
+    - ${{ inputs.requirements }}
 branding:
   icon: 'lock'
   color: 'blue'
