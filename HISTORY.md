@@ -1,6 +1,6 @@
 # Release History
 
-## 1.19.0 (master)
+## 1.19.0
 
 * Added (DJG300) and (DJG301) for inspection of Django authorization mixins in class-based views.
 * Fixed #118 : Fixers don't work for Mako and Jinja2 in edge case (@koxudaxi)

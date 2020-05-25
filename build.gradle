@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.18.0'
+version '1.19.0'
 
 repositories {
     mavenCentral()
@@ -39,9 +39,10 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.18.0</h2>
+      <h2>1.19.0</h2>
       <ul>
-        <li>Added [SQL200] for inspection of insecure SQLalchemy method calls</li>
+        <li>Added (DJG300) and (DJG301) for inspection of Django authorization mixins in class-based views.</li>
+        <li>Fixed #118 : Fixers don't work for Mako and Jinja2 in edge case (@koxudaxi)</li>
       </ul>
       """
 }
