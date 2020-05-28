@@ -9,7 +9,7 @@ if [ -f "$5" ]; then
     python3 -m pip install -r "$5"
 fi
 
-/opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v0 -d "$4" 2> errors.log
+/opt/pycharm-community/bin/inspect.sh "$1" "$2" out/ -format json -v2 -d "$4"
 
 set -e
 echo "::set-output name=result::out/"
