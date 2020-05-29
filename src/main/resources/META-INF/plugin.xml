@@ -69,6 +69,8 @@
 
         <applicationConfigurable displayName="Python Security" instance="security.settings.SecuritySettingsConfigurable" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettingsConfigurable" groupId="tools"/>
         <applicationService serviceImplementation="security.settings.SecuritySettings" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettings" />
+        <commandLineInspectionProjectConfigurator implementation="security.cli.SecurityPluginCommandLineInspectionProjectConfigurator"/>
+
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
     </extensions>
