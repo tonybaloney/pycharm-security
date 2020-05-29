@@ -1,7 +1,7 @@
 #!/bin/sh -l
 cd /github/workspace
 mkdir -p .idea/
-mv /code/project.iml .idea/project.iml
+mv /code/project.iml .idea/security-project-.iml
 echo "Scanning $1 with profile $2"
 
 if [ -f "$5" ]; then
