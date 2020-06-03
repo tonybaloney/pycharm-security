@@ -1,10 +1,15 @@
 package security.packaging
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.jetbrains.python.packaging.PyPackage
-import java.io.IOException
-import java.net.URL
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.client.features.defaultRequest
+import io.ktor.client.features.json.GsonSerializer
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.headers
+import io.ktor.http.Url
 
 
 class SnykChecker (val apiKey: String, val orgId: String ): BasePackageChecker() {
@@ -15,7 +20,7 @@ class SnykChecker (val apiKey: String, val orgId: String ): BasePackageChecker()
         val id: String?
     )
 
-    class SnykIssue (val record: SnykRecord): PackageIssue {
+    class SnykIssue (val record: SnykRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
             return "${record.title} (${record.severity} severity) found in ${record.`package`} impacting version ${record.version}. <br/>See <a href='${record.url}'>${record.id}</a> for details"
         }
@@ -48,38 +53,37 @@ class SnykChecker (val apiKey: String, val orgId: String ): BasePackageChecker()
         val packageManager: String
     )
 
-    private fun load(packageName: String, packageVersion: String): SnykTestApiResponse? {
-        val fullUrl = URL("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId")
-
-        val fullConnection = fullUrl.openConnection()
-        fullConnection.setRequestProperty("Authorization", "token $apiKey")
-        fullConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
-
-        try {
-            val fullReader = fullConnection.getInputStream().reader()
-            val responseType = object : TypeToken<SnykTestApiResponse>() {}.type
-            return Gson().fromJson(fullReader, responseType)
-        } catch (io: IOException){
-            if (io.message.isNullOrEmpty().not())
-                throw PackageCheckerLoadException(io.message!!)
-            else
-                throw PackageCheckerLoadException("Could not load data from Snyk API")
+    private suspend fun load(packageName: String, packageVersion: String): SnykTestApiResponse? {
+        val client = HttpClient(Apache) {
+            install(JsonFeature) {
+                serializer = GsonSerializer{
+                    serializeNulls()
+                    disableHtmlEscaping()
+                }
+            }
+            defaultRequest {
+                headers {
+                    header("Authorization", "token $apiKey")
+                    header("Content-Type", "application/json; charset=utf-8")
+                }
+            }
         }
+
+        return client.get<SnykTestApiResponse>(Url("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId"))
     }
 
-    override fun hasMatch(pythonPackage: PyPackage): Boolean{
-        val data = load(pythonPackage.name.toLowerCase(), pythonPackage.version)
-        return data?.ok?.not() ?: false
+    override fun hasMatch(pythonPackage: PyPackage): Boolean {
+        return true // Hardcode to prevent it being called twice
     }
 
-    override fun getMatches (pythonPackage: PyPackage): List<SnykIssue> {
+    override suspend fun getMatches (pythonPackage: PyPackage): List<SnykIssue> {
         val records: ArrayList<SnykIssue> = ArrayList()
         val data = load(pythonPackage.name.toLowerCase(), pythonPackage.version) ?: return records
         if (data.ok) return records
         if (data.issues == null) return records
 
         data.issues.vulnerabilities.forEach { issue ->
-            records.add(SnykIssue(issue))
+            records.add(SnykIssue(issue, pythonPackage))
         }
 
         return records

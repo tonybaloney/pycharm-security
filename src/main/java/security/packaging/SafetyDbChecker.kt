@@ -11,7 +11,7 @@ class SafetyDbChecker : BasePackageChecker {
     private lateinit var database: Map<String?, List<SafetyDbRecord>>
     private lateinit var lookup: Map<String?, List<String>>
 
-    class SafetyDbIssue (val record: SafetyDbRecord): PackageIssue {
+    class SafetyDbIssue (val record: SafetyDbRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
             return if (record.cve.isNullOrEmpty()){
                 record.advisory
@@ -75,12 +75,12 @@ class SafetyDbChecker : BasePackageChecker {
         return false
     }
 
-    override fun getMatches (pythonPackage: PyPackage): List<SafetyDbIssue> {
+    override suspend fun getMatches (pythonPackage: PyPackage): List<SafetyDbIssue> {
         val records: ArrayList<SafetyDbIssue> = ArrayList()
         for (record in database[pythonPackage.name.toLowerCase()] ?: error("Package not in database")){
             val specs = parseVersionSpecs(record.v) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
-                records.add(SafetyDbIssue(record))
+                records.add(SafetyDbIssue(record, pythonPackage))
         }
         return records.toList()
     }

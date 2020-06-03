@@ -208,14 +208,14 @@ internal class SafetyDbCheckerTest {
     }
 
     @Test
-    fun getMatches() {
+    suspend fun getMatches() {
         val testPackage = mock<PyPackage> {
             on { name } doReturn "aiocouchdb"
             on { version } doReturn "0.1.0"
         }
         assertTrue(instance.hasMatch(testPackage))
 
-        val matches = instance.getMatches(testPackage)
+        val matches: List<SafetyDbChecker.SafetyDbIssue> = instance.getMatches(testPackage)
         verify(testPackage, times(2)).name
         verify(testPackage, times(2)).version
 

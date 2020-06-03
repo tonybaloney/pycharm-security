@@ -8,13 +8,13 @@ import com.jetbrains.python.packaging.requirement.PyRequirementVersionSpec
 import java.util.stream.Collectors
 import java.util.stream.StreamSupport
 
-interface PackageIssue {
-    fun getMessage(): String
+abstract class PackageIssue(val pyPackage: PyPackage) {
+    abstract fun getMessage(): String
 }
 
 interface PackageChecker {
     fun hasMatch(pythonPackage: PyPackage): Boolean
-    fun getMatches (pythonPackage: PyPackage): List<PackageIssue>
+    suspend fun getMatches (pythonPackage: PyPackage): List<PackageIssue>
 }
 
 abstract class BasePackageChecker: PackageChecker {
