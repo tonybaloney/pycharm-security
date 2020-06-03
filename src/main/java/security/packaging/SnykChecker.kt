@@ -3,16 +3,19 @@ package security.packaging
 import com.jetbrains.python.packaging.PyPackage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
+import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.timeout
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.http.Url
+import kotlinx.coroutines.TimeoutCancellationException
 
 
-class SnykChecker (val apiKey: String, val orgId: String ): BasePackageChecker() {
+class SnykChecker (private val apiKey: String, private val orgId: String ): BasePackageChecker() {
     var baseUrl = "https://snyk.io/api/v1"
 
     data class SnykOrgRecord(
@@ -66,10 +69,18 @@ class SnykChecker (val apiKey: String, val orgId: String ): BasePackageChecker()
                     header("Authorization", "token $apiKey")
                     header("Content-Type", "application/json; charset=utf-8")
                 }
+                timeout {  }
+            }
+            install(HttpTimeout){
+                requestTimeoutMillis = 60_000
             }
         }
 
-        return client.get<SnykTestApiResponse>(Url("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId"))
+        try {
+            return client.get<SnykTestApiResponse>(Url("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId"))
+        } catch (t: TimeoutCancellationException){
+            throw PackageCheckerLoadException("Timeout on Snyk API.")
+        }
     }
 
     override fun hasMatch(pythonPackage: PyPackage): Boolean {

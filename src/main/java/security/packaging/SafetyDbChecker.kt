@@ -29,6 +29,7 @@ class SafetyDbChecker : BasePackageChecker {
         val v: String
     )
 
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     constructor() {
         load(
             this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json").reader(),
