@@ -13,6 +13,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.http.Url
 import kotlinx.coroutines.TimeoutCancellationException
+import java.net.SocketTimeoutException
 
 
 class SnykChecker (private val apiKey: String, private val orgId: String ): BasePackageChecker() {
@@ -71,15 +72,22 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
                 }
                 timeout {  }
             }
-            install(HttpTimeout){
-                requestTimeoutMillis = 60_000
-            }
+            install(HttpTimeout)
         }
 
         try {
             return client.get<SnykTestApiResponse>(Url("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId"))
+                {
+                    timeout {
+                        connectTimeoutMillis = 60_000
+                        requestTimeoutMillis = 60_000
+                        socketTimeoutMillis = 60_000
+                    }
+                }
         } catch (t: TimeoutCancellationException){
-            throw PackageCheckerLoadException("Timeout on Snyk API.")
+            throw PackageCheckerLoadException("Timeout connecting to Snyk API.")
+        } catch (t: SocketTimeoutException){
+            throw PackageCheckerLoadException("Timeout on socket.")
         }
     }
 

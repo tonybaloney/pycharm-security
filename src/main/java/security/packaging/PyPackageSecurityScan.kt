@@ -11,6 +11,7 @@ import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.PyPackageManager
 import com.jetbrains.python.sdk.PythonSdkType
 import com.jetbrains.python.sdk.PythonSdkUtil
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import security.settings.SecuritySettings
 
@@ -40,7 +41,7 @@ object PyPackageSecurityScan {
 
     fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: PackageChecker): Int {
         var total = 0
-        for (sdk in pythonSdks) {
+        pythonSdks.forEach { sdk ->
             val packageManager = PyPackageManager.getInstance(sdk)
             packageManager.refreshAndGetPackages(true)
             total += inspectLocalPackages(packageManager, project, packageChecker) ?: 0
@@ -51,7 +52,12 @@ object PyPackageSecurityScan {
     private suspend fun collectPackages (packageChecker: PackageChecker, packages: List<PyPackage>) : Collection<List<PackageIssue>>
     {
         val matches = packages.filter { packageChecker.hasMatch(it) }
-        return matches.map { packageChecker.getMatches(it) }
+        val tasks= runBlocking {
+            matches.map {
+                this.async { packageChecker.getMatches(it) }
+            }
+        }
+        return tasks.map{ it.await() }
     }
 
     fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: PackageChecker): Int? {
