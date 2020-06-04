@@ -3,11 +3,9 @@ package security.packaging
 import com.jetbrains.python.packaging.PyPackage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
-import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.timeout
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
@@ -70,20 +68,16 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
                     header("Authorization", "token $apiKey")
                     header("Content-Type", "application/json; charset=utf-8")
                 }
-                timeout {  }
             }
-            install(HttpTimeout)
+            engine {
+                connectTimeout = 60_000
+                connectionRequestTimeout = 60_000
+                socketTimeout = 60_000
+            }
         }
 
         try {
             return client.get<SnykTestApiResponse>(Url("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId"))
-                {
-                    timeout {
-                        connectTimeoutMillis = 60_000
-                        requestTimeoutMillis = 60_000
-                        socketTimeoutMillis = 60_000
-                    }
-                }
         } catch (t: TimeoutCancellationException){
             throw PackageCheckerLoadException("Timeout connecting to Snyk API.")
         } catch (t: SocketTimeoutException){
