@@ -3,6 +3,7 @@ package security.packaging
 import com.jetbrains.python.packaging.PyPackage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
+import io.ktor.client.features.ServerResponseException
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
@@ -82,6 +83,8 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
             throw PackageCheckerLoadException("Timeout connecting to Snyk API.")
         } catch (t: SocketTimeoutException){
             throw PackageCheckerLoadException("Timeout on socket.")
+        } catch (t: ServerResponseException){
+            throw PackageCheckerLoadException("Server error on Snyk API.")
         }
     }
 
