@@ -8,13 +8,13 @@ import com.jetbrains.python.packaging.requirement.PyRequirementVersionSpec
 import java.util.stream.Collectors
 import java.util.stream.StreamSupport
 
-interface PackageIssue {
-    fun getMessage(): String
+abstract class PackageIssue(val pyPackage: PyPackage) {
+    abstract fun getMessage(): String
 }
 
 interface PackageChecker {
     fun hasMatch(pythonPackage: PyPackage): Boolean
-    fun getMatches (pythonPackage: PyPackage): List<PackageIssue>
+    suspend fun getMatches (pythonPackage: PyPackage): List<PackageIssue>
 }
 
 abstract class BasePackageChecker: PackageChecker {
@@ -44,7 +44,7 @@ abstract class BasePackageChecker: PackageChecker {
             relation = tripleRequirementMap[versionSpec.substring(0, 3)]
         else if (versionSpec.length >= 2 && doubleRequirementMap.containsKey(versionSpec.substring(0, 2)))
             relation = doubleRequirementMap[versionSpec.substring(0, 2)]
-        else if (versionSpec.length >= 1 && singleRequirementMap.containsKey(versionSpec.substring(0, 1)))
+        else if (versionSpec.isNotEmpty() && singleRequirementMap.containsKey(versionSpec.substring(0, 1)))
             relation = singleRequirementMap[versionSpec.substring(0, 1)]
         else
             return null
@@ -54,12 +54,7 @@ abstract class BasePackageChecker: PackageChecker {
     }
 
     fun findFirstNotWhiteSpaceAfter(line: String, beginIndex: Int): Int {
-        /// Taken from PyRequirementParser, but that function is Private :-(
-        for (i in beginIndex until line.length) {
-            if (!StringUtil.isWhiteSpace(line[i])) {
-                return i
-            }
-        }
-        return line.length
+        return (beginIndex until line.length).firstOrNull { !StringUtil.isWhiteSpace(line[it]) }
+                ?: line.length
     }
 }

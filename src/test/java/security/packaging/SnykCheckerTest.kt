@@ -18,7 +18,7 @@ internal class SnykCheckerTest {
     }
 
     @Test
-    fun `test single match`() {
+    suspend fun `test single match`() {
         val checker = SnykChecker("test", "test")
         // Use the mock API
         checker.baseUrl = testUrl

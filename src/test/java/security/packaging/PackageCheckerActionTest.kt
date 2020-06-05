@@ -23,14 +23,14 @@ internal class PackageCheckerActionTest : BasePlatformTestCase() {
 
     @Test
     fun `test action loaded`() {
-        var action = PackageCheckerAction()
+        val action = PackageCheckerAction()
         action.actionPerformed(TestActionEvent())
         TestCase.assertTrue(true)
     }
 
     @Test
     fun `test startup task loaded`() {
-        var action = PythonPackageVulnerabilityStartupTask()
+        val action = PythonPackageVulnerabilityStartupTask()
         action.runActivity(this.project)
         TestCase.assertTrue(true)
     }

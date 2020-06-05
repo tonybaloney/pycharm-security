@@ -11,6 +11,8 @@ import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.PyPackageManager
 import com.jetbrains.python.sdk.PythonSdkType
 import com.jetbrains.python.sdk.PythonSdkUtil
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import security.settings.SecuritySettings
 
 object PyPackageSecurityScan {
@@ -23,16 +25,13 @@ object PyPackageSecurityScan {
             return null
         }
         try {
-            if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Disabled)
-                return false
-            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Bundled)
-                checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
-            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Api)
-                checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey, SecuritySettings.instance.pyupApiUrl))
-            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Custom)
-                checkPackagesInSdks(pythonSdks, project, SafetyDbChecker("", SecuritySettings.instance.pyupCustomUrl))
-            else if (SecuritySettings.instance.safetyDbMode == SecuritySettings.SafetyDbType.Snyk)
-                checkPackagesInSdks(pythonSdks, project, SnykChecker(SecuritySettings.instance.snykApiKey, SecuritySettings.instance.snykOrgId))
+            when (SecuritySettings.instance.safetyDbMode) {
+                SecuritySettings.SafetyDbType.Disabled -> return false
+                SecuritySettings.SafetyDbType.Bundled -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
+                SecuritySettings.SafetyDbType.Api -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey, SecuritySettings.instance.pyupApiUrl))
+                SecuritySettings.SafetyDbType.Custom -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker("", SecuritySettings.instance.pyupCustomUrl))
+                SecuritySettings.SafetyDbType.Snyk -> checkPackagesInSdks(pythonSdks, project, SnykChecker(SecuritySettings.instance.snykApiKey, SecuritySettings.instance.snykOrgId))
+            }
             return true
         } catch (ex: PackageCheckerLoadException){
             backendError(project, ex.message)
@@ -42,12 +41,23 @@ object PyPackageSecurityScan {
 
     fun checkPackagesInSdks(pythonSdks: Set<Sdk>, project: Project, packageChecker: PackageChecker): Int {
         var total = 0
-        for (sdk in pythonSdks) {
+        pythonSdks.forEach { sdk ->
             val packageManager = PyPackageManager.getInstance(sdk)
             packageManager.refreshAndGetPackages(true)
             total += inspectLocalPackages(packageManager, project, packageChecker) ?: 0
         }
         return total
+    }
+
+    private suspend fun collectPackages (packageChecker: PackageChecker, packages: List<PyPackage>) : Collection<List<PackageIssue>>
+    {
+        val matches = packages.filter { packageChecker.hasMatch(it) }
+        val tasks= runBlocking {
+            matches.map {
+                this.async { packageChecker.getMatches(it) }
+            }
+        }
+        return tasks.map{ it.await() }
     }
 
     fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: PackageChecker): Int? {
@@ -56,10 +66,10 @@ object PyPackageSecurityScan {
             returnError(project)
             return null
         }
-        packageManager.packages!!.filter { packageChecker.hasMatch(it) }.forEach { pack ->
-            packageChecker.getMatches(pack).forEach { issue ->
-                matches++
-                showFoundIssueWarning(pack, issue, project)
+        runBlocking {
+            collectPackages(packageChecker, packageManager.packages!!).forEach { issues ->
+                matches += issues.size
+                issues.forEach { issue -> showFoundIssueWarning(issue.pyPackage, issue, project) }
             }
         }
         if (matches == 0) {

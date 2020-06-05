@@ -1,5 +1,9 @@
 # Release History
 
+## 1.20.0
+
+* Massive speed improvement to the package checker action by checking multiple packages asynchronously
+
 ## 1.19.0
 
 * Added (DJG300) and (DJG301) for inspection of Django authorization mixins in class-based views.
