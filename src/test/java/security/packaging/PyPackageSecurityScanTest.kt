@@ -98,6 +98,14 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
     }
 
     @Test
+    fun `test list with null package`(){
+        val mockPackageManager = mock<PyPackageManager> {
+            on { packages } doReturn(listOf(null))
+        }
+        assertEquals(PyPackageSecurityScan.inspectLocalPackages(mockPackageManager, project, instance), 0)
+    }
+
+    @Test
     fun `test ok packages`(){
         val testPackage1 = mock<PyPackage> {
             on { name } doReturn "good"

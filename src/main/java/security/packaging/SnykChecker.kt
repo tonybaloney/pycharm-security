@@ -88,11 +88,12 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
         }
     }
 
-    override fun hasMatch(pythonPackage: PyPackage): Boolean {
+    override fun hasMatch(pythonPackage: PyPackage?): Boolean {
         return true // Hardcode to prevent it being called twice
     }
 
-    override suspend fun getMatches (pythonPackage: PyPackage): List<SnykIssue> {
+    override suspend fun getMatches (pythonPackage: PyPackage?): List<SnykIssue> {
+        if (pythonPackage==null) return listOf()
         val records: ArrayList<SnykIssue> = ArrayList()
         val data = load(pythonPackage.name.toLowerCase(), pythonPackage.version) ?: return records
         if (data.ok) return records

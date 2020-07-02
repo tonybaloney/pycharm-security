@@ -49,12 +49,14 @@ object PyPackageSecurityScan {
         return total
     }
 
-    private suspend fun collectPackages (packageChecker: PackageChecker, packages: List<PyPackage>) : Collection<List<PackageIssue>>
+    private suspend fun collectPackages (packageChecker: PackageChecker, packages: List<PyPackage?>) : Collection<List<PackageIssue>>
     {
         val matches = packages.filter { packageChecker.hasMatch(it) }
         val tasks= runBlocking {
             matches.map {
-                this.async { packageChecker.getMatches(it) }
+                this.async {
+                        packageChecker.getMatches(it)
+                }
             }
         }
         return tasks.map{ it.await() }
@@ -62,12 +64,14 @@ object PyPackageSecurityScan {
 
     fun inspectLocalPackages(packageManager: PyPackageManager, project: Project, packageChecker: PackageChecker): Int? {
         var matches = 0
-        if (packageManager.packages == null) {
+        if (packageManager.packages == null){
             returnError(project)
             return null
         }
+        val packages: List<PyPackage> = packageManager.packages!!
+
         runBlocking {
-            collectPackages(packageChecker, packageManager.packages!!).forEach { issues ->
+            collectPackages(packageChecker, packages).forEach { issues ->
                 matches += issues.size
                 issues.forEach { issue -> showFoundIssueWarning(issue.pyPackage, issue, project) }
             }

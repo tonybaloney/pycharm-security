@@ -13,8 +13,8 @@ abstract class PackageIssue(val pyPackage: PyPackage) {
 }
 
 interface PackageChecker {
-    fun hasMatch(pythonPackage: PyPackage): Boolean
-    suspend fun getMatches (pythonPackage: PyPackage): List<PackageIssue>
+    fun hasMatch(pythonPackage: PyPackage?): Boolean
+    suspend fun getMatches (pythonPackage: PyPackage?): List<PackageIssue>
 }
 
 abstract class BasePackageChecker: PackageChecker {
