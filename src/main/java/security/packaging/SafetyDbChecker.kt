@@ -67,7 +67,8 @@ class SafetyDbChecker : BasePackageChecker {
         database = Gson().fromJson<Map<String?, List<SafetyDbRecord>>>(databaseReader, recordDatabaseType)
     }
 
-    override fun hasMatch(pythonPackage: PyPackage): Boolean{
+    override fun hasMatch(pythonPackage: PyPackage?): Boolean{
+        if (pythonPackage==null) return false
         for (record in lookup[pythonPackage.name.toLowerCase()] ?: return false){
             val specs = parseVersionSpecs(record) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
@@ -76,7 +77,8 @@ class SafetyDbChecker : BasePackageChecker {
         return false
     }
 
-    override suspend fun getMatches (pythonPackage: PyPackage): List<SafetyDbIssue> {
+    override suspend fun getMatches (pythonPackage: PyPackage?): List<SafetyDbIssue> {
+        if (pythonPackage==null) return listOf()
         val records: ArrayList<SafetyDbIssue> = ArrayList()
         for (record in database[pythonPackage.name.toLowerCase()] ?: error("Package not in database")){
             val specs = parseVersionSpecs(record.v) ?: continue
