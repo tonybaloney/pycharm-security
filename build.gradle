@@ -51,8 +51,8 @@ patchPluginXml {
     changeNotes """
       <h2>1.20.1</h2>
       <ul>
-        <li>Added support for PyCharm 2020.2 series</li>
-        <li>Sped up security package scanning</li>
+        <li>Fixed null pointer exception when SDK not properly initialized</li>
+        <li>Updated SafetyDB to July 2020 update</li>
       </ul>
       """
 }

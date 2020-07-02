@@ -1,5 +1,10 @@
 # Release History
 
+## 1.21.0
+
+* Fixed null pointer exception when SDK not properly initialized
+* Updated SafetyDB to July 2020 update
+
 ## 1.20.0
 
 * Massive speed improvement to the package checker action by checking multiple packages asynchronously
