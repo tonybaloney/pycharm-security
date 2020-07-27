@@ -15,7 +15,7 @@ RUN apt-get -y update && apt-get -y install wget unzip openjdk-11-jre-headless -
 # Install PyCharm
     && wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSION}.tar.gz \
     && tar xzf pycharm-community-${PYCHARM_VERSION}.tar.gz -C /opt/ \
-    && mv /opt/pycharm-community-${PYCHARM_VERSION} /opt/pycharm-community \
+    && mv /opt/pycharm-community-2020.2 /opt/pycharm-community \
     && rm -f /sources/pycharm-community-${PYCHARM_VERSION}.tar.gz \
 
 # Test and compile plugin
