@@ -1,5 +1,9 @@
 # Release History
 
+## 1.22.0
+
+* Use 202.6397.50 (2020.2) in CI/CD action
+
 ## 1.21.0
 
 * Fixed null pointer exception when SDK not properly initialized
@@ -8,9 +12,6 @@
 ## 1.20.0
 
 * Massive speed improvement to the package checker action by checking multiple packages asynchronously
-
-## 1.20.0
-
 * Added support for PyCharm 2020.2 series
 * Sped up security package scanning
 
