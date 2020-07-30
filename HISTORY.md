@@ -1,5 +1,9 @@
 # Release History
 
+## 1.22.1
+
+* Update to 2020.2 
+
 ## 1.22.0
 
 * Use 202.6397.50 (2020.2) in CI/CD action

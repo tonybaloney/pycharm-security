@@ -1,4 +1,4 @@
-ARG PYCHARM_VERSION=202.6397.50
+ARG PYCHARM_VERSION=2020.2
 FROM ubuntu:18.04
 ARG PYCHARM_VERSION
 RUN echo "Building PyCharm $PYCHARM_VERSION with python-security"
@@ -15,7 +15,7 @@ RUN apt-get -y update && apt-get -y install wget unzip openjdk-11-jre-headless -
 # Install PyCharm
     && wget https://download.jetbrains.com/python/pycharm-community-${PYCHARM_VERSION}.tar.gz \
     && tar xzf pycharm-community-${PYCHARM_VERSION}.tar.gz -C /opt/ \
-    && mv /opt/pycharm-community-2020.2 /opt/pycharm-community \
+    && mv /opt/pycharm-community-${PYCHARM_VERSION} /opt/pycharm-community \
     && rm -f /sources/pycharm-community-${PYCHARM_VERSION}.tar.gz \
 
 # Test and compile plugin
