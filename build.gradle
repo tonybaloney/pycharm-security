@@ -22,7 +22,7 @@ repositories {
 dependencies {
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.6.2'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
-    testImplementation "net.bytebuddy:byte-buddy:1.10.13"
+    testImplementation "net.bytebuddy:byte-buddy:1.10.14"
     testImplementation "net.bytebuddy:byte-buddy-agent:1.10.14"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
