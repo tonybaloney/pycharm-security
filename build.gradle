@@ -10,7 +10,7 @@ group 'org.tonybaloney.security'
 version '1.22.1'
 
 def ktor_version = "1.4.0"
-def kotlin_version = "1.4.10"
+def kotlin_version = "1.4.20"
 
 repositories {
     mavenCentral()
