@@ -26,7 +26,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test os_system call`(){
-        var code = """
+        val code = """
             import os
             os.system("ls {0}".format(x))
         """.trimIndent()
@@ -35,7 +35,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test popen2 list call`(){
-        var code = """
+        val code = """
             import popen2
             popen2.popen3(["ls", x])
         """.trimIndent()
@@ -44,7 +44,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test os_system call constant`(){
-        var code = """
+        val code = """
             import os
             os.system("ls foo")
         """.trimIndent()
@@ -53,7 +53,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test os_system call quoted`(){
-        var code = """
+        val code = """
             import os
             import shlex
             os.system(shlex.quote(x))
@@ -63,7 +63,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test popen2 list constant`(){
-        var code = """
+        val code = """
             import popen2
             popen2.popen3(["ls", "x"])
         """.trimIndent()
@@ -72,7 +72,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test popen2 list quoted`(){
-        var code = """
+        val code = """
             import popen2
             import shlex
             popen2.popen3(["ls", shlex.quote(x)])
@@ -82,7 +82,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test system no args`(){
-        var code = """
+        val code = """
             import os
             os.system()
         """.trimIndent()
@@ -91,7 +91,7 @@ class StandardShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test other function`(){
-        var code = """
+        val code = """
             import os
             os.path()
         """.trimIndent()

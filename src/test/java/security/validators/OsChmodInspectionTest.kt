@@ -26,7 +26,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with octal bad`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', 0o777)
         """.trimIndent()
@@ -35,7 +35,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with octal good`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', 0o300)
         """.trimIndent()
@@ -44,7 +44,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with single statref bad`(){
-        var code = """
+        val code = """
             import os
             import stat
             os.chmod('x', stat.S_IXGRP)
@@ -54,7 +54,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with single statref good`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', stat.S_IRGRP)
         """.trimIndent()
@@ -63,7 +63,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with single binary or good`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', stat.S_IRGRP | stat.S_IRGRP)
         """.trimIndent()
@@ -72,7 +72,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with single binary or bad`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', stat.S_IRGRP | stat.S_IXGRP)
         """.trimIndent()
@@ -81,7 +81,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with multi binary or good`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', stat.S_IRGRP | stat.S_IRGRP | stat.S_IRUSR)
         """.trimIndent()
@@ -90,7 +90,7 @@ class OsChmodInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test with multi binary or bad`(){
-        var code = """
+        val code = """
             import os
             os.chmod('x', stat.S_IRGRP | stat.S_IRUSR | stat.S_IXGRP)
         """.trimIndent()

@@ -1,5 +1,9 @@
 # Release History
 
+## 1.22.2
+
+* Enable 203* series (2020.3)
+
 ## 1.22.1
 
 * Update to 2020.2 

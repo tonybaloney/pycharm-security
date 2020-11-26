@@ -26,7 +26,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test quoted string`(){
-        var code = """
+        val code = """
             import django.db.models.expressions
             x = "injectable string"
             django.db.models.expressions.RawSQL("SELECT * FROM foo WHERE ID = '%s'", (x,))
@@ -36,7 +36,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test double quoted string`(){
-        var code = """
+        val code = """
             import django.db.models.expressions
             x = "injectable string"
             django.db.models.expressions.RawSQL('SELECT * FROM foo WHERE ID = "%s"', (x,))
@@ -46,7 +46,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format non quoted string`(){
-        var code = """
+        val code = """
             import django.db.models.expressions
             x = "injectable string"
             django.db.models.expressions.RawSQL("SELECT * FROM foo WHERE ID = %s", (x,))
@@ -56,7 +56,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test some other rawsql method`(){
-        var code = """
+        val code = """
             RawSQL("SELECT * FROM foo WHERE ID = '%s'", (x,))
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.DjangoRawSqlCheck, "test.py", DjangoRawSqlInspection())
@@ -64,7 +64,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test cursor execute with no quotes`(){
-        var code = """
+        val code = """
             from django.db import connection
 
             def my_custom_sql(self):
@@ -79,7 +79,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test cursor execute with quotes`(){
-        var code = """
+        val code = """
             from django.db import connection
 
             def my_custom_sql(self):
@@ -94,7 +94,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with quotes`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -106,7 +106,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with no quotes`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -118,7 +118,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with missing quote at beginning`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -130,7 +130,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with missing double quote at beginning`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -142,7 +142,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with missing quote at end`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -154,7 +154,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with missing double quote at end`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -166,7 +166,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with nothing else`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -178,7 +178,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw no args`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 
@@ -190,7 +190,7 @@ class DjangoRawSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw not literal`(){
-        var code = """
+        val code = """
             from django.db import connection
             from .models import User
 

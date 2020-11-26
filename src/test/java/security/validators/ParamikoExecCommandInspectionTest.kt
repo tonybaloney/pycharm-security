@@ -26,7 +26,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test shell string literal is ok`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.exec_command('rm -rf /')
@@ -36,7 +36,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no args`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.exec_command()
@@ -46,7 +46,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test invalid first arg`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.exec_command(None)
@@ -56,7 +56,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test call not quote arg`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.exec_command(meep())
@@ -66,7 +66,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test shell string format is bad`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.exec_command('rm -rf / {}'.format(xx))
@@ -76,7 +76,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test channel format is bad`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             channel = client.invoke_shell()
@@ -87,7 +87,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test paramiko not imported`(){
-        var code = """
+        val code = """
             import math
             client = SSHClient()
             client.exec_command('rm -rf / {}'.format(xx))
@@ -97,7 +97,7 @@ class ParamikoExecCommandInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test quoted input is ok`(){
-        var code = """
+        val code = """
             import paramiko.client
             import shlex
             client = paramiko.client.SSHClient()

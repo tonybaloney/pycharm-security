@@ -26,7 +26,7 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test bind no args`(){
-        var code = """
+        val code = """
             bind()
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
@@ -34,7 +34,7 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not bind no args`(){
-        var code = """
+        val code = """
             mind()
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
@@ -42,7 +42,7 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test 0000 string`(){
-        var code = """
+        val code = """
             bind("0.0.0.0")
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
@@ -50,14 +50,14 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test other string`(){
-        var code = """
+        val code = """
             bind("1.2.3.4")
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
     }
     @Test
     fun `test ipv6 string`(){
-        var code = """
+        val code = """
             bind("::")
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
@@ -65,7 +65,7 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test tuple ipv4`(){
-        var code = """
+        val code = """
             bind(("0.0.0.0", 80))
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
@@ -73,7 +73,7 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test tuple ipv6`(){
-        var code = """
+        val code = """
             bind(("::", 80))
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())
@@ -81,7 +81,7 @@ class BindAllInterfacesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test tuple other`(){
-        var code = """
+        val code = """
             bind(("1.0.0.0", 80))
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BindAllInterfacesCheck, "test.py", BindAllInterfacesInspection())

@@ -1,7 +1,5 @@
 package security.validators
 
-import com.jetbrains.python.PythonLanguage
-import com.jetbrains.python.psi.LanguageLevel
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -28,7 +26,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no wrap socket`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_pocket(ssl_version=ssl.PROTOCOL_SSLv3)
@@ -38,7 +36,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not ssl qn`() {
-        var code = """
+        val code = """
             import banana
             
             banana.wrap_socket(ssl_version=ssl.PROTOCOL_SSLv3)
@@ -48,7 +46,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test bad protocol`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_socket(ssl_version=ssl.PROTOCOL_SSLv3)
@@ -58,7 +56,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no default`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_socket()
@@ -68,7 +66,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no default old python`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_socket()
@@ -78,7 +76,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test none version`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_socket(ssl_version=None)
@@ -88,7 +86,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test good setting`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLS)
@@ -98,7 +96,7 @@ class SslWrapSocketInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not reference`() {
-        var code = """
+        val code = """
             import ssl
             
             ssl.wrap_socket(ssl_version=1)

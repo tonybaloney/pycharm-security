@@ -17,7 +17,7 @@ import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QualifiedNameHelpersTest: SecurityTestTask() {
-    lateinit var dummyAnnotation: Annotation
+    private lateinit var dummyAnnotation: Annotation
 
     @BeforeAll
     override fun setUp() {
@@ -32,7 +32,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test direct reference`(){
-        var code = """
+        val code = """
             import math
             math.floor(1.9)
         """.trimIndent()
@@ -41,7 +41,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test direct reference no arguments`(){
-        var code = """
+        val code = """
             import math
             math.floor()
         """.trimIndent()
@@ -50,7 +50,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test double brackets reference no arguments`(){
-        var code = """
+        val code = """
             import math
             math.floor()()
         """.trimIndent()
@@ -59,7 +59,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test non named call`(){
-        var code = """
+        val code = """
             import math
             _()
         """.trimIndent()
@@ -68,7 +68,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test resolved callee`(){
-        var code = """
+        val code = """
             class x:
                 @staticmethod
                 def meth():
@@ -81,7 +81,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test fully resolved callee with context`(){
-        var code = """
+        val code = """
             class x:
                 @staticmethod
                 def meth():
@@ -95,7 +95,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test fully resolved callee`(){
-        var code = """
+        val code = """
             class x:
                 @staticmethod
                 def meth():
@@ -109,7 +109,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
     @Test
     fun `test alias`(){
-        var code = """
+        val code = """
             import x as y
             y.meth()
         """.trimIndent()
@@ -119,7 +119,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
     private fun getQualifiedName(code: String, resolveContext: Boolean = false): String?{
         var name: String? = null
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
 
             if (resolveContext){

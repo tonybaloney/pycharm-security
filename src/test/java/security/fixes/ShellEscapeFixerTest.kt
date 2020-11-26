@@ -42,7 +42,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get argument at caret`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(opt, shell=True)
         """.trimIndent()
@@ -55,11 +55,11 @@ class ShellEscapeFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getPyExpressionAtCaret(testFile, mockEditor)
+            val el = getPyExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el is PyReferenceExpression)
             assertTrue(el!!.text.contains("opt"))
@@ -71,7 +71,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get argument as list at caret`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call([opt], shell=True)
         """.trimIndent()
@@ -84,11 +84,11 @@ class ShellEscapeFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getPyExpressionAtCaret(testFile, mockEditor)
+            val el = getPyExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el is PyListLiteralExpression)
             assertTrue(el!!.text.contains("[opt]"))
@@ -100,7 +100,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret escapes ref expr`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(opt, shell=True)
         """.trimIndent()
@@ -113,12 +113,12 @@ class ShellEscapeFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var old = getPyExpressionAtCaret(testFile, mockEditor)
-            var el = fixer.getNewExpressionFromPyExpression(testFile, project, old!!)
+            val old = getPyExpressionAtCaret(testFile, mockEditor)
+            val el = fixer.getNewExpressionFromPyExpression(testFile, project, old!!)
             assertNotNull(el)
             assertTrue(el is PyCallExpression)
             assertEquals(el!!.callee?.text, "shlex_quote")
@@ -132,7 +132,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret escapes list expr`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(['ps', opt], shell=True)
         """.trimIndent()
@@ -145,21 +145,21 @@ class ShellEscapeFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var old = getPyExpressionAtCaret(testFile, mockEditor)
-            var el = fixer.getNewExpressionFromList(testFile, project, old as PyListLiteralExpression)
+            val old = getPyExpressionAtCaret(testFile, mockEditor)
+            val el = fixer.getNewExpressionFromList(testFile, project, old as PyListLiteralExpression)
             assertNotNull(el)
             assertTrue(el is PyListLiteralExpression)
             assertTrue((el as PyListLiteralExpression).elements.first() is PyStringLiteralExpression)
             assertEquals((el).elements.first().text, "'ps'")
             assertTrue((el).elements[1] is PyCallExpression)
-            val second_arg = ((el).elements[1] as PyCallExpression)
-            assertEquals(second_arg.callee?.text, "shlex_quote")
-            assertTrue(second_arg.arguments.first() is PyReferenceExpression)
-            assertEquals((second_arg.arguments.first() as PyReferenceExpression).text, "opt")
+            val secondArg = ((el).elements[1] as PyCallExpression)
+            assertEquals(secondArg.callee?.text, "shlex_quote")
+            assertTrue(secondArg.arguments.first() is PyReferenceExpression)
+            assertEquals((secondArg.arguments.first() as PyReferenceExpression).text, "opt")
         }
 
         verify(mockEditor, Mockito.times(1)).caretModel
@@ -168,14 +168,14 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix with literal`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call('foo')
             subprocess.call('foo')
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             val expr: @NotNull MutableCollection<PyExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyStringLiteralExpression::class.java)
@@ -193,14 +193,14 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix with list literal`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(['foo'])
             subprocess.call(['foo'])
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
@@ -218,7 +218,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix with list literal of existing escaped instances`(){
-        var code = """
+        val code = """
             import subprocess
             import shlex
             subprocess.call([shlex.quote('foo')])
@@ -226,7 +226,7 @@ class ShellEscapeFixerTest: SecurityTestTask() {
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
@@ -244,14 +244,14 @@ class ShellEscapeFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix with list literal of existing non-escaped instances`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call([get_value_from_place('foo')])
             subprocess.call(['foo'])
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = ShellEscapeFixer()
             val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)

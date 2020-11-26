@@ -43,10 +43,10 @@ class MakoFilterFixerTest: SecurityTestTask() {
     private fun getNewFileForCode(code: String): String {
         var result: String = ""
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = MakoFilterFixer()
-            var expr = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java).first()
+            val expr = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java).first()
             result = fixer.runFix(project, testFile, expr)?.text ?: ""
         }
         return result.replace(" ","").replace("\n", "")
@@ -54,7 +54,7 @@ class MakoFilterFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with no args`(){
-        var code = """
+        val code = """
             import mako.template
             env = mako.template.Template('xyz')
         """.trimIndent()
@@ -64,7 +64,7 @@ class MakoFilterFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with nested keyword args`(){
-        var code = """
+        val code = """
             import mako.template
             env = mako.template.Template(str(value='xyz'))
         """.trimIndent()
@@ -74,7 +74,7 @@ class MakoFilterFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with existing arg`(){
-        var code = """
+        val code = """
             import mako.template
             env = mako.template.Template('xyz', default_filters=['h'])
         """.trimIndent()
@@ -91,13 +91,13 @@ class MakoFilterFixerTest: SecurityTestTask() {
         val mockEditor = mock<Editor> {
             on { caretModel } doReturn mockCaretModel
         }
-        var code = """
+        val code = """
             import mako.template
             env = mako.template.Template('xyz')
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = MakoFilterFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))

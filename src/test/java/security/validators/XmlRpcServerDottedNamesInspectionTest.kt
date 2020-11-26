@@ -26,7 +26,7 @@ class XmlRpcServerDottedNamesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test xml rpc server instance with dotted names enabled`(){
-        var code = """
+        val code = """
             import xmlrpc.server
 
             with xmlrpc.server.SimpleXMLRPCServer(('localhost', 8000),) as server:
@@ -37,7 +37,7 @@ class XmlRpcServerDottedNamesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test xml rpc server instance with dotted names disabled`(){
-        var code = """
+        val code = """
             import xmlrpc.server
 
             with xmlrpc.server.SimpleXMLRPCServer(('localhost', 8000),) as server:
@@ -48,7 +48,7 @@ class XmlRpcServerDottedNamesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test xml rpc server instance with dotted names not specified`(){
-        var code = """
+        val code = """
             import xmlrpc.server
 
             with xmlrpc.server.SimpleXMLRPCServer(('localhost', 8000),) as server:
@@ -59,7 +59,7 @@ class XmlRpcServerDottedNamesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test xml rpc server instance with dotted names positional enabled`(){
-        var code = """
+        val code = """
             import xmlrpc.server
 
             with xmlrpc.server.SimpleXMLRPCServer(('localhost', 8000),) as server:
@@ -70,7 +70,7 @@ class XmlRpcServerDottedNamesInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test xml rpc server instance with dotted names positional disabled`(){
-        var code = """
+        val code = """
             import xmlrpc.server
 
             with xmlrpc.server.SimpleXMLRPCServer(('localhost', 8000),) as server:

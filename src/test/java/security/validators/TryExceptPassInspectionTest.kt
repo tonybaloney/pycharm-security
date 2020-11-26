@@ -26,7 +26,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt in no except`(){
-        var code = """
+        val code = """
             try:
                 x = 1
                 
@@ -36,7 +36,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt no statements in except`(){
-        var code = """
+        val code = """
             try:
                 x = 1
             except:
@@ -46,7 +46,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt in test file`(){
-        var code = """
+        val code = """
             try:
                 x = 1
             except:
@@ -57,7 +57,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt in non test file`(){
-        var code = """
+        val code = """
             try:
                 x = 1
             except:
@@ -68,7 +68,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt with 2 excepts`(){
-        var code = """
+        val code = """
             try:
                 x = 1
             except RuntimeException:
@@ -81,7 +81,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt with comments`(){
-        var code = """
+        val code = """
             try:
                 x = 1
             except Exception:
@@ -93,7 +93,7 @@ class TryExceptPassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test stmt with actual statements`(){
-        var code = """
+        val code = """
             try:
                 x = 1
             except Exception:

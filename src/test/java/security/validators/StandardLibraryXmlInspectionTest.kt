@@ -26,7 +26,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test invalid import`(){
-        var code = """
+        val code = """
             from import x
         """.trimIndent()
         testFromImportStatement(code, 0, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
@@ -34,7 +34,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test from import`(){
-        var code = """
+        val code = """
             from xml.dom.minidom import parse, parseString
         """.trimIndent()
         testFromImportStatement(code, 1, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
@@ -42,7 +42,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test normal import minidom`(){
-        var code = """
+        val code = """
             import xml.dom.minidom
         """.trimIndent()
         testImportStatement(code, 1, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
@@ -50,7 +50,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test normal safe namespace`(){
-        var code = """
+        val code = """
             import defusedxml.minidom
         """.trimIndent()
         testImportStatement(code, 0, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
@@ -58,7 +58,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test alias import`(){
-        var code = """
+        val code = """
             import xml.etree.ElementTree as ET
         """.trimIndent()
         testImportStatement(code, 1, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
@@ -66,7 +66,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test multiple import`(){
-        var code = """
+        val code = """
             import xml.etree.ElementTree, xml.dom.minidom
         """.trimIndent()
         testImportStatement(code, 1, Checks.StandardLibraryXmlCheck, "test_foo.py", StandardLibraryXmlInspection())
@@ -74,7 +74,7 @@ class StandardLibraryXmlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test nested import`(){
-        var code = """
+        val code = """
             def foo():
                 import xml.etree.ElementTree as ET
         """.trimIndent()

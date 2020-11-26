@@ -26,7 +26,7 @@ class StrFormatInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string`(){
-        var code = """
+        val code = """
             def format_event(format_string, event):
                 return format_string.format(event=event)
         """.trimIndent()
@@ -35,7 +35,7 @@ class StrFormatInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format f-string`(){
-        var code = """
+        val code = """
             def format_event(format_string, event):
                 return f'Event {format_string}'.format(event=event)
         """.trimIndent()
@@ -44,7 +44,7 @@ class StrFormatInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format falsePositiveString`(){
-        var code = """
+        val code = """
             'Event: {}'.format(event=event)
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.StrFormatInspectionCheck, "test.py", StrFormatInspection())
@@ -52,7 +52,7 @@ class StrFormatInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format class string`(){
-        var code = """
+        val code = """
             class Formatter:
                 def __init___(self, formatter):
                     self.formatter = formatter
@@ -64,7 +64,7 @@ class StrFormatInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format class falsePositiveString`(){
-        var code = """
+        val code = """
             class Formatter:
                 def format(self, item):
                     return str(item)

@@ -26,7 +26,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with insecure algorithm`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new('sha')
         """.trimIndent()
@@ -35,7 +35,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with insecure algorithm kwarg`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new(name='sha')
         """.trimIndent()
@@ -44,7 +44,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with more-secure algorithm`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new('blake2')
         """.trimIndent()
@@ -53,7 +53,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with type import`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.sha()
         """.trimIndent()
@@ -62,7 +62,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with non-string argument`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new(1)
         """.trimIndent()
@@ -71,7 +71,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with length-attack algorithm kwarg`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new(name='whirlpool')
         """.trimIndent()
@@ -80,7 +80,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with length-attack algorithm type import`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.whirlpool()
         """.trimIndent()
@@ -89,7 +89,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test new hash with length-attack algorithm`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new('whirlpool')
         """.trimIndent()
@@ -98,7 +98,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test secure algorithm`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new('blake2')
         """.trimIndent()
@@ -107,7 +107,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not new method`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.pew('blake2')
         """.trimIndent()
@@ -116,7 +116,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no args`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new()
         """.trimIndent()
@@ -125,7 +125,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test first arg non string literal`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new(1)
         """.trimIndent()
@@ -134,7 +134,7 @@ class InsecureHashInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test named arg non string literal`(){
-        var code = """
+        val code = """
             import hashlib
             hashlib.new(name=1)
         """.trimIndent()
