@@ -1,8 +1,4 @@
 {
-    "$meta": {
-        "advisory": "PyUp.io metadata",
-        "timestamp": 1604210400
-    },
     "acqusition": [
         "<0",
         ">0"

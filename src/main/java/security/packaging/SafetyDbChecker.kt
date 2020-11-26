@@ -61,10 +61,10 @@ class SafetyDbChecker : BasePackageChecker {
 
     private fun load(databaseReader: Reader, lookupReader: Reader) {
         val recordLookupType = object : TypeToken<Map<String?, List<String>>>() {}.type
-        lookup = Gson().fromJson<Map<String?, List<String>>>(lookupReader, recordLookupType)
+        lookup = Gson().fromJson(lookupReader, recordLookupType)
 
         val recordDatabaseType = object : TypeToken<Map<String?, List<SafetyDbRecord>>>() {}.type
-        database = Gson().fromJson<Map<String?, List<SafetyDbRecord>>>(databaseReader, recordDatabaseType)
+        database = Gson().fromJson(databaseReader, recordDatabaseType)
     }
 
     override fun hasMatch(pythonPackage: PyPackage?): Boolean{
