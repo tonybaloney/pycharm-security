@@ -26,7 +26,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test mark_safe string`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = '<b>Hello World</b>'
@@ -37,7 +37,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test mark_safe falsePositiveString`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = django.utils.safestring.mark_safe('<b>Hello World</b>')
@@ -47,7 +47,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test mark_safe kwargsFalsePositiveString`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = django.utils.safestring.mark_safe(s='<b>Hello World</b>')
@@ -57,7 +57,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test SafeString string`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = '<b>Hello World</b>'
@@ -68,7 +68,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test SafeText string`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = '<b>Hello World</b>'
@@ -79,7 +79,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test SafeUnicode string`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = u'<b>Hello World</b>'
@@ -90,7 +90,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test SafeBytes string`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = b'<b>Hello World</b>'
@@ -101,7 +101,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no import`(){
-        var code = """
+        val code = """
             mystr = b'<b>Hello World</b>'
             mystr = SafeBytes(mystr)
         """.trimIndent()
@@ -110,7 +110,7 @@ class DjangoSafeStringInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test other method`(){
-        var code = """
+        val code = """
             import django.utils.safestring
 
             mystr = b'<b>Hello World</b>'

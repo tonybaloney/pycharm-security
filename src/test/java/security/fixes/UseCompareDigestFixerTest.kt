@@ -42,7 +42,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get binary expression element at caret`(){
-        var code = """
+        val code = """
             if password == "SECRET":
                 pass
         """.trimIndent()
@@ -55,11 +55,11 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = UseCompareDigestFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getBinaryExpressionElementAtCaret(testFile, mockEditor)
+            val el = getBinaryExpressionElementAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el!!.text.contains("password == "))
         }
@@ -70,7 +70,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret`(){
-        var code = """
+        val code = """
             import hashlib
             if password == "SECRET":
                 pass
@@ -84,13 +84,13 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = UseCompareDigestFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
+            val oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
             assertNotNull(oldEl)
-            var el = fixer.getNewExpressionAtCaret(testFile, project, oldEl!!)
+            val el = fixer.getNewExpressionAtCaret(testFile, project, oldEl!!)
             assertNotNull(el)
             assertTrue(el!!.text.contains("compare_digest"))
         }
@@ -101,7 +101,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret with no imports`(){
-        var code = """
+        val code = """
             if password == "SECRET":
                 pass
         """.trimIndent()
@@ -114,13 +114,13 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = UseCompareDigestFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
+            val oldEl = getBinaryExpressionElementAtCaret(testFile, mockEditor)
             assertNotNull(oldEl)
-            var el = fixer.getNewExpressionAtCaret(testFile, project, oldEl!!)
+            val el = fixer.getNewExpressionAtCaret(testFile, project, oldEl!!)
             assertNotNull(el)
             assertTrue(el!!.text.contains("compare_digest"))
         }
@@ -131,7 +131,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix`(){
-        var code = """
+        val code = """
             if password == "SECRET":
                 pass
             if password == "SECRET":
@@ -139,7 +139,7 @@ class UseCompareDigestFixerTest: SecurityTestTask() {
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = UseCompareDigestFixer()
             val expr: @NotNull MutableCollection<PyBinaryExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyBinaryExpression::class.java)

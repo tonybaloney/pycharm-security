@@ -26,7 +26,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with shell mode`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(shell=True)
         """.trimIndent()
@@ -35,7 +35,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with shell mode ref arg`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(x, shell=True)
         """.trimIndent()
@@ -44,7 +44,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with shell mode list ref arg`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call([x], shell=True)
         """.trimIndent()
@@ -53,7 +53,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with shell mode string literal arg`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call('test', shell=True)
         """.trimIndent()
@@ -62,7 +62,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with shell mode list literal arg`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(['test', 'x'], shell=True)
         """.trimIndent()
@@ -71,7 +71,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with shell mixed list arg`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call(['test', x], shell=True)
         """.trimIndent()
@@ -80,7 +80,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with escaped arg`(){
-        var code = """
+        val code = """
             import subprocess
             import shlex
             subprocess.call(shlex.quote(x), shell=True)
@@ -90,7 +90,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with escaped list arg`(){
-        var code = """
+        val code = """
             import subprocess
             import shlex
             subprocess.call([shlex.quote(x)], shell=True)
@@ -100,7 +100,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess call with other func call`(){
-        var code = """
+        val code = """
             import subprocess
             import shlex
             subprocess.call([something(x)], shell=True)
@@ -110,7 +110,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess Popen with shell mode`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.Popen(shell=True)
         """.trimIndent()
@@ -119,7 +119,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess run with shell mode`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.run(shell=True)
         """.trimIndent()
@@ -128,7 +128,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess run with shell mode off`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.run(shell=False)
         """.trimIndent()
@@ -137,7 +137,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess run with shell mode non-bool`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.run(shell=is_shell())
         """.trimIndent()
@@ -146,7 +146,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess run with no shell arg`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.run('zxx')
         """.trimIndent()
@@ -155,7 +155,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test subprocess other function`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.fun('zxx')
         """.trimIndent()
@@ -164,7 +164,7 @@ class SubprocessShellModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test normal subprocess call`(){
-        var code = """
+        val code = """
             import subprocess
             subprocess.call()
         """.trimIndent()

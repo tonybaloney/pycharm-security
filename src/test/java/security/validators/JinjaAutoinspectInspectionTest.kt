@@ -26,7 +26,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 no autoescape`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment()
         """.trimIndent()
@@ -35,7 +35,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 autoescape is false`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment(autoescape=False)
         """.trimIndent()
@@ -44,7 +44,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 autoescape is true`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment(autoescape=True)
         """.trimIndent()
@@ -53,7 +53,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 with existin autoescape to selector function`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment(autoescape=jinja2.select_autoescape(
                 enabled_extensions=('html', 'xml'),
@@ -65,7 +65,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 no autoescape on template`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template()
         """.trimIndent()
@@ -74,7 +74,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 autoescape is false on template`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template(autoescape=False)
         """.trimIndent()
@@ -83,7 +83,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 autoescape is true on template`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template(autoescape=True)
         """.trimIndent()
@@ -92,7 +92,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 with existin autoescape to selector function on Template`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template(autoescape=jinja2.select_autoescape(
                 enabled_extensions=('html', 'xml'),
@@ -104,7 +104,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 with not template call`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Templateeeee(autoescape=jinja2.select_autoescape(
                 enabled_extensions=('html', 'xml'),
@@ -116,7 +116,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 with not jinja qn`(){
-        var code = """
+        val code = """
             import jinja2000
             env = jinja2000.Template(autoescape=jinja2.select_autoescape(
                 enabled_extensions=('html', 'xml'),
@@ -128,7 +128,7 @@ class JinjaAutoinspectInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test jinja2 autoescape non bool`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template(autoescape='banana')
         """.trimIndent()

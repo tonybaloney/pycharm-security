@@ -26,7 +26,7 @@ class SqlAlchemyUnsafeQueryInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test unsafe text`() {
-        var code = """
+        val code = """
             import sqlalchemy
             
             sqlalchemy.text(data)
@@ -36,7 +36,7 @@ class SqlAlchemyUnsafeQueryInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test safe argument`() {
-        var code = """
+        val code = """
             import sqlalchemy
             
             sqlalchemy.text(data)
@@ -46,7 +46,7 @@ class SqlAlchemyUnsafeQueryInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test complex text`() {
-        var code = """
+        val code = """
             import sqlalchemy
             
             session.query(User).filter(User.id == 1).filter(text(part)).all()
@@ -56,7 +56,7 @@ class SqlAlchemyUnsafeQueryInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test unsafe suffix`() {
-        var code = """
+        val code = """
             import sqlalchemy
             
             select([users.c.name]).where(users.c.id == 1).suffix_with(suffix, dialect="sqlite")
@@ -66,7 +66,7 @@ class SqlAlchemyUnsafeQueryInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test text not sqlalchemy`(){
-        var code = """
+        val code = """
             import bicycle
             
             select([users.c.name]).where(users.c.id == 1).suffix_with(suffix, dialect="sqlite")
@@ -76,7 +76,7 @@ class SqlAlchemyUnsafeQueryInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test sqlalchemy not text`(){
-        var code = """
+        val code = """
             import sqlalchemy
             
             vext(x)

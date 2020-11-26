@@ -26,7 +26,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test django settings file with no csrf`(){
-        var code = """
+        val code = """
             MIDDLEWARE = [
                 'django.middleware.security.SecurityMiddleware',
                 'django.contrib.sessions.middleware.SessionMiddleware',
@@ -41,7 +41,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test django settings file no clickjack`(){
-        var code = """
+        val code = """
             MIDDLEWARE = [
                 'django.middleware.security.SecurityMiddleware',
                 'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,7 +56,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test django settings with empty middleware`(){
-        var code = """
+        val code = """
             MIDDLEWARE = [
             ]
         """.trimIndent()
@@ -66,7 +66,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test django settings with all requirements`() {
-        var code = """
+        val code = """
             MIDDLEWARE = [
                 'django.middleware.security.SecurityMiddleware',
                 'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,7 +82,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test another assignment type`(){
-        var code = """
+        val code = """
             MUDDLE_WARE = [
             ]
         """.trimIndent()
@@ -92,7 +92,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test another file name`(){
-        var code = """
+        val code = """
                 MIDDLEWARE = [
                 ]
             """.trimIndent()
@@ -101,7 +101,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no left hand `(){
-        var code = """
+        val code = """
                  = [
                 ]
             """.trimIndent()
@@ -110,7 +110,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no right hand`(){
-        var code = """
+        val code = """
                 MIDDLEWARE = 
             """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())
@@ -118,7 +118,7 @@ class DjangoMiddlewareInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test value is not list literal`(){
-        var code = """
+        val code = """
                 MIDDLEWARE = 'banana'
             """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoClickjackMiddlewareCheck, "settings.py", DjangoMiddlewareInspection())

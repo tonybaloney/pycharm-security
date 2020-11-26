@@ -26,7 +26,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string string select`(){
-        var code = """
+        val code = """
             query = "SELECT * FROM users WHERE id = {0}".format(id)
         """.trimIndent()
         testStringLiteralExpression(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -34,7 +34,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string not select`(){
-        var code = """
+        val code = """
             query = "SELECT a banana {0}".format(id)
         """.trimIndent()
         testStringLiteralExpression(code, 0, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -42,7 +42,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string update`(){
-        var code = """
+        val code = """
             query = "UPDATE users SET id = {0} WHERE x=1".format(id)
         """.trimIndent()
         testStringLiteralExpression(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -50,7 +50,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string string not update`(){
-        var code = """
+        val code = """
             query = "UPDATE a banana {0}".format(id)
         """.trimIndent()
         testStringLiteralExpression(code, 0, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -59,7 +59,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test insert into format function`(){
-        var code = """
+        val code = """
             query = "INSERT INTO users (id) VALUES ( id = {0} )".format(id)
         """.trimIndent()
         testStringLiteralExpression(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -67,7 +67,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string string select perc format`(){
-        var code = """
+        val code = """
             query = "SELECT * FROM users WHERE id = {0}" % id
         """.trimIndent()
         testStringLiteralExpression(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -75,7 +75,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string not select perc format`(){
-        var code = """
+        val code = """
             query = "SELECT a banana {0}" % id
         """.trimIndent()
         testStringLiteralExpression(code, 0, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -83,7 +83,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string update perc format`(){
-        var code = """
+        val code = """
             query = "UPDATE users SET id = {0} WHERE x=1" % id
         """.trimIndent()
         testStringLiteralExpression(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -91,7 +91,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string string not update perc format`(){
-        var code = """
+        val code = """
             query = "UPDATE a banana {0}" % id
         """.trimIndent()
         testStringLiteralExpression(code, 0, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -100,7 +100,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test insert into format function perc format`(){
-        var code = """
+        val code = """
             query = "INSERT INTO users (id) VALUES ( id = {0} )" % id
         """.trimIndent()
         testStringLiteralExpression(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -108,7 +108,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string string select fstring format`(){
-        var code = """
+        val code = """
             query = f"SELECT * FROM users WHERE id = {0}"
         """.trimIndent()
         testFormattedStringElement(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -116,7 +116,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string not select fstring format`(){
-        var code = """
+        val code = """
             query = f"SELECT a banana {0}"
         """.trimIndent()
         testFormattedStringElement(code, 0, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -124,7 +124,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string update fstring format`(){
-        var code = """
+        val code = """
             query = f"UPDATE users SET id = {0} WHERE x=1"
         """.trimIndent()
         testFormattedStringElement(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -132,7 +132,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format string string not update fstring format`(){
-        var code = """
+        val code = """
             query = f"UPDATE a banana {0}"
         """.trimIndent()
         testFormattedStringElement(code, 0, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())
@@ -141,7 +141,7 @@ class SqlInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test insert into format function fstring format`(){
-        var code = """
+        val code = """
             query = f"INSERT INTO users (id) VALUES ( id = {0} )"
         """.trimIndent()
         testFormattedStringElement(code, 1, Checks.SqlInjectionCheck, "test.py", SqlInjectionInspection())

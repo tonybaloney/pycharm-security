@@ -26,7 +26,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask app debug mode on`(){
-        var code = """
+        val code = """
             from flask import Flask
             
             app = Flask()
@@ -37,7 +37,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask app with debug mode off`(){
-        var code = """
+        val code = """
             from flask import Flask
             
             app = Flask()
@@ -48,7 +48,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask app with debug mode not bool`(){
-        var code = """
+        val code = """
             from flask import Flask
             
             app = Flask()
@@ -59,7 +59,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask with no mention of debug mode`(){
-        var code = """
+        val code = """
             from flask import Flask
             
             app = Flask()
@@ -70,7 +70,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask not run method`(){
-        var code = """
+        val code = """
             from flask import Flask
             
             app = Flask()
@@ -81,7 +81,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask not app run`(){
-        var code = """
+        val code = """
             from flask import Flask
             
             app = Flask()
@@ -92,7 +92,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test flask not imported`(){
-        var code = """
+        val code = """
             from banana import make
             
             app = Flask()
@@ -103,7 +103,7 @@ class FlaskDebugModeInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not reference parent`(){
-        var code = """
+        val code = """
             from flask import Flask
             "1".run()
         """.trimIndent()

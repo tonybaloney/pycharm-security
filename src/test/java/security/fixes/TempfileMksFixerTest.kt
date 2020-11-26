@@ -42,7 +42,7 @@ class TempfileMksFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get call element at caret`(){
-        var code = """
+        val code = """
             import tempfile
             tempfile.mktemp()
         """.trimIndent()
@@ -55,11 +55,11 @@ class TempfileMksFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = TempfileMksFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getPyCallExpressionAtCaret(testFile, mockEditor)
+            val el = getPyCallExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el!!.text.contains("tempfile.mktemp"))
         }
@@ -70,7 +70,7 @@ class TempfileMksFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret`(){
-        var code = """
+        val code = """
             import tempfile
             tempfile.mktemp()
         """.trimIndent()
@@ -83,11 +83,11 @@ class TempfileMksFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = TempfileMksFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = fixer.getNewExpressionAtCaret(testFile, mockEditor, project)
+            val el = fixer.getNewExpressionAtCaret(testFile, mockEditor, project)
             assertNotNull(el)
             assertTrue(el!!.text.contains("tempfile.mkstemp"))
         }
@@ -98,14 +98,14 @@ class TempfileMksFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix`(){
-        var code = """
+        val code = """
             import tempfile
             tempfile.mktemp()
             tempfile.mktemp()
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = TempfileMksFixer()
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)

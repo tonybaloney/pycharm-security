@@ -43,7 +43,7 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get call element at caret`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load()
         """.trimIndent()
@@ -56,11 +56,11 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = PyyamlSafeLoadFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getPyCallExpressionAtCaret(testFile, mockEditor)
+            val el = getPyCallExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el!!.text.contains("yaml.load"))
         }
@@ -71,7 +71,7 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load()
         """.trimIndent()
@@ -84,11 +84,11 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = PyyamlSafeLoadFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = fixer.getNewExpressionAtCaret(testFile, mockEditor, project)
+            val el = fixer.getNewExpressionAtCaret(testFile, mockEditor, project)
             assertNotNull(el)
             assertTrue(el!!.text.contains("yaml.safe_load"))
         }
@@ -99,14 +99,14 @@ class PyyamlSafeLoadFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load()
             yaml.load()
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = PyyamlSafeLoadFixer()
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)

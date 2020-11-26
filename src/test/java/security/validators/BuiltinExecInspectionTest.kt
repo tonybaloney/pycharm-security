@@ -26,7 +26,7 @@ class BuiltinExecInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test exec no args `(){
-        var code = """
+        val code = """
             exec()
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BuiltinExecCheck, "test.py", BuiltinExecInspection())
@@ -34,7 +34,7 @@ class BuiltinExecInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test string literal arg`(){
-        var code = """
+        val code = """
             exec('do this')
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BuiltinExecCheck, "test.py", BuiltinExecInspection())
@@ -42,7 +42,7 @@ class BuiltinExecInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test variable arg`(){
-        var code = """
+        val code = """
             exec(x)
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.BuiltinExecCheck, "test.py", BuiltinExecInspection())
@@ -50,7 +50,7 @@ class BuiltinExecInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test random name`(){
-        var code = """
+        val code = """
             xexecec()
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.BuiltinExecCheck, "test.py", BuiltinExecInspection())
@@ -58,7 +58,7 @@ class BuiltinExecInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test qn mismatch`(){
-        var code = """
+        val code = """
             import some_libary
             some_library.exec(f)
         """.trimIndent()

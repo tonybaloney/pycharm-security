@@ -7,7 +7,6 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.PyListLiteralExpression
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
@@ -45,11 +44,11 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
     private fun getNewFileForCode(code: String): String {
         var result: String = ""
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code)
 
             assertNotNull(testFile)
             val fixer = JinjaAutoinspectUnconditionalFixer()
-            var expr = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java).first()
+            val expr = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java).first()
             result = fixer.runFix(project, testFile, expr)?.text ?: ""
         }
         return result.replace(" ","").replace("\n", "")
@@ -57,7 +56,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with no args`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment()
         """.trimIndent()
@@ -67,7 +66,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace template with no args`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Template()
         """.trimIndent()
@@ -77,7 +76,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with args`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment(loader=PackageLoader('yourapplication', 'templates'))
         """.trimIndent()
@@ -87,7 +86,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
 
     @Test
     fun `replace environment with nested keyword args`(){
-        var code = """
+        val code = """
             import jinja2
             env = jinja2.Environment(loader=PackageLoader(package_path='yourapplication',package_name='templates'))
         """.trimIndent()
@@ -153,7 +152,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = JinjaAutoinspectUnconditionalFixer()
             val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
@@ -184,7 +183,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = JinjaAutoinspectUnconditionalFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
@@ -213,7 +212,7 @@ class JinjaAutoinspectFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = JinjaAutoinspectUnconditionalFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))

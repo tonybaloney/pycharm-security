@@ -26,7 +26,7 @@ class TempfileMktempInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test temp file with insecure make`(){
-        var code = """
+        val code = """
             import tempfile
             tempfile.mktemp()
         """.trimIndent()
@@ -35,7 +35,7 @@ class TempfileMktempInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test temp file with make (safe) temp`(){
-        var code = """
+        val code = """
             import tempfile
             tempfile.mkstemp()
         """.trimIndent()
@@ -44,7 +44,7 @@ class TempfileMktempInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test temp file with other lib`(){
-        var code = """
+        val code = """
             import nottempfile
             nottempfile.mktemp()
         """.trimIndent()

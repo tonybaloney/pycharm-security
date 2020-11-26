@@ -26,7 +26,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test quoted string`(){
-        var code = """
+        val code = """
             import django.db.models.query
             django.db.models.query.QuerySet.extra(
                 select={'val': "select col from sometable where othercol = '%s'"},
@@ -38,7 +38,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test format non quoted string`(){
-        var code = """
+        val code = """
             import django.db.models.query
             django.db.models.query.QuerySet.extra(
                 select={'val': "select col from sometable where othercol = %s"},
@@ -50,7 +50,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with missing quote at beginning`(){
-        var code = """
+        val code = """
             import django.db.models.query
             django.db.models.query.QuerySet.extra(
                 select={'val': "%s'"},
@@ -62,7 +62,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with missing quote at end`(){
-        var code = """
+        val code = """
             import django.db.models.query
             django.db.models.query.QuerySet.extra(
                 select={'val': "'%s"},
@@ -74,7 +74,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test model raw with nothing else`(){
-        var code = """
+        val code = """
             import django.db.models.query
             django.db.models.query.QuerySet.extra()
         """.trimIndent()
@@ -83,7 +83,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test extra not query set`(){
-        var code = """
+        val code = """
             extra(
                 select={'val': "select col from sometable where othercol = '%s'"},
                 select_params=(someparam,),
@@ -94,7 +94,7 @@ class DjangoExtraSqlInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not extra not query set`(){
-        var code = """
+        val code = """
             not_extra(
                 select={'val': "select col from sometable where othercol = '%s'"},
                 select_params=(someparam,),

@@ -23,7 +23,7 @@ class DjangoPermissionRequiredMixinInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test valid mixin`(){
-        var code = """
+        val code = """
             from django.contrib.auth.mixins import PermissionRequiredMixin
             from django.views.generic import DetailView
             
@@ -37,7 +37,7 @@ class DjangoPermissionRequiredMixinInspectionTest: SecurityTestTask() {
     @Test
     @Disabled("Resolver doesn't work in unit tests, see https://github.com/tonybaloney/pycharm-security/issues/120")
     fun `test invalid order mixin`(){
-        var code = """
+        val code = """
             from django.contrib.auth.mixins import PermissionRequiredMixin
             from django.views.generic import DetailView
             
@@ -51,7 +51,7 @@ class DjangoPermissionRequiredMixinInspectionTest: SecurityTestTask() {
     @Test
     @Disabled("Resolver doesn't work in unit tests, see https://github.com/tonybaloney/pycharm-security/issues/120")
     fun `test missing property mixin`(){
-        var code = """
+        val code = """
             from django.contrib.auth.mixins import PermissionRequiredMixin
             from django.views.generic import DetailView
             

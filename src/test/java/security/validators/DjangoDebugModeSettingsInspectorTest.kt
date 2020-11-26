@@ -27,7 +27,7 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test django settings file with debug mode on`(){
-        var code = """
+        val code = """
             DEBUG = True
         """.trimIndent()
         testCodeAssignmentStatement(code, 1, Checks.DjangoDebugModeCheck, "settings.py", DjangoDebugModeSettingsInspection())
@@ -35,7 +35,7 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test django settings file with debug mode off`(){
-        var code = """
+        val code = """
             DEBUG = False
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "settings.py", DjangoDebugModeSettingsInspection())
@@ -43,7 +43,7 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test django settings with no debug mode`(){
-        var code = """
+        val code = """
             X = 1
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "settings.py", DjangoDebugModeSettingsInspection())
@@ -51,7 +51,7 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test debug true in another file name`(){
-        var code = """
+        val code = """
             DEBUG = True
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "test.py", DjangoDebugModeSettingsInspection())
@@ -59,7 +59,7 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test no left hand`(){
-        var code = """
+        val code = """
             = True
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "test.py", DjangoDebugModeSettingsInspection())
@@ -67,7 +67,7 @@ class DjangoDebugModeSettingsInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test no right hand`(){
-        var code = """
+        val code = """
            DEBUG = 
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.DjangoDebugModeCheck, "test.py", DjangoDebugModeSettingsInspection())

@@ -24,7 +24,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test empty file`(){
-        var code = """
+        val code = """
             
         """.trimIndent()
         assertFalse(testHasImport(code, "django"))
@@ -32,7 +32,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test file with no imports`(){
-        var code = """
+        val code = """
             x = 1
         """.trimIndent()
         assertFalse(testHasImport(code, "django"))
@@ -40,7 +40,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test simple import`(){
-        var code = """
+        val code = """
             import django
         """.trimIndent()
         assertTrue(testHasImport(code, "django"))
@@ -48,7 +48,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test dotted import`(){
-        var code = """
+        val code = """
             import ..
         """.trimIndent()
         assertFalse(testHasImport(code, "django"))
@@ -56,7 +56,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test from import`(){
-        var code = """
+        val code = """
             from django.db import DbConnection
         """.trimIndent()
         assertTrue(testHasImport(code, "django"))
@@ -64,7 +64,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test from import multi`(){
-        var code = """
+        val code = """
             from django.db import DbConnection
         """.trimIndent()
         assertTrue(testHasImport(code, "django.db"))
@@ -72,7 +72,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test multiple import`(){
-        var code = """
+        val code = """
             import banana
             import apple
         """.trimIndent()
@@ -81,7 +81,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test multiple import dotted`(){
-        var code = """
+        val code = """
             import banana
             import fruit.apple
         """.trimIndent()
@@ -90,7 +90,7 @@ class ImportValidatorsTest: SecurityTestTask() {
 
     @Test
     fun `test multiple import dotted not exist`(){
-        var code = """
+        val code = """
             import banana
             import fruit.apple
         """.trimIndent()

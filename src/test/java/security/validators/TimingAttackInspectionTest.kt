@@ -26,7 +26,7 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test match of password comparator left`(){
-        var code = """
+        val code = """
             password = "BANANA"
             if password == "BANANA":
                 pass
@@ -36,7 +36,7 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test match of password comparator right`(){
-        var code = """
+        val code = """
             password = "BANANA"
             if "BANANA" == password:
                 pass
@@ -46,7 +46,7 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test skip of normal comparator`(){
-        var code = """
+        val code = """
             var = "BANANA"
             if "BANANA" == var:
                 pass
@@ -56,7 +56,7 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test skip of is None`(){
-        var code = """
+        val code = """
             var = "BANANA"
             if "BANANA" is None:
                 pass
@@ -66,7 +66,7 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test skip of plus`(){
-        var code = """
+        val code = """
             var = "BANANA"
             if "BANANA" + hammock:
                 pass
@@ -76,7 +76,7 @@ class TimingAttackInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test include of not equal`(){
-        var code = """
+        val code = """
             var = "BANANA"
             if "BANANA" != password:
                 pass

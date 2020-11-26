@@ -27,7 +27,7 @@ class HardcodedPasswordInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test hardcoded secret`(){
-        var code = """
+        val code = """
             secret = "my secret key"
         """.trimIndent()
         testCodeAssignmentStatement(code, 1, Checks.HardcodedPasswordCheck, "test.py", HardcodedPasswordInspection())
@@ -35,7 +35,7 @@ class HardcodedPasswordInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test hardcoded password`(){
-        var code = """
+        val code = """
             password = "my password"
         """.trimIndent()
         testCodeAssignmentStatement(code, 1, Checks.HardcodedPasswordCheck, "test.py", HardcodedPasswordInspection())
@@ -43,7 +43,7 @@ class HardcodedPasswordInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test does not fire on call expression`(){
-        var code = """
+        val code = """
             password = get_password()
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.HardcodedPasswordCheck, "test.py", HardcodedPasswordInspection())
@@ -51,7 +51,7 @@ class HardcodedPasswordInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test no left hand`(){
-        var code = """
+        val code = """
             = "my password"
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.HardcodedPasswordCheck, "test.py", HardcodedPasswordInspection())
@@ -59,7 +59,7 @@ class HardcodedPasswordInspectorTest : SecurityTestTask() {
 
     @Test
     fun `test no right hand`(){
-        var code = """
+        val code = """
            password = 
         """.trimIndent()
         testCodeAssignmentStatement(code, 0, Checks.HardcodedPasswordCheck, "test.py", HardcodedPasswordInspection())

@@ -26,7 +26,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test quoted string`(){
-        var code = """
+        val code = """
             from django.db.models import F, Func
             queryset.annotate(field_lower=django.db.models.Func(F('field'), function='LOWER', template="'%(function)s'(%(expressions)s)"))
         """.trimIndent()
@@ -35,7 +35,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test quoted string in class`(){
-        var code = """
+        val code = """
             from django.db.models import F, Func
             class ConcatPair(django.db.models.Func):
                 function = 'CONCAT'
@@ -53,7 +53,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test non quoted string`(){
-        var code = """
+        val code = """
             from django.db.models import F, Func
             queryset.annotate(field_lower=django.db.models.Func(F('field'), function='LOWER', template="%(function)s(%(expressions)s)"))
         """.trimIndent()
@@ -62,7 +62,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no template argument`(){
-        var code = """
+        val code = """
             from django.db.models import F, Func
             queryset.annotate(field_lower=django.db.models.Func(F('field'), function='LOWER'))
         """.trimIndent()
@@ -71,7 +71,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test template argument not string literal`(){
-        var code = """
+        val code = """
             from django.db.models import F, Func
             queryset.annotate(field_lower=django.db.models.Func(F('field'), function='LOWER', template=xxx))
         """.trimIndent()
@@ -91,7 +91,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test expression child not child of target`(){
-        var code = """
+        val code = """
             from django.db.models import Expression
             class Example(SomethingElse):
                 function = 'EXAMPLE'
@@ -102,7 +102,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no template attribute`(){
-        var code = """
+        val code = """
             from django.db.models import Expression
             class Example(django.db.models.Expression):
                 function = 'EXAMPLE'
@@ -112,7 +112,7 @@ class DjangoExpressionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test template attribute not string literal`(){
-        var code = """
+        val code = """
             from django.db.models import Expression
             class Example(django.db.models.Expression):
                 function = 'EXAMPLE'

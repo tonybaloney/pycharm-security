@@ -26,7 +26,7 @@ class HardcodedTempFileInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test temp file open`(){
-        var code = """
+        val code = """
             open("/tmp/my_path")
         """.trimIndent()
         testCodeCallExpression(code, 1, Checks.HardcodedTempFileCheck, "test.py", HardcodedTempFileInspection())
@@ -34,7 +34,7 @@ class HardcodedTempFileInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test temp file dynamic path open`(){
-        var code = """
+        val code = """
             import tempfile
             open(tempfile.mkstemp())
         """.trimIndent()
@@ -43,7 +43,7 @@ class HardcodedTempFileInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test open no args`(){
-        var code = """
+        val code = """
             open()
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.HardcodedTempFileCheck, "test.py", HardcodedTempFileInspection())
@@ -51,7 +51,7 @@ class HardcodedTempFileInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test open not builtin`(){
-        var code = """
+        val code = """
             import door
             door.open()
         """.trimIndent()
@@ -60,7 +60,7 @@ class HardcodedTempFileInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test open normal path`(){
-        var code = """
+        val code = """
             open('/path/to/normal')
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.HardcodedTempFileCheck, "test.py", HardcodedTempFileInspection())

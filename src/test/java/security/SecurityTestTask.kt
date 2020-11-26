@@ -24,10 +24,10 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
-                on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -40,9 +40,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyAssignmentStatement(e)
             }
             try {
-                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             } catch (a: AssertionError){
-                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
             }
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
@@ -51,10 +51,10 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testCodeCallExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
-                on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
 
             val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
             QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
@@ -71,9 +71,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyCallExpression(e)
             }
             try {
-                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             } catch (a: AssertionError){
-                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
             }
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
@@ -82,10 +82,10 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testCodeClass(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
-                on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
 
             val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
             QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
@@ -102,9 +102,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyClass(e)
             }
             try {
-                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             } catch (a: AssertionError){
-                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
+                Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
             }
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
@@ -113,9 +113,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testBinaryExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -127,7 +127,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyBinaryExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
@@ -135,9 +135,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testStringLiteralExpression(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -149,7 +149,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyStringLiteralExpression(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
@@ -157,9 +157,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testFormattedStringElement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -171,7 +171,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyFormattedStringElement(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
@@ -181,7 +181,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -203,7 +203,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             val mockHolder = mock<ProblemsHolder> {
                 on { registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -223,9 +223,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testImportStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -237,7 +237,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyImportStatement(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }
@@ -245,9 +245,9 @@ open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testFromImportStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
         ApplicationManager.getApplication().runReadAction {
             val mockHolder = mock<ProblemsHolder> {
-                on { registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
+                on { registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
-            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -259,7 +259,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             expr.forEach { e ->
                 testVisitor.visitPyFromImportStatement(e)
             }
-            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), anyVararg<LocalQuickFix>())
+            Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
             Mockito.verify(mockLocalSession, Mockito.times(1)).file
         }
     }

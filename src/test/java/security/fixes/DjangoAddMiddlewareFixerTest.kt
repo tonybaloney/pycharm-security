@@ -43,7 +43,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get list literal expression at caret`(){
-        var code = """
+        val code = """
             MIDDLEWARE = [
                 'test_banana',
                 'test_apple'
@@ -58,11 +58,11 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = DjangoAddMiddlewareFixer("test_banana")
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var el = getListLiteralExpressionAtCaret(testFile, mockEditor)
+            val el = getListLiteralExpressionAtCaret(testFile, mockEditor)
             assertNotNull(el)
             assertTrue(el is PyListLiteralExpression)
             assertTrue(el!!.text.contains("'test_banana'"))
@@ -74,7 +74,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
 
     @Test
     fun `test get new element at caret`(){
-        var code = """
+        val code = """
             MIDDLEWARE = [
                 'test_banana',
                 'test_apple'
@@ -89,13 +89,13 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
         }
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = DjangoAddMiddlewareFixer("test_plum")
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            var oldEl = getListLiteralExpressionAtCaret(testFile, mockEditor)
+            val oldEl = getListLiteralExpressionAtCaret(testFile, mockEditor)
             assertNotNull(oldEl)
-            var el = fixer.getNewExpression(project, oldEl!!)
+            val el = fixer.getNewExpression(project, oldEl!!)
             assertNotNull(el)
             assertTrue(el.text.contains("test_plum"))
             assertTrue(el.text.contains("test_banana"))
@@ -108,7 +108,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
 
     @Test
     fun `test batch fix`(){
-        var code = """
+        val code = """
             MIDDLEWARE = [
                 'test_banana',
                 'test_apple'
@@ -120,7 +120,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
         """.trimIndent()
 
         ApplicationManager.getApplication().runReadAction {
-            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code);
+            val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = DjangoAddMiddlewareFixer("test_middleware")
             val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)

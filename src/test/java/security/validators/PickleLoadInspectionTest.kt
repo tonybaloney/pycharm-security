@@ -26,7 +26,7 @@ class PickleLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test pickle load`() {
-        var code = """
+        val code = """
             import pickle
             
             pickle.load(data)
@@ -36,7 +36,7 @@ class PickleLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test pickle loads`() {
-        var code = """
+        val code = """
             import pickle
             
             pickle.loads(data)
@@ -46,7 +46,7 @@ class PickleLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test cpickle load`() {
-        var code = """
+        val code = """
             import cPickle
             
             cPickle.loads(data)
@@ -56,7 +56,7 @@ class PickleLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test cpickle loads`() {
-        var code = """
+        val code = """
             import cPickle
             
             cPickle.load(data)
@@ -66,7 +66,7 @@ class PickleLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test load not pickle`(){
-        var code = """
+        val code = """
             import bicycle
             
             bicycle.load(data)
@@ -76,7 +76,7 @@ class PickleLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test pickle not load`(){
-        var code = """
+        val code = """
             import pickle
             
             pickle.toad(data)

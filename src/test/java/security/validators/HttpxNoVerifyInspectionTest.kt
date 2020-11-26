@@ -26,7 +26,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the get method with no verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.get(url, verify=False)
@@ -36,7 +36,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the get method with verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.get(url, verify=True)
@@ -46,7 +46,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the post method with no verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.post(url, verify=False)
@@ -56,7 +56,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the post method with verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.post(url, verify=True)
@@ -66,7 +66,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the options method with no verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.options(url, verify=False)
@@ -76,7 +76,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the put method with no verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.put(url, verify=False)
@@ -86,7 +86,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test the patch method with no verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.patch(url, verify=False)
@@ -96,7 +96,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test httpx import with get and no arguments`() {
-        var code = """
+        val code = """
             from httpx import get
             
             get(url)
@@ -106,7 +106,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test httpx import with get and a verify true argument`() {
-        var code = """
+        val code = """
             from httpx import get
             
             get(url, verify=True)
@@ -116,7 +116,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test wrong qualified path`() {
-        var code = """
+        val code = """
             import httpx
             
             httpxxxx.patch(url, verify=False)
@@ -126,7 +126,7 @@ class HttpxNoVerifyInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test non boolean literal verify`() {
-        var code = """
+        val code = """
             import httpx
             
             httpx.patch(url, verify='banana')

@@ -26,7 +26,7 @@ class ParamikoHostKeyBypassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no args`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.set_missing_host_key_policy()
@@ -36,7 +36,7 @@ class ParamikoHostKeyBypassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test RejectPolicy`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.set_missing_host_key_policy(paramiko.client.RejectPolicy)
@@ -46,7 +46,7 @@ class ParamikoHostKeyBypassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test WarningPolicy`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.set_missing_host_key_policy(paramiko.client.WarningPolicy)
@@ -56,7 +56,7 @@ class ParamikoHostKeyBypassInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test AutoAddPolicy`(){
-        var code = """
+        val code = """
             import paramiko.client
             client = paramiko.client.SSHClient()
             client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy)

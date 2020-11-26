@@ -26,7 +26,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml load`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load()
         """.trimIndent()
@@ -35,7 +35,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml load with args`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load(f)
         """.trimIndent()
@@ -44,7 +44,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not yaml qn load`(){
-        var code = """
+        val code = """
             import yaml
             waml.load()
         """.trimIndent()
@@ -53,7 +53,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml not load`(){
-        var code = """
+        val code = """
             import yaml
             yaml.loooad()
         """.trimIndent()
@@ -62,7 +62,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml safe_load`(){
-        var code = """
+        val code = """
             import yaml
             yaml.safe_load()
         """.trimIndent()
@@ -71,7 +71,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml load with args and safeloader skips`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load(f, Loader=yaml.SafeLoader)
         """.trimIndent()
@@ -80,7 +80,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml load with args and invalid safeloader fires`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load(f, Loader=None)
         """.trimIndent()
@@ -89,7 +89,7 @@ class PyyamlLoadInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test yaml load with args and normal loader fires`(){
-        var code = """
+        val code = """
             import yaml
             yaml.load(f, Loader=yaml.Loader)
         """.trimIndent()

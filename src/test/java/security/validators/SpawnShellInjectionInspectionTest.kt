@@ -26,7 +26,7 @@ class SpawnShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test bad call`(){
-        var code = """
+        val code = """
             import os
             os.execle(x, y, z)
         """.trimIndent()
@@ -35,7 +35,7 @@ class SpawnShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test no arguments call`(){
-        var code = """
+        val code = """
             import os
             os.execle()
         """.trimIndent()
@@ -44,7 +44,7 @@ class SpawnShellInjectionInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test other call`(){
-        var code = """
+        val code = """
             import os
             os.path()
         """.trimIndent()

@@ -26,7 +26,7 @@ class MakoTemplateInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test mako template no autoescape`(){
-        var code = """
+        val code = """
             import mako.template
             t = mako.Template("my template")
         """.trimIndent()
@@ -35,7 +35,7 @@ class MakoTemplateInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test mako with existin autoescape to list`(){
-        var code = """
+        val code = """
             import mako.template
             env = mako.template.Template("SDFSDF", default_filters=['h'])
         """.trimIndent()
@@ -44,7 +44,7 @@ class MakoTemplateInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test not mako template call`(){
-        var code = """
+        val code = """
             env = Template("SDFSDF", default_filters=['h'])
         """.trimIndent()
         testCodeCallExpression(code, 0, Checks.MakoTemplateFilterCheck, "test.py", MakoTemplateInspection())
@@ -52,7 +52,7 @@ class MakoTemplateInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test mako not template call`(){
-        var code = """
+        val code = """
             import mako.template
             env = Templateeeeee("SDFSDF", default_filters=['h'])
         """.trimIndent()

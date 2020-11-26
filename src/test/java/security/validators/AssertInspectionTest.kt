@@ -26,7 +26,7 @@ class AssertInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test assert in test file`(){
-        var code = """
+        val code = """
             assert 1 == 1
         """.trimIndent()
         testAssertStatement(code, 0, Checks.AssertCheck, "test_foo.py", AssertInspection())
@@ -34,7 +34,7 @@ class AssertInspectionTest: SecurityTestTask() {
 
     @Test
     fun `test assert in non test file`(){
-        var code = """
+        val code = """
             assert 1 == 1
         """.trimIndent()
         testAssertStatement(code, 1, Checks.AssertCheck, "my_file.py", AssertInspection())
