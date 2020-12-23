@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.22.2'
+version '1.23.0'
 
 def ktor_version = "1.4.2"
 def kotlin_version = "1.4.20"
@@ -44,14 +44,14 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2020.2'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '203.5981-EAP-CANDIDATE-SNAPSHOT'
 
 
 patchPluginXml {
     changeNotes """
-      <h2>1.22.2</h2>
+      <h2>1.23.0</h2>
       <ul>
-        <li>Enable 2020.3</li>
+        <li>December 2020 update of vulnerabilitiess</li>
       </ul>
       """
 }
