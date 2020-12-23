@@ -1,5 +1,9 @@
 # Release History
 
+## 1.23.0
+
+* PyUp.io december update
+
 ## 1.22.2
 
 * Enable 203* series (2020.3)
