@@ -1,5 +1,9 @@
 # Release History
 
+## 1.23.1
+
+* Fix corrupt package
+
 ## 1.23.0
 
 * PyUp.io december update

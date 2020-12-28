@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.23.0'
+version '1.23.1'
 
 def ktor_version = "1.4.3"
 def kotlin_version = "1.4.21"
@@ -49,7 +49,7 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.23.0</h2>
+      <h2>1.23.1</h2>
       <ul>
         <li>December 2020 update of vulnerabilitiess</li>
       </ul>
