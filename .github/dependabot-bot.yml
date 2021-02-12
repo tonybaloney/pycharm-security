@@ -2,3 +2,6 @@ safe:
  - byte-buddy
  - junit-jupiter
  - byte-buddy-agent
+ - ktor_version
+ - org.jetbrains.kotlin.jvm
+ - kotlin_version
