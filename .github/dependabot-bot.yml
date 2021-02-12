@@ -1,2 +1,4 @@
 safe:
- - bytebuddy
+ - byte-buddy
+ - junit-jupiter
+ - byte-buddy-agent
