@@ -9,7 +9,7 @@ plugins {
 group 'org.tonybaloney.security'
 version '1.23.1'
 
-def ktor_version = "1.5.1"
+def ktor_version = "1.5.2"
 def kotlin_version = "1.4.31"
 
 repositories {
