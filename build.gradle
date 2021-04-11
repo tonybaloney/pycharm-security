@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.23.1'
+version '1.24.0'
 
 def ktor_version = "1.5.3"
 def kotlin_version = "1.4.32"
@@ -44,14 +44,14 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '203.5981-EAP-CANDIDATE-SNAPSHOT'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '211-EAP-SNAPSHOT'
 
 
 patchPluginXml {
     changeNotes """
-      <h2>1.23.1</h2>
+      <h2>1.24.0</h2>
       <ul>
-        <li>December 2020 update of vulnerabilitiess</li>
+        <li>Support for 2021.1 release of PyCharm</li>
       </ul>
       """
 }
