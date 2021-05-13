@@ -1,5 +1,6 @@
 package security.helpers
 
+import com.intellij.psi.PsiInvalidElementAccessException
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.PyReferenceExpression
 import com.jetbrains.python.psi.resolve.PyResolveContext
@@ -8,15 +9,18 @@ object QualifiedNameHelpers {
     var resolveContext: PyResolveContext = PyResolveContext.defaultContext()
 
     fun getQualifiedName(callExpression: PyCallExpression): String? {
-        val resolved = callExpression.multiResolveCallee(resolveContext)
-        if (resolved.isEmpty()) {
-            val firstChild = callExpression.firstChild ?: return null
-            if (firstChild !is PyReferenceExpression) return null
-            val qualifiedName = (firstChild).asQualifiedName() ?: return null
-            return qualifiedName.toString()
+        try {
+            val resolved = callExpression.multiResolveCallee(resolveContext)
+            if (resolved.isEmpty()) {
+                val firstChild = callExpression.firstChild ?: return null
+                if (firstChild !is PyReferenceExpression) return null
+                val qualifiedName = (firstChild).asQualifiedName() ?: return null
+                return qualifiedName.toString()
+            } else
+                return resolved[0].callable?.qualifiedName ?: resolved[0].callable?.name
+        } catch (pse: PsiInvalidElementAccessException){
+            return null
         }
-        else
-            return resolved[0].callable?.qualifiedName ?: resolved[0].callable?.name
     }
 }
 
