@@ -1,5 +1,9 @@
 # Release History
 
+## 1.24.0
+
+* Support for 2021.1 release of PyCharm
+
 ## 1.23.1
 
 * Fix corrupt package
