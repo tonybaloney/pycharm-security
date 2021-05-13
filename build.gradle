@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.24.0'
+version '1.24.1'
 
 def ktor_version = "1.5.4"
 def kotlin_version = "1.5.0"
@@ -49,9 +49,9 @@ intellij.version = project.hasProperty('intellijVersion') ? project.getProperty(
 
 patchPluginXml {
     changeNotes """
-      <h2>1.24.0</h2>
+      <h2>1.24.1</h2>
       <ul>
-        <li>Support for 2021.1 release of PyCharm</li>
+        <li>Fix a bug raising a runtime exception (PsiInvalidElementException)</li>
       </ul>
       """
 }

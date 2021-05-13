@@ -1,5 +1,9 @@
 # Release History
 
+## 1.24.1
+
+* Fix a bug raising a runtime exception (PsiInvalidElementException)
+
 ## 1.24.0
 
 * Support for 2021.1 release of PyCharm
