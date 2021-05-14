@@ -20,6 +20,10 @@ internal class SafetyDbCheckerTest {
     fun setUp() {
         val testLookupData = """
             {
+             "$\\meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1619848801
+             },
              "test_package": [],
              "aiocouchdb": [
                 "<0.6.0"
