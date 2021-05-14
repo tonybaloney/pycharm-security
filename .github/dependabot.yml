@@ -1,0 +1,18 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "19:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.jetbrains.intellij
+    versions:
+    - 0.7.1
+  - dependency-name: net.bytebuddy:byte-buddy-agent
+    versions:
+    - 1.10.19
+  - dependency-name: net.bytebuddy:byte-buddy
+    versions:
+    - 1.10.19
