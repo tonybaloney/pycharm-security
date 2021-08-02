@@ -1,6 +1,6 @@
 package security.packaging
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.jetbrains.python.packaging.PyPackage
 import java.io.IOException
@@ -52,6 +52,8 @@ class SafetyDbChecker : BasePackageChecker {
                 throw PackageCheckerLoadException(io.message!!)
             else
                 throw PackageCheckerLoadException("Could not load data from SafetyDB API")
+        }catch (io: com.google.gson.JsonSyntaxException){
+            throw PackageCheckerLoadException("Could not load data from SafetyDB API, JSON file is corrupted")
         }
     }
 
@@ -60,16 +62,17 @@ class SafetyDbChecker : BasePackageChecker {
     }
 
     private fun load(databaseReader: Reader, lookupReader: Reader) {
+        val gson = GsonBuilder().create()
         val recordLookupType = object : TypeToken<Map<String?, List<String>>>() {}.type
-        lookup = Gson().fromJson(lookupReader, recordLookupType)
+        lookup = gson.fromJson(lookupReader, recordLookupType)
 
         val recordDatabaseType = object : TypeToken<Map<String?, List<SafetyDbRecord>>>() {}.type
-        database = Gson().fromJson(databaseReader, recordDatabaseType)
+        database = gson.fromJson(databaseReader, recordDatabaseType)
     }
 
     override fun hasMatch(pythonPackage: PyPackage?): Boolean{
         if (pythonPackage==null) return false
-        for (record in lookup[pythonPackage.name.toLowerCase()] ?: return false){
+        for (record in lookup[pythonPackage.name.lowercase()] ?: return false){
             val specs = parseVersionSpecs(record) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
                 return true
@@ -80,7 +83,7 @@ class SafetyDbChecker : BasePackageChecker {
     override suspend fun getMatches (pythonPackage: PyPackage?): List<SafetyDbIssue> {
         if (pythonPackage==null) return listOf()
         val records: ArrayList<SafetyDbIssue> = ArrayList()
-        for (record in database[pythonPackage.name.toLowerCase()] ?: error("Package not in database")){
+        for (record in database[pythonPackage.name.lowercase()] ?: error("Package not in database")){
             val specs = parseVersionSpecs(record.v) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
                 records.add(SafetyDbIssue(record, pythonPackage))

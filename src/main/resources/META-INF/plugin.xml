@@ -22,7 +22,7 @@
      <li>Scan code in your CI/CD using Docker</li>
     </ul>
     ]]></description>
-    <idea-version since-build="201.5985.*" until-build="211.*" />
+    <idea-version since-build="201.5985.*" until-build="212.*" />
     
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -69,6 +69,10 @@
 
         <applicationConfigurable displayName="Python Security" instance="security.settings.SecuritySettingsConfigurable" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettingsConfigurable" groupId="tools"/>
         <applicationService serviceImplementation="security.settings.SecuritySettings" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettings" />
+
+        <notificationGroup displayType="BALLOON" id="pythonsecurity.checker" >
+
+        </notificationGroup>
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
     </extensions>
@@ -77,4 +81,5 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
+
 </idea-plugin>
