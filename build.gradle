@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.24.1'
+version '1.24.2'
 
 def ktor_version = "1.6.2"
 def kotlin_version = "1.5.21"
@@ -44,14 +44,14 @@ intellij {
     updateSinceUntilBuild false
 }
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '211-EAP-SNAPSHOT'
+intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2021.2'
 
 
 patchPluginXml {
     changeNotes """
-      <h2>1.24.1</h2>
+      <h2>1.24.2</h2>
       <ul>
-        <li>Fix a bug raising a runtime exception (PsiInvalidElementException)</li>
+        <li>Support for 2021.2 IDEs</li>
       </ul>
       """
 }
