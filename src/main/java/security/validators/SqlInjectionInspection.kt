@@ -28,11 +28,11 @@ class SqlInjectionInspection : PyInspection() {
 
         fun looksLikeSql(str: String) : Boolean {
             // Quickly respond to double-worded SQL statements
-            if (certainlySqlStartingStrings.any { str.toUpperCase().startsWith(it) }) return true
+            if (certainlySqlStartingStrings.any { str.uppercase().startsWith(it) }) return true
 
             // SELECT must contain FROM, and UPDATE must contain SET
             possiblySqlCommandPairs.forEach { pair ->
-                if (str.toUpperCase().startsWith(pair.key) && str.toUpperCase().contains(pair.value))
+                if (str.uppercase().startsWith(pair.key) && str.uppercase().contains(pair.value))
                     return true
             }
             return false

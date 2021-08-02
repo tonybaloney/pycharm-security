@@ -1,7 +1,7 @@
 package security.packaging
 
 import com.google.common.collect.Sets
-import com.intellij.notification.NotificationGroup
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.module.ModuleManager
@@ -16,7 +16,7 @@ import kotlinx.coroutines.runBlocking
 import security.settings.SecuritySettings
 
 object PyPackageSecurityScan {
-    var NOTIFICATION_GROUP = NotificationGroup.balloonGroup("Python Package Security Checker")
+    var NOTIFICATION_GROUP = NotificationGroupManager.getInstance().getNotificationGroup("pythonsecurity.checker")
 
     fun checkPackages(project: Project): Boolean?{
         val pythonSdks = getPythonSdks(project)
@@ -86,7 +86,7 @@ object PyPackageSecurityScan {
 
     private fun backendError(project: Project, message: String?){
         NOTIFICATION_GROUP
-                .createNotification("Could not check Python packages", null,
+                .createNotification("Could not check Python packages",
                         "Could not fetch API to validate records. Check your API details.\n$message",
                         NotificationType.ERROR)
                 .notify(project)
@@ -94,7 +94,7 @@ object PyPackageSecurityScan {
 
     private fun returnError(project: Project){
         NOTIFICATION_GROUP
-                .createNotification("Could not check Python packages", null,
+                .createNotification("Could not check Python packages",
                         "Could not verify security of Python packages, unable to locate configured Python Interpreter. Please configure your interpreter.",
                         NotificationType.INFORMATION)
                 .notify(project)
@@ -102,7 +102,7 @@ object PyPackageSecurityScan {
 
     private fun showTotalIssuesWarning(matches: Int, project: Project) {
         NOTIFICATION_GROUP
-                .createNotification("Completed checking packages", null,
+                .createNotification("Completed checking packages",
                         "Found $matches potential security issues with your installed packages.",
                         NotificationType.WARNING)
                 .notify(project)
@@ -110,19 +110,21 @@ object PyPackageSecurityScan {
 
     private fun showNoMatchesInformation(project: Project) {
         NOTIFICATION_GROUP
-                .createNotification("Completed checking packages", null,
+                .createNotification("Completed checking packages",
                         "Found no known security issues with your installed packages.",
                         NotificationType.INFORMATION)
                 .notify(project)
     }
 
     private fun showFoundIssueWarning(pack: PyPackage?, issue: PackageIssue, project: Project) {
-        NOTIFICATION_GROUP
-                .createNotification("Found Security Vulnerability in $pack package", null,
+        val not = NOTIFICATION_GROUP
+                .createNotification("Found Security Vulnerability in $pack package",
                         issue.getMessage(),
-                        NotificationType.WARNING,
-                        NotificationListener.URL_OPENING_LISTENER
-                ).notify(project)
+                        NotificationType.WARNING
+
+                )
+        not.setListener(NotificationListener.URL_OPENING_LISTENER)
+        not.notify(project)
     }
 
     fun getPythonSdks(project: Project): Set<Sdk> {

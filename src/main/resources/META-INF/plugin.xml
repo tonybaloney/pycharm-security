@@ -69,6 +69,10 @@
 
         <applicationConfigurable displayName="Python Security" instance="security.settings.SecuritySettingsConfigurable" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettingsConfigurable" groupId="tools"/>
         <applicationService serviceImplementation="security.settings.SecuritySettings" id="org.tonybaloney.security.pycharm-security.settings.SecuritySettings" />
+
+        <notificationGroup displayType="BALLOON" id="pythonsecurity.checker" >
+
+        </notificationGroup>
     </extensions>
     <extensions defaultExtensionNs="Pythonid">
     </extensions>
@@ -77,4 +81,5 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
+
 </idea-plugin>

@@ -1,16 +1,12 @@
 package security.packaging
 
 import com.jetbrains.python.packaging.PyPackage
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
-import io.ktor.client.features.ServerResponseException
-import io.ktor.client.features.defaultRequest
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
-import io.ktor.http.Url
+import io.ktor.client.*
+import io.ktor.client.engine.apache.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 
@@ -95,7 +91,7 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
     override suspend fun getMatches (pythonPackage: PyPackage?): List<SnykIssue> {
         if (pythonPackage==null) return listOf()
         val records: ArrayList<SnykIssue> = ArrayList()
-        val data = load(pythonPackage.name.toLowerCase(), pythonPackage.version) ?: return records
+        val data = load(pythonPackage.name.lowercase(), pythonPackage.version) ?: return records
         if (data.ok) return records
         if (data.issues == null) return records
 
