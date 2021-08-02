@@ -38,17 +38,18 @@ test {
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    type 'PC'
-    plugins 'python-ce', 'yaml'
-    updateSinceUntilBuild false
-}
 // Make the intellij version overridable on the command line to support multiple build versions..
-intellij.version = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2021.2'
+def intellijversion = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2021.2'
 
+intellij {
+    type = 'PC'
+    plugins = ['python-ce', 'yaml']
+    updateSinceUntilBuild = false
+    version = intellijversion
+}
 
 patchPluginXml {
-    changeNotes """
+    changeNotes = """
       <h2>1.24.2</h2>
       <ul>
         <li>Support for 2021.2 IDEs</li>
@@ -57,7 +58,7 @@ patchPluginXml {
 }
 
 publishPlugin {
-    token intellijPublishToken
+    token = intellijPublishToken
     // channels 'beta'
 }
 
