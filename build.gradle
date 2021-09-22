@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.8.0'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.8.1'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "net.bytebuddy:byte-buddy:1.11.16"
     testImplementation "net.bytebuddy:byte-buddy-agent:1.11.17"
