@@ -1,5 +1,9 @@
 # Release History
 
+## 1.24.3
+
+* Update safety db to october 2021
+
 ## 1.24.2
 
 * Support for 2021.2 series
