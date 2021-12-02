@@ -1,5 +1,11 @@
 # Release History
 
+## 1.25.0
+
+* Added a PyPi API option for package security checking that uses the new PyPI vulnerability API
+* Support for 2021.3
+* Update safety DB to december 
+
 ## 1.24.3
 
 * Update safety db to october 2021

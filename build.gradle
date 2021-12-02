@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.24.3'
+version '1.25.0'
 
 def ktor_version = "1.6.4"
 def kotlin_version = "1.5.31"
@@ -39,7 +39,7 @@ test {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 // Make the intellij version overridable on the command line to support multiple build versions..
-def intellijversion = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2021.2'
+def intellijversion = project.hasProperty('intellijVersion') ? project.getProperty('intellijVersion') : '2021.3'
 
 intellij {
     type = 'PC'
@@ -50,9 +50,11 @@ intellij {
 
 patchPluginXml {
     changeNotes = """
-      <h2>1.24.3</h2>
+      <h2>1.25.0</h2>
       <ul>
-        <li>Safety db update</li>
+        <li>Added a PyPi API option for package security checking that uses the new PyPI vulnerability API</li>
+        <li>Support for 2021.3</li>
+        <li>Update safety DB to december </li>
       </ul>
       """
 }

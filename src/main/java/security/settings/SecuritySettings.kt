@@ -75,7 +75,8 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
         Bundled,
         Api,
         Custom,
-        Snyk
+        Snyk,
+        Pypi
     }
 
     companion object {

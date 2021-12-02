@@ -42,6 +42,10 @@ This plugin will check the installed packages in your Python projects against th
 
 ![](doc/_static/safetydb-screenshot.png)
 
+## PyPi vulnerability API
+
+This plugin will check the installed packages in your Python projects against the OSV database in PyPi and raise a warning for any vulnerabilities.
+
 ## Current checks
 
 See [Supported Checks](https://pycharm-security.readthedocs.io/en/latest/checks/index.html) for a current list.
