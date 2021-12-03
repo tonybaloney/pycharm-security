@@ -28,7 +28,7 @@ class TempfileMktempInspection : PyInspection() {
             if (skipDocstring(node)) return
 
             if (!calleeMatches(node, "mktemp")) return
-            if (!qualifiedNameMatches(node, "tempfile.mktemp")) return
+            if (!qualifiedNameMatches(node, "tempfile.mktemp", typeEvalContext)) return
             holder.registerProblem(node, Checks.TempfileMktempCheck.getDescription(), TempfileMksFixer())
         }
     }

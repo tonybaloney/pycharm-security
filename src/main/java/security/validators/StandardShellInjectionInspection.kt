@@ -28,7 +28,7 @@ class StandardShellInjectionInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
 
-            if (!qualifiedNameMatches(node, ShellApis)) return
+            if (!qualifiedNameMatches(node, ShellApis, typeEvalContext)) return
 
             if (node.arguments.isNullOrEmpty()) return
 

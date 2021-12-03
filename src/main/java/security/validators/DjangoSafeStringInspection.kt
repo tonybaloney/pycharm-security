@@ -32,7 +32,7 @@ class DjangoSafeStringInspection : PyInspection() {
             if (node.arguments.isEmpty()) return
             if (skipDocstring(node)) return
             if (!calleeMatches(node, methodNames)) return
-            if (!qualifiedNameStartsWith(node, arrayOf("django.utils.safestring", "jinja2.filters"))) return
+            if (!qualifiedNameStartsWith(node, arrayOf("django.utils.safestring", "jinja2.filters"), typeEvalContext)) return
             var arg = node.arguments[0]
             if (arg is PyKeywordArgument){
                 if(!methodKwargs.containsKey(node.callee?.name)) return

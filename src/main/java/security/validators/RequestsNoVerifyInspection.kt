@@ -28,7 +28,7 @@ class RequestsNoVerifyInspection : PyInspection() {
             if (skipDocstring(node)) return
             val requestsMethodNames = arrayOf("get", "post", "options", "delete", "put", "patch", "head")
             if (!calleeMatches(node, requestsMethodNames)) return
-            if (!qualifiedNameStartsWith(node, "requests.")) return
+            if (!qualifiedNameStartsWith(node, "requests.", typeEvalContext)) return
             val verifyArgument = node.getKeywordArgument("verify") ?: return
             if (verifyArgument !is PyBoolLiteralExpression) return
             if (verifyArgument.value) return

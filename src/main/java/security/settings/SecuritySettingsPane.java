@@ -18,6 +18,7 @@ public class SecuritySettingsPane implements ItemListener{
     private JRadioButton radioButton5;
     private JTextField snykApiTextField;
     private JTextField snykOrgIdTextField;
+    private JRadioButton pyPiVulnerabilityAPIRadioButton;
 
     private ButtonGroup safetyButtonGroup;
 
@@ -64,6 +65,8 @@ public class SecuritySettingsPane implements ItemListener{
             radioButton4.setSelected(true);
         else if (settings.getSafetyDbMode() == SecuritySettings.SafetyDbType.Snyk)
             radioButton5.setSelected(true);
+        else if (settings.getSafetyDbMode() == SecuritySettings.SafetyDbType.Pypi)
+            pyPiVulnerabilityAPIRadioButton.setSelected(true);
         else
             radioButton1.setSelected(true);
     }
@@ -79,6 +82,8 @@ public class SecuritySettingsPane implements ItemListener{
             return SecuritySettings.SafetyDbType.Custom;
         else if (radioButton5.isSelected())
             return SecuritySettings.SafetyDbType.Snyk;
+        else if (pyPiVulnerabilityAPIRadioButton.isSelected())
+            return SecuritySettings.SafetyDbType.Pypi;
         else
             return SecuritySettings.SafetyDbType.Bundled;
     }
@@ -95,7 +100,7 @@ public class SecuritySettingsPane implements ItemListener{
                 snykOrgIdTextField.setEnabled(false);
                 snykApiTextField.setEnabled(false);
             }
-        } else if (itemEvent.getSource() == radioButton1 || itemEvent.getSource() == radioButton2) { // Disabled or Bundled
+        } else if (itemEvent.getSource() == radioButton1 || itemEvent.getSource() == radioButton2 || itemEvent.getSource() == pyPiVulnerabilityAPIRadioButton) { // Disabled or Bundled
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 apiKeyField.setEnabled(false);
                 apiUrlField.setEnabled(false);
@@ -133,5 +138,7 @@ public class SecuritySettingsPane implements ItemListener{
         radioButton4.addItemListener(this);
         radioButton5 = new JRadioButton();
         radioButton5.addItemListener(this);
+        pyPiVulnerabilityAPIRadioButton = new JRadioButton();
+        pyPiVulnerabilityAPIRadioButton.addItemListener(this);
     }
 }

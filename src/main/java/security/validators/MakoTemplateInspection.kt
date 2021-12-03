@@ -27,7 +27,7 @@ class MakoTemplateInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, "Template")) return
-            if (!qualifiedNameStartsWith(node, "mako.")) return
+            if (!qualifiedNameStartsWith(node, "mako.", typeEvalContext)) return
             val defaultFiltersArgument = node.getKeywordArgument("default_filters")
             if (defaultFiltersArgument == null)
             {

@@ -12,7 +12,7 @@
                         <root url="file:///usr/lib/python3.6/lib-dynload" type="simple" />
                         <root url="file:///usr/local/lib/python3.6/dist-packages" type="simple" />
                         <root url="file:///usr/lib/python3/dist-packages" type="simple" />
-                        <root url="file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2021.2/python_stubs/-1506223722" type="simple" />
+                        <root url="file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2021.3/python_stubs/-1506223722" type="simple" />
                         <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/python-skeletons" type="simple" />
                         <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/stdlib/3.6" type="simple" />
                         <root url="file://$APPLICATION_HOME_DIR$/plugins/python/helpers/typeshed/stdlib/3" type="simple" />

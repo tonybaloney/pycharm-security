@@ -31,6 +31,7 @@ object PyPackageSecurityScan {
                 SecuritySettings.SafetyDbType.Api -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey, SecuritySettings.instance.pyupApiUrl))
                 SecuritySettings.SafetyDbType.Custom -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker("", SecuritySettings.instance.pyupCustomUrl))
                 SecuritySettings.SafetyDbType.Snyk -> checkPackagesInSdks(pythonSdks, project, SnykChecker(SecuritySettings.instance.snykApiKey, SecuritySettings.instance.snykOrgId))
+                SecuritySettings.SafetyDbType.Pypi -> checkPackagesInSdks(pythonSdks, project, PypiChecker())
             }
             return true
         } catch (ex: PackageCheckerLoadException){

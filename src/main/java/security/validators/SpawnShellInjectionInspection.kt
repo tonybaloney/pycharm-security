@@ -25,7 +25,7 @@ class SpawnShellInjectionInspection : PyInspection() {
     private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
-            if (!qualifiedNameMatches(node, SpawnShellApis)) return
+            if (!qualifiedNameMatches(node, SpawnShellApis, typeEvalContext)) return
             if (node.arguments.isNullOrEmpty()) return
             holder.registerProblem(node, Checks.SpawnShellInjectionCheck.getDescription(), ProblemHighlightType.WEAK_WARNING)
         }

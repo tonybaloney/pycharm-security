@@ -38,7 +38,7 @@ class InsecureHashInspection : PyInspection() {
 
         fun checkHashAlgorithmsByNew(node: PyCallExpression, algorithms: Array<String>, check: Checks.CheckType) {
             if (!calleeMatches(node, "new")) return
-            if (!qualifiedNameStartsWith(node, "hashlib.")) return
+            if (!qualifiedNameStartsWith(node, "hashlib.", typeEvalContext)) return
             if (node.arguments.isEmpty()) return
             val nameKwArg = node.getKeywordArgument("name")
             val firstArg = node.arguments[0]
@@ -53,7 +53,7 @@ class InsecureHashInspection : PyInspection() {
 
         fun checkHashAlgorithmsByImport(node: PyCallExpression, algorithms: Array<String>, check: Checks.CheckType) {
             if (!calleeMatches(node, algorithms)) return
-            if (qualifiedNameStartsWith(node, "hashlib."))
+            if (qualifiedNameStartsWith(node, "hashlib.", typeEvalContext))
                 holder.registerProblem(node, check.getDescription())
         }
     }

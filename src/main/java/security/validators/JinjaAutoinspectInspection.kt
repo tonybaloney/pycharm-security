@@ -28,7 +28,7 @@ class JinjaAutoinspectInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, arrayOf("Environment", "Template"))) return
-            if (!qualifiedNameStartsWith(node, "jinja2.")) return
+            if (!qualifiedNameStartsWith(node, "jinja2.", typeEvalContext)) return
             val autoescapeArgument = node.getKeywordArgument("autoescape")
             if (autoescapeArgument == null)
             {

@@ -8,19 +8,19 @@ import com.jetbrains.python.psi.*
 
 
 fun getPyExpressionAtCaret(file: PsiFile, editor: Editor): PyExpression? {
-    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyExpression::class.java) ?: return null
+    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyExpression::class.java)
 }
 
 fun getPyCallExpressionAtCaret(file: PsiFile, editor: Editor): PyCallExpression? {
-    return PsiTreeUtil.getTopmostParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java) ?: return null
+    return PsiTreeUtil.getTopmostParentOfType(file.findElementAt(editor.caretModel.offset), PyCallExpression::class.java)
 }
 
 fun getListLiteralExpressionAtCaret(file: PsiFile, editor: Editor): PyListLiteralExpression? {
-    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyListLiteralExpression::class.java) ?: return null
+    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyListLiteralExpression::class.java)
 }
 
 fun getBinaryExpressionElementAtCaret(file: PsiFile, editor: Editor): PyBinaryExpression? {
-    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyBinaryExpression::class.java) ?: return null
+    return PsiTreeUtil.getParentOfType(file.findElementAt(editor.caretModel.offset), PyBinaryExpression::class.java)
 }
 
 fun getNewCallExpressiontAtCaret(file: PsiFile, editor: Editor, project: Project, old: String, new: String): PyCallExpression ? {

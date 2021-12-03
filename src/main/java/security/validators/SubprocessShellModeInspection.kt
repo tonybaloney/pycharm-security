@@ -33,7 +33,7 @@ class SubprocessShellModeInspection : PyInspection() {
             val shellMethodNames = arrayOf("call", "run", "Popen", "check_call", "check_output")
 
             // Check this is an import from the subprocess module
-            if (!qualifiedNameStartsWith(node, "subprocess.")) return
+            if (!qualifiedNameStartsWith(node, "subprocess.", typeEvalContext)) return
             if (node.arguments.isNullOrEmpty()) return
 
             // Match the method name against one of shellMethodNames

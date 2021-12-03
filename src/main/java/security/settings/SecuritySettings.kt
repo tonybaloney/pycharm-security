@@ -1,7 +1,7 @@
 package security.settings
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -75,12 +75,13 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
         Bundled,
         Api,
         Custom,
-        Snyk
+        Snyk,
+        Pypi
     }
 
     companion object {
         @JvmStatic
         val instance: SecuritySettings
-            get() = ServiceManager.getService(SecuritySettings::class.java)
+            get() = ApplicationManager.getApplication().getService(SecuritySettings::class.java)
     }
 }
