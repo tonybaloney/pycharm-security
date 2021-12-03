@@ -57,11 +57,11 @@ class ShellEscapeFixer : LocalQuickFix, IntentionAction, HighPriorityAction {
         val list = elementGenerator.createListLiteral()
         for (item in oldElement.elements){
             if (item is PyReferenceExpression){
-                list.add(getNewEscapedExpression(file, project, item) as @org.jetbrains.annotations.NotNull PsiElement)
+                list.add(getNewEscapedExpression(file, project, item) as PsiElement)
                 continue
             } else if (item is PyCallExpression) {
                 if (getQualifiedName(item, TypeEvalContext.codeAnalysis(project, file)) != "shlex.quote") {
-                    list.add(getNewEscapedExpression(file, project, item) as @org.jetbrains.annotations.NotNull PsiElement)
+                    list.add(getNewEscapedExpression(file, project, item) as PsiElement)
                     continue
                 }
             }
