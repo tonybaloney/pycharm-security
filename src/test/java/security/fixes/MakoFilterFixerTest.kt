@@ -12,7 +12,6 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import junit.framework.TestCase
-import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -101,7 +100,7 @@ class MakoFilterFixerTest: SecurityTestTask() {
             assertNotNull(testFile)
             val fixer = MakoFilterFixer()
             assertTrue(fixer.isAvailable(project, mockEditor, testFile))
-            val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
+            val expr: MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 val mockProblemDescriptor = mock<ProblemDescriptor> {

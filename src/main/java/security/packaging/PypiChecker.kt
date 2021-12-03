@@ -11,7 +11,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 
 
-class PypiChecker (): BasePackageChecker() {
+class PypiChecker : BasePackageChecker() {
     var baseUrl = "https://pypi.org"
 
     class PyPiIssue (val record: VulnerabilityRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {

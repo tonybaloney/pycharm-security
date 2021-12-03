@@ -11,7 +11,6 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -123,7 +122,7 @@ class DjangoAddMiddlewareFixerTest: SecurityTestTask() {
             val testFile = this.createLightFile("app.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
             val fixer = DjangoAddMiddlewareFixer("test_middleware")
-            val expr: @NotNull MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
+            val expr: MutableCollection<PyListLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyListLiteralExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 val mockProblemDescriptor = mock<ProblemDescriptor> {

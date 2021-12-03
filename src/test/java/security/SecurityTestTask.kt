@@ -15,7 +15,6 @@ import com.jetbrains.python.psi.*
 import com.jetbrains.python.psi.resolve.PyResolveContext
 import com.jetbrains.python.psi.types.TypeEvalContext
 import com.nhaarman.mockitokotlin2.*
-import org.jetbrains.annotations.NotNull
 import org.mockito.ArgumentMatchers.contains
 import org.mockito.Mockito
 import security.helpers.QualifiedNameHelpers
@@ -34,7 +33,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyAssignmentStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssignmentStatement::class.java)
+            val expr: MutableCollection<PyAssignmentStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssignmentStatement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyAssignmentStatement(e)
@@ -57,7 +56,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
 
             val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
-            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext(typeEvalContext).withTypeEvalContext(typeEvalContext)
 
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
@@ -65,7 +64,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
+            val expr: MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyCallExpression(e)
@@ -88,7 +87,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
 
             val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
-            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext(typeEvalContext).withTypeEvalContext(typeEvalContext)
 
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
@@ -96,7 +95,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyClass> = PsiTreeUtil.findChildrenOfType(testFile, PyClass::class.java)
+            val expr: MutableCollection<PyClass> = PsiTreeUtil.findChildrenOfType(testFile, PyClass::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyClass(e)
@@ -122,7 +121,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyBinaryExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyBinaryExpression::class.java)
+            val expr: MutableCollection<PyBinaryExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyBinaryExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyBinaryExpression(e)
@@ -144,7 +143,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyStringLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyStringLiteralExpression::class.java)
+            val expr: MutableCollection<PyStringLiteralExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyStringLiteralExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyStringLiteralExpression(e)
@@ -166,7 +165,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyFormattedStringElement> = PsiTreeUtil.findChildrenOfType(testFile, PyFormattedStringElement::class.java)
+            val expr: MutableCollection<PyFormattedStringElement> = PsiTreeUtil.findChildrenOfType(testFile, PyFormattedStringElement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyFormattedStringElement(e)
@@ -188,7 +187,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyAssertStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssertStatement::class.java)
+            val expr: MutableCollection<PyAssertStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyAssertStatement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyAssertStatement(e)
@@ -210,7 +209,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyTryExceptStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyTryExceptStatement::class.java)
+            val expr: MutableCollection<PyTryExceptStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyTryExceptStatement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyTryExceptStatement(e)
@@ -232,7 +231,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyImportStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyImportStatement::class.java)
+            val expr: MutableCollection<PyImportStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyImportStatement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyImportStatement(e)
@@ -254,7 +253,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             assertNotNull(testFile)
             val testVisitor = instance.buildVisitor(mockHolder, true, mockLocalSession) as PyInspectionVisitor
 
-            val expr: @NotNull MutableCollection<PyFromImportStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyFromImportStatement::class.java)
+            val expr: MutableCollection<PyFromImportStatement> = PsiTreeUtil.findChildrenOfType(testFile, PyFromImportStatement::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 testVisitor.visitPyFromImportStatement(e)

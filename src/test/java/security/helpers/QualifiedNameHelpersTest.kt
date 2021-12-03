@@ -8,7 +8,6 @@ import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
 import com.jetbrains.python.psi.resolve.PyResolveContext
 import com.jetbrains.python.psi.types.TypeEvalContext
-import org.jetbrains.annotations.NotNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -124,10 +123,10 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
 
             if (resolveContext){
                 val typeEvalContext = TypeEvalContext.codeCompletion(this.project, testFile)
-                QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext().withTypeEvalContext(typeEvalContext)
+                QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext(typeEvalContext).withTypeEvalContext(typeEvalContext)
             }
 
-            val expr: @NotNull MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
+            val expr: MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
                 name = QualifiedNameHelpers.getQualifiedName(e)
