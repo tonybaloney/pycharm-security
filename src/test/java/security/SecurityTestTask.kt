@@ -12,12 +12,9 @@ import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.*
-import com.jetbrains.python.psi.resolve.PyResolveContext
-import com.jetbrains.python.psi.types.TypeEvalContext
 import com.nhaarman.mockitokotlin2.*
 import org.mockito.ArgumentMatchers.contains
 import org.mockito.Mockito
-import security.helpers.QualifiedNameHelpers
 
 open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
@@ -55,9 +52,6 @@ open class SecurityTestTask: BasePlatformTestCase() {
             }
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
 
-            val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
-            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext(typeEvalContext).withTypeEvalContext(typeEvalContext)
-
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }
@@ -85,10 +79,6 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 on { registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>()) } doAnswer {}
             }
             val testFile = this.createLightFile(filename, PythonFileType.INSTANCE.language, code)
-
-            val typeEvalContext = TypeEvalContext.userInitiated(this.project, testFile)
-            QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext(typeEvalContext).withTypeEvalContext(typeEvalContext)
-
             val mockLocalSession = mock<LocalInspectionToolSession> {
                 on { file } doReturn (testFile)
             }

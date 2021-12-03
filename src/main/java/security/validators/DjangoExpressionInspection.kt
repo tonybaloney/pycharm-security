@@ -32,7 +32,7 @@ class DjangoExpressionInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, expressionTypes + extraMethods)) return
-            if (!qualifiedNameStartsWith(node, namespace)) return
+            if (!qualifiedNameStartsWith(node, namespace, typeEvalContext)) return
 
             if (node.arguments.isNullOrEmpty()) return
             val templateStatement = node.getKeywordArgument("template") ?: return

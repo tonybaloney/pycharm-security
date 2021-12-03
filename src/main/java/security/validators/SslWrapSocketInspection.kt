@@ -26,7 +26,7 @@ class SslWrapSocketInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, "wrap_socket")) return
-            if (!qualifiedNameMatches(node, "ssl.wrap_socket")) return
+            if (!qualifiedNameMatches(node, "ssl.wrap_socket", typeEvalContext)) return
 
             if (node.arguments.isNullOrEmpty())
                 holder.registerProblem(node, Checks.SslWrapSocketNoVersionCheck.getDescription())

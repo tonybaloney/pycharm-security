@@ -25,7 +25,7 @@ class PickleLoadInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             val pickleLoadNames = arrayOf("pickle.load", "pickle.loads", "cPickle.load", "cPickle.loads", "pickle._load", "pickle._loads", "cPickle._load", "cPickle._loads")
-            if (qualifiedNameMatches(node, pickleLoadNames))
+            if (qualifiedNameMatches(node, pickleLoadNames, typeEvalContext))
                 holder.registerProblem(node, Checks.PickleLoadCheck.getDescription())
         }
     }

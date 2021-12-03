@@ -27,7 +27,7 @@ class BuiltinExecInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, "exec")) return
-            if (!qualifiedNameMatches(node, "exec")) return
+            if (!qualifiedNameMatches(node, "exec", typeEvalContext)) return
 
             // First argument as a string literal is ok
             if (node.arguments.isNullOrEmpty()) return

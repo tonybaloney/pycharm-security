@@ -6,7 +6,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.psi.PyCallExpression
-import com.jetbrains.python.psi.resolve.PyResolveContext
 import com.jetbrains.python.psi.types.TypeEvalContext
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -89,7 +88,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
             y = x
             y.meth()
         """.trimIndent()
-        assertEquals(getQualifiedName(code, false), "meth")
+        assertEquals(getQualifiedName(code), "meth")
     }
 
     @Test
@@ -103,7 +102,7 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
             y = x
             y.meth()
         """.trimIndent()
-        assertEquals(getQualifiedName(code, true), "meth")
+        assertEquals(getQualifiedName(code), "meth")
     }
 
     @Test
@@ -112,24 +111,19 @@ class QualifiedNameHelpersTest: SecurityTestTask() {
             import x as y
             y.meth()
         """.trimIndent()
-        assertEquals(getQualifiedName(code, true), "y.meth")
+        assertEquals(getQualifiedName(code), "y.meth")
     }
 
-    private fun getQualifiedName(code: String, resolveContext: Boolean = false): String?{
+    private fun getQualifiedName(code: String): String?{
         var name: String? = null
         ApplicationManager.getApplication().runReadAction {
             val testFile = this.createLightFile("test.py", PythonFileType.INSTANCE.language, code)
             assertNotNull(testFile)
 
-            if (resolveContext){
-                val typeEvalContext = TypeEvalContext.codeCompletion(this.project, testFile)
-                QualifiedNameHelpers.resolveContext = PyResolveContext.defaultContext(typeEvalContext).withTypeEvalContext(typeEvalContext)
-            }
-
             val expr: MutableCollection<PyCallExpression> = PsiTreeUtil.findChildrenOfType(testFile, PyCallExpression::class.java)
             assertNotNull(expr)
             expr.forEach { e ->
-                name = QualifiedNameHelpers.getQualifiedName(e)
+                name = QualifiedNameHelpers.getQualifiedName(e, TypeEvalContext.codeAnalysis(project, testFile))
             }
         }
         return name

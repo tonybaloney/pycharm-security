@@ -26,7 +26,7 @@ class DjangoExtraSqlInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, "extra")) return
-            if (!qualifiedNameMatches(node, "django.db.models.query.QuerySet.extra")) return
+            if (!qualifiedNameMatches(node, "django.db.models.query.QuerySet.extra", typeEvalContext)) return
 
             val keywordArgumentsToInspect = arrayOf("where", "select", "tables", "order_by", "params")
             keywordArgumentsToInspect

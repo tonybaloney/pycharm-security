@@ -28,7 +28,7 @@ class PyyamlLoadInspection : PyInspection() {
         override fun visitPyCallExpression(node: PyCallExpression) {
             if (skipDocstring(node)) return
             if (!calleeMatches(node, "load")) return
-            if (!qualifiedNameMatches(node, "yaml.load")) return
+            if (!qualifiedNameMatches(node, "yaml.load", typeEvalContext)) return
             // Inspect loader kwarg
             val loaderArg = node.getKeywordArgument("Loader")
             if (loaderArg != null && loaderArg is PyReferenceExpression)

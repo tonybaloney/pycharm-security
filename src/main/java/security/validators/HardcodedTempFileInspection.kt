@@ -13,7 +13,7 @@ import security.helpers.qualifiedNameMatches
 import security.helpers.skipDocstring
 
 class HardcodedTempFileInspection : PyInspection() {
-    val check = Checks.HardcodedTempFileCheck;
+    val check = Checks.HardcodedTempFileCheck
 
     override fun getStaticDescription(): String? {
         return check.getStaticDescription()
@@ -28,7 +28,7 @@ class HardcodedTempFileInspection : PyInspection() {
             if (skipDocstring(node)) return
             val possibleTempPaths = arrayOf("/tmp", "/var/tmp", "/dev/shm")
             if (!calleeMatches(node, "open")) return
-            if (!qualifiedNameMatches(node, "open")) return
+            if (!qualifiedNameMatches(node, "open", typeEvalContext)) return
             if (node.arguments.isNullOrEmpty()) return
             if (node.arguments.first() !is PyStringLiteralExpression) return
             val path = (node.arguments.first() as PyStringLiteralExpression).stringValue
