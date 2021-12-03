@@ -12,9 +12,9 @@ import com.jetbrains.python.PythonFileType
 import com.jetbrains.python.inspections.PyInspection
 import com.jetbrains.python.inspections.PyInspectionVisitor
 import com.jetbrains.python.psi.*
-import com.nhaarman.mockitokotlin2.*
 import org.mockito.ArgumentMatchers.contains
 import org.mockito.Mockito
+import org.mockito.kotlin.*
 
 open class SecurityTestTask: BasePlatformTestCase() {
     fun <inspector: PyInspection>testCodeAssignmentStatement(code: String, times: Int = 1, check: Checks.CheckType, filename: String = "test.py", instance: inspector){
@@ -40,7 +40,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             } catch (a: AssertionError){
                 Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
             }
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -68,7 +68,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             } catch (a: AssertionError){
                 Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
             }
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -95,7 +95,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
             } catch (a: AssertionError){
                 Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), any<ProblemHighlightType>(), anyVararg<LocalQuickFix>())
             }
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -117,7 +117,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyBinaryExpression(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -139,7 +139,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyStringLiteralExpression(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -161,7 +161,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyFormattedStringElement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -183,7 +183,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyAssertStatement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -205,7 +205,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyTryExceptStatement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any<PsiElement>(), contains(check.Code), any<ProblemHighlightType>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -227,7 +227,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyImportStatement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 
@@ -249,7 +249,7 @@ open class SecurityTestTask: BasePlatformTestCase() {
                 testVisitor.visitPyFromImportStatement(e)
             }
             Mockito.verify(mockHolder, Mockito.times(times)).registerProblem(any(), contains(check.Code), anyVararg<LocalQuickFix>())
-            Mockito.verify(mockLocalSession, Mockito.times(1)).file
+            Mockito.verify(mockLocalSession, Mockito.atLeastOnce()).file
         }
     }
 }
