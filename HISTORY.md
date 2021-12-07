@@ -1,5 +1,9 @@
 # Release History
 
+## 1.25.1
+
+* Fixed plugin compatibility issue
+
 ## 1.25.0
 
 * Added a PyPi API option for package security checking that uses the new PyPI vulnerability API
