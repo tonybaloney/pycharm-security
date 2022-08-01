@@ -3,6 +3,7 @@
 ## 1.26.0
 
 * Support for 2022.2
+* Update safety DB to July 2022
 
 ## 1.25.0
 
