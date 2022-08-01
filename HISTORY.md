@@ -1,5 +1,9 @@
 # Release History
 
+## 1.26.0
+
+* Support for 2022.2
+
 ## 1.25.0
 
 * Added a PyPi API option for package security checking that uses the new PyPI vulnerability API

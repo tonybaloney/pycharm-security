@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.25.1'
+version '1.26.0'
 
 def ktor_version = "2.0.3"
 def kotlin_version = "1.7.10"
@@ -41,16 +41,14 @@ intellij {
     type = 'PC'
     plugins = ['python-ce', 'yaml']
     updateSinceUntilBuild = false
-    version = '2021.3'
+    version = '2022.2'
 }
 
 patchPluginXml {
     changeNotes = """
-      <h2>1.25.0</h2>
+      <h2>1.26.0</h2>
       <ul>
-        <li>Added a PyPi API option for package security checking that uses the new PyPI vulnerability API</li>
-        <li>Support for 2021.3</li>
-        <li>Update safety DB to december </li>
+        <li>Support for 2022.2</li>
       </ul>
       """
 }
