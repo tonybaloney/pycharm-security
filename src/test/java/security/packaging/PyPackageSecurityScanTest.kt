@@ -22,6 +22,15 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
     override fun setUp() {
         val testLookupData = """
             {
+            "meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1666399806,
+                "last_updated": "2022-10-22 00:50:06",
+                "base_domain": "https://pyup.io",
+                "attribution": "Licensed under CC-BY-4.0 by pyup.io."
+            },
+            "vulnerable_packages": 
+            {
              "apples": [
                 "<0.6.0"
                 ],
@@ -29,8 +38,18 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
                 "<1.0.0,>=0.5.0"
              ]
             }
+            }
         """.trimIndent()
         val testData = """
+            {
+            "meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1666399806,
+                "last_updated": "2022-10-22 00:50:06",
+                "base_domain": "https://pyup.io",
+                "attribution": "Licensed under CC-BY-4.0 by pyup.io."
+            },
+            "vulnerable_packages": 
             {
              "apples": [
                  {
@@ -54,6 +73,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
                     "v": "<1.0.0,>=0.5.0"
                 }
                 ]
+            }
             }
         """.trimIndent()
         val lookupReader = StringReader(testLookupData)

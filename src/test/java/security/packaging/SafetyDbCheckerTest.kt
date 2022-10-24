@@ -20,52 +20,72 @@ internal class SafetyDbCheckerTest {
     fun setUp() {
         val testLookupData = """
             {
-             "test_package": [],
-             "aiocouchdb": [
-                "<0.6.0"
-                ],
-             "bananas": [
-                "<1.0.0,>=0.5.0"
-             ],
-             "eee": [
-                 "===0.5.0"
-              ],
-              "ee": [
-                  "==0.5.0"
-               ],
-               "lte": [
-                   "<=0.5.0"
-              ],
-              "ne": [
-                   "!=0.5.0"
-              ],
-              "gt": [
-                     ">0.5.0"
-                ],
-              "co": [
-                   "~=0.5.0"
-              ],
-              "invalid": [
-                "!!22"
-              ],
-              "django": [
-                "==0.1.0"
-              ]
+            "meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1666399806,
+                "last_updated": "2022-10-22 00:50:06",
+                "base_domain": "https://pyup.io",
+                "attribution": "Licensed under CC-BY-4.0 by pyup.io."
+            },
+            "vulnerable_packages": 
+                {
+                 "test_package": [],
+                 "aiocouchdb": [
+                    "<0.6.0"
+                    ],
+                 "bananas": [
+                    "<1.0.0,>=0.5.0"
+                 ],
+                 "eee": [
+                     "===0.5.0"
+                  ],
+                  "ee": [
+                      "==0.5.0"
+                   ],
+                   "lte": [
+                       "<=0.5.0"
+                  ],
+                  "ne": [
+                       "!=0.5.0"
+                  ],
+                  "gt": [
+                         ">0.5.0"
+                    ],
+                  "co": [
+                       "~=0.5.0"
+                  ],
+                  "invalid": [
+                    "!!22"
+                  ],
+                  "django": [
+                    "==0.1.0"
+                  ]
+                }
             }
         """.trimIndent()
         val testData = """
             {
-             "aiocouchdb": [
-                 {
-                    "advisory": "aiocouchdb 0.6.0 now correctly set members for database security.",
-                    "cve": null,
-                    "id": "pyup.io-25612",
-                    "specs": [
-                        "<0.6.0"
-                    ],
-                    "v": "<0.6.0"
+            "meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1666399806,
+                "last_updated": "2022-10-22 00:50:06",
+                "base_domain": "https://pyup.io",
+                "attribution": "Licensed under CC-BY-4.0 by pyup.io."
+            },
+            "vulnerable_packages": 
+                {
+                 "aiocouchdb": [
+                     {
+                        "advisory": "aiocouchdb 0.6.0 now correctly set members for database security.",
+                        "cve": null,
+                        "id": "pyup.io-25612",
+                        "specs": [
+                            "<0.6.0"
+                        ],
+                        "v": "<0.6.0"
+                    }
+                    ]
                 }
-                ]
             }
         """.trimIndent()
         val lookupReader = StringReader(testLookupData)

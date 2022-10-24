@@ -74,7 +74,7 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
         Disabled,
         Bundled,
         Api,
-        Custom,
+        Custom, // Deprecated
         Snyk,
         Pypi
     }
