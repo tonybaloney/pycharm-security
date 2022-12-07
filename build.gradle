@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'org.tonybaloney.security'
-version '1.26.0'
+version '1.27.0'
 
 def ktor_version = "1.6.8"
 def kotlin_version = "1.7.22"
@@ -38,14 +38,14 @@ intellij {
     type = 'PC'
     plugins = ['python-ce', 'yaml']
     updateSinceUntilBuild = false
-    version = '2022.2'
+    version = '2022.3'
 }
 
 patchPluginXml {
     changeNotes = """
-      <h2>1.26.0</h2>
+      <h2>1.27.0</h2>
       <ul>
-        <li>Support for 2022.2</li>
+        <li>Support for 2022.3</li>
       </ul>
       """
 }
