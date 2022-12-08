@@ -1,32 +1,49 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '1.9.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
+    id 'org.jetbrains.intellij' version '1.10.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.22'
     id 'jacoco'
     id 'org.kordamp.gradle.markdown' version '2.2.0'
 }
 
 group 'org.tonybaloney.security'
-version '1.26.0'
+version '1.27.0'
 
-def ktor_version = "1.6.8"
-def kotlin_version = "1.7.20"
+def ktor_version = "2.2.0"
+def atomicfu_version = "0.18.5"
 
 repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 dependencies {
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.0'
+    // Stability in IntelliJ
+    implementation "org.jetbrains.kotlinx:atomicfu:$atomicfu_version"
+
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    testImplementation 'net.bytebuddy:byte-buddy:1.12.18'
-    testImplementation 'net.bytebuddy:byte-buddy-agent:1.12.18'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "io.ktor:ktor-client-core:$ktor_version"
-    compile "io.ktor:ktor-client-apache:$ktor_version"
-    compile "io.ktor:ktor-client-gson:$ktor_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    testImplementation 'net.bytebuddy:byte-buddy:1.12.19'
+    testImplementation 'net.bytebuddy:byte-buddy-agent:1.12.19'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.0'
+    // HAck to get build working. Try removing in future
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.7.2'
+
+    // For API clients
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-apache:$ktor_version"
+    implementation "io.ktor:ktor-serialization-gson:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
 }
 
 test {
@@ -38,14 +55,14 @@ intellij {
     type = 'PC'
     plugins = ['python-ce', 'yaml']
     updateSinceUntilBuild = false
-    version = '2022.2'
+    version = '2022.3'
 }
 
 patchPluginXml {
     changeNotes = """
-      <h2>1.26.0</h2>
+      <h2>1.27.0</h2>
       <ul>
-        <li>Support for 2022.2</li>
+        <li>Support for 2022.3</li>
       </ul>
       """
 }

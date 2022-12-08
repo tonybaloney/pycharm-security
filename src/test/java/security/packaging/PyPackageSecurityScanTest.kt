@@ -1,6 +1,7 @@
 package security.packaging
 
 import com.intellij.openapi.projectRoots.Sdk
+import com.intellij.openapi.projectRoots.SdkModificator
 import com.jetbrains.python.packaging.PyPackage
 import com.jetbrains.python.packaging.PyPackageManager
 import org.junit.jupiter.api.AfterAll
@@ -94,9 +95,13 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
 
     @Test
     fun `test check packages`(){
+        val mockModificator = mock<SdkModificator> {
+        }
+
         val mockSdk = mock<Sdk> {
             on { name } doReturn ("test")
             on { homePath } doReturn (".")
+            on { sdkModificator } doReturn (mockModificator)
         }
         assertEquals(PyPackageSecurityScan.checkPackagesInSdks(setOf(mockSdk), project, instance), 0)
     }
