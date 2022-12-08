@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.7.22'
     id 'jacoco'
     id 'org.kordamp.gradle.markdown' version '2.2.0'
+    id 'application'
 }
 
 group 'org.tonybaloney.security'
@@ -16,8 +17,15 @@ repositories {
 }
 
 java {
-    sourceCompatibility = 17
-    targetCompatibility = 17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 dependencies {
