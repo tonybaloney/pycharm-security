@@ -2,11 +2,12 @@ package security.packaging
 
 import com.jetbrains.python.packaging.PyPackage
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.apache.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.serialization.gson.*
 import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 
@@ -39,8 +40,8 @@ class PypiChecker : BasePackageChecker() {
 
     private suspend fun load(packageName: String, packageVersion: String): PyPiPackageApiResponse? {
         val client = HttpClient(Apache) {
-            install(JsonFeature) {
-                serializer = GsonSerializer{
+            install(ContentNegotiation) {
+                gson {
                     serializeNulls()
                     disableHtmlEscaping()
                 }
@@ -58,7 +59,7 @@ class PypiChecker : BasePackageChecker() {
         }
 
         try {
-            return client.get<PyPiPackageApiResponse>(Url("$baseUrl/pypi/$packageName/$packageVersion/json"))
+            return client.get("$baseUrl/pypi/$packageName/$packageVersion/json").body()
         } catch (t: TimeoutCancellationException){
             throw PackageCheckerLoadException("Timeout connecting to PyPi API.")
         } catch (t: SocketTimeoutException){

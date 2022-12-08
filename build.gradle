@@ -4,13 +4,12 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.7.22'
     id 'jacoco'
     id 'org.kordamp.gradle.markdown' version '2.2.0'
-    id 'application'
 }
 
 group 'org.tonybaloney.security'
 version '1.27.0'
 
-def ktor_version = "1.6.8"
+def ktor_version = "2.2.0"
 
 repositories {
     mavenCentral()
@@ -30,12 +29,14 @@ kotlin {
 
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.0'
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.7.2'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation 'net.bytebuddy:byte-buddy:1.12.19'
     testImplementation 'net.bytebuddy:byte-buddy-agent:1.12.19'
     implementation "io.ktor:ktor-client-core:$ktor_version"
     implementation "io.ktor:ktor-client-apache:$ktor_version"
-    implementation "io.ktor:ktor-client-gson:$ktor_version"
+    implementation "io.ktor:ktor-serialization-gson:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
 }
 
 test {
