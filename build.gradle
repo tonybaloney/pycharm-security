@@ -9,7 +9,7 @@ plugins {
 group 'org.tonybaloney.security'
 version '1.27.0'
 
-def ktor_version = "2.2.0"
+def ktor_version = "2.2.1"
 def atomicfu_version = "0.18.5"
 
 repositories {
