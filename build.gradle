@@ -32,7 +32,7 @@ dependencies {
     // Stability in IntelliJ
     implementation "org.jetbrains.kotlinx:atomicfu:$atomicfu_version"
 
-    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
     testImplementation 'net.bytebuddy:byte-buddy:1.12.19'
     testImplementation 'net.bytebuddy:byte-buddy-agent:1.12.19'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.1'
