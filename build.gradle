@@ -10,23 +10,24 @@ group 'org.tonybaloney.security'
 version '1.27.0'
 
 def ktor_version = "1.6.8"
-def kotlin_version = "1.7.22"
 
 repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
 dependencies {
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.0'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation 'net.bytebuddy:byte-buddy:1.12.19'
     testImplementation 'net.bytebuddy:byte-buddy-agent:1.12.19'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "io.ktor:ktor-client-core:$ktor_version"
-    compile "io.ktor:ktor-client-apache:$ktor_version"
-    compile "io.ktor:ktor-client-gson:$ktor_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-apache:$ktor_version"
+    implementation "io.ktor:ktor-client-gson:$ktor_version"
 }
 
 test {
