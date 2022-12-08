@@ -2,11 +2,12 @@ package security.packaging
 
 import com.jetbrains.python.packaging.PyPackage
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.apache.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.serialization.gson.*
 import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 
@@ -54,8 +55,8 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
 
     private suspend fun load(packageName: String, packageVersion: String): SnykTestApiResponse? {
         val client = HttpClient(Apache) {
-            install(JsonFeature) {
-                serializer = GsonSerializer{
+            install(ContentNegotiation) {
+                gson {
                     serializeNulls()
                     disableHtmlEscaping()
                 }
@@ -74,7 +75,7 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
         }
 
         try {
-            return client.get<SnykTestApiResponse>(Url("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId"))
+            return client.get("$baseUrl/test/pip/$packageName/$packageVersion?org=$orgId").body()
         } catch (t: TimeoutCancellationException){
             throw PackageCheckerLoadException("Timeout connecting to Snyk API.")
         } catch (t: SocketTimeoutException){
