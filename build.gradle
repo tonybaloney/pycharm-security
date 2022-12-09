@@ -10,7 +10,6 @@ group 'org.tonybaloney.security'
 version '1.27.0'
 
 def ktor_version = "2.2.1"
-def atomicfu_version = "0.18.5"
 
 repositories {
     mavenCentral()
@@ -29,9 +28,6 @@ kotlin {
 }
 
 dependencies {
-    // Stability in IntelliJ
-    implementation "org.jetbrains.kotlinx:atomicfu:$atomicfu_version"
-
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
     testImplementation 'net.bytebuddy:byte-buddy:1.12.19'
     testImplementation 'net.bytebuddy:byte-buddy-agent:1.12.19'
