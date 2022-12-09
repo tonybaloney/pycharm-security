@@ -11,6 +11,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import java.io.StringReader
+import kotlinx.coroutines.*
 
 
 internal class SafetyDbCheckerTest {
@@ -59,6 +60,12 @@ internal class SafetyDbCheckerTest {
                   ],
                   "django": [
                     "==0.1.0"
+                  ],
+                  "gunicorn": [
+                    "<19.10.0",
+                    "<19.4.0",
+                    "<19.5.0",
+                    ">=20.0.0,<20.0.1"
                   ]
                 }
             }
@@ -75,16 +82,54 @@ internal class SafetyDbCheckerTest {
             "vulnerable_packages": 
                 {
                  "aiocouchdb": [
-                     {
-                        "advisory": "aiocouchdb 0.6.0 now correctly set members for database security.",
-                        "cve": null,
-                        "id": "pyup.io-25612",
-                        "specs": [
-                            "<0.6.0"
-                        ],
-                        "v": "<0.6.0"
-                    }
-                    ]
+                  {
+                    "specs": [
+                      "<0.6.0"
+                    ],
+                    "type": "pve",
+                    "cve": "PVE-2021-25612",
+                    "advisory": "aiocouchdb 0.6.0 now correctly set members for data...",
+                    "id": "pyup.io-25612",
+                    "transitive": false,
+                    "more_info_path": "/v/25612/fe5/"
+                  }
+                ],
+                "gunicorn": [
+                  {
+                    "specs": [
+                      "<19.10.0",
+                      ">=20.0.0,<20.0.1"
+                    ],
+                    "type": "pve",
+                    "cve": "PVE-2021-40104",
+                    "advisory": "Gunicorn 20.0.1 fixes chunked encoding support to p...",
+                    "id": "pyup.io-40104",
+                    "transitive": false,
+                    "more_info_path": "/v/40104/fe5/"
+                  },
+                  {
+                    "specs": [
+                      "<19.4.0"
+                    ],
+                    "type": "pve",
+                    "cve": "PVE-2021-40103",
+                    "advisory": "Gunicorn 19.4.0 includes a security fix to raise 'I...",
+                    "id": "pyup.io-40103",
+                    "transitive": false,
+                    "more_info_path": "/v/40103/fe5/"
+                  },
+                  {
+                    "specs": [
+                      "<19.5.0"
+                    ],
+                    "type": "cve",
+                    "cve": "CVE-2018-1000164",
+                    "advisory": "Gunicorn 19.5.0 includes a fix for CVE-2018-1000164...",
+                    "id": "pyup.io-40105",
+                    "transitive": false,
+                    "more_info_path": "/v/40105/fe5/"
+                  }
+                ]
                 }
             }
         """.trimIndent()
@@ -228,24 +273,57 @@ internal class SafetyDbCheckerTest {
     }
 
     @Test
-    suspend fun getMatches() {
+    fun `test get matches with aiocouch known vulnerability`() {
         val testPackage = mock<PyPackage> {
             on { name } doReturn "aiocouchdb"
             on { version } doReturn "0.1.0"
         }
         assertTrue(instance.hasMatch(testPackage))
 
-        val matches: List<SafetyDbChecker.SafetyDbIssue> = instance.getMatches(testPackage)
+        val matches: List<SafetyDbChecker.SafetyDbIssue> = runBlocking { instance.getMatches(testPackage) }
         verify(testPackage, times(2)).name
         verify(testPackage, times(2)).version
 
         assertEquals(matches.size, 1)
-        assertEquals(matches[0].record.v, "<0.6.0")
-        assertEquals(matches[0].record.advisory, "aiocouchdb 0.6.0 now correctly set members for database security.")
-        assertNull(matches[0].record.cve)
-        assertEquals(matches[0].record.id, "pyup.io-25612")
         assertEquals(matches[0].record.specs.size, 1)
         assertEquals(matches[0].record.specs[0], "<0.6.0")
+        assertEquals(matches[0].record.advisory, "aiocouchdb 0.6.0 now correctly set members for data...")
+        assertEquals(matches[0].record.cve, "PVE-2021-25612")
+        assertEquals(matches[0].record.id, "pyup.io-25612")
+        assertTrue(matches[0].getMessage().isNotBlank())
+    }
+
+    @Test
+    fun `test get matches with gunicorn known vulnerability`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "gunicorn"
+            on { version } doReturn "20.0.0"
+        }
+        assertTrue(instance.hasMatch(testPackage))
+
+        val matches: List<SafetyDbChecker.SafetyDbIssue> = runBlocking { instance.getMatches(testPackage) }
+
+        assertEquals(matches.size, 1)
+        assertEquals(matches[0].record.specs.size, 2)
+        assertEquals(matches[0].record.specs[0], "<19.10.0")
+        assertEquals(matches[0].record.specs[1], ">=20.0.0,<20.0.1")
+        assertEquals(matches[0].record.advisory, "Gunicorn 20.0.1 fixes chunked encoding support to p...")
+        assertEquals(matches[0].record.cve, "PVE-2021-40104")
+        assertEquals(matches[0].record.id, "pyup.io-40104")
+        assertTrue(matches[0].getMessage().isNotBlank())
+    }
+
+    @Test
+    fun `test get multiple matches with gunicorn known vulnerabilities`() {
+        val testPackage = mock<PyPackage> {
+            on { name } doReturn "gunicorn"
+            on { version } doReturn "19.0.0"
+        }
+        assertTrue(instance.hasMatch(testPackage))
+
+        val matches: List<SafetyDbChecker.SafetyDbIssue> = runBlocking { instance.getMatches(testPackage) }
+
+        assertEquals(matches.size, 3)
         assertTrue(matches[0].getMessage().isNotBlank())
     }
 

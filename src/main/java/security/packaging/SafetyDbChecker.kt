@@ -23,11 +23,13 @@ class SafetyDbChecker : BasePackageChecker {
     }
 
     data class SafetyDbRecord(
-        val advisory: String,
-        val cve: String?,
-        val id: String,
         val specs: List<String>,
-        val v: String
+        val type: String,
+        val cve: String?,
+        val advisory: String,
+        val id: String,
+        val transitive: Boolean,
+        val more_info_path: String
     )
 
     data class SafetyDbMeta(
@@ -47,34 +49,17 @@ class SafetyDbChecker : BasePackageChecker {
         val vulnerable_packages: Map<String?, List<SafetyDbRecord>>?
     )
 
-    constructor() {
+    constructor(apiKey: String? = null) {
         val fullUrl = URL("$baseUrl/insecure_full.json")
         val indexUrl = URL("$baseUrl/insecure.json")
         val fullConnection = fullUrl.openConnection()
         val indexConnection = indexUrl.openConnection()
+        if (!apiKey.isNullOrEmpty()) {
+            fullConnection.setRequestProperty("X-Api-Key", apiKey)
+            indexConnection.setRequestProperty("X-Api-Key", apiKey)
+        }
         fullConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
         indexConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
-        try {
-            val fullReader = fullConnection.getInputStream().reader()
-            val indexReader = indexConnection.getInputStream().reader()
-            load(fullReader, indexReader)
-        } catch (io: IOException){
-            if (io.message.isNullOrEmpty().not())
-                throw PackageCheckerLoadException(io.message!!)
-            else
-                throw PackageCheckerLoadException("Could not load data from SafetyDB API")
-        }catch (io: com.google.gson.JsonSyntaxException){
-            throw PackageCheckerLoadException("Could not load data from SafetyDB API, JSON file is corrupted")
-        }
-    }
-
-    constructor(apiKey: String, baseUrl: String) {
-        val fullUrl = URL("$baseUrl/insecure_full.json")
-        val indexUrl = URL("$baseUrl/insecure.json")
-        val fullConnection = fullUrl.openConnection()
-        val indexConnection = indexUrl.openConnection()
-        fullConnection.setRequestProperty("X-Api-Key", apiKey)
-        indexConnection.setRequestProperty("X-Api-Key", apiKey)
         try {
             val fullReader = fullConnection.getInputStream().reader()
             val indexReader = indexConnection.getInputStream().reader()
@@ -122,9 +107,13 @@ class SafetyDbChecker : BasePackageChecker {
         if (pythonPackage==null) return listOf()
         val records: ArrayList<SafetyDbIssue> = ArrayList()
         for (record in database.vulnerable_packages?.get(pythonPackage.name.lowercase()) ?: error("Package not in database")){
-            val specs = parseVersionSpecs(record.v) ?: continue
-            if (specs.all { it != null && it.matches(pythonPackage.version) })
-                records.add(SafetyDbIssue(record, pythonPackage))
+            for (spec in record.specs) {
+                val specs = parseVersionSpecs(spec) ?: continue
+                if (specs.all { it != null && it.matches(pythonPackage.version) }) {
+                    records.add(SafetyDbIssue(record, pythonPackage))
+                    break
+                }
+            }
         }
         return records.toList()
     }

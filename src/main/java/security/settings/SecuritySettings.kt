@@ -16,18 +16,6 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
             state.PYUP_API_KEY = value
         }
 
-    var pyupApiUrl: String
-        get() = state.PYUP_API_URL
-        set(value) {
-            state.PYUP_API_URL = value
-        }
-
-    var pyupCustomUrl: String
-        get() = state.PYUP_CUSTOM_URL
-        set(value) {
-            state.PYUP_CUSTOM_URL = value
-        }
-
     var snykApiKey: String
         get() = state.SNYK_API_KEY
         set(value) {
@@ -62,8 +50,8 @@ class SecuritySettings : PersistentStateComponent<SecuritySettings.State> {
     class State {
         @JvmField
         var PYUP_API_KEY: String = ""
-        var PYUP_API_URL: String = "https://pyup.io/api/v1/safety/"
-        var PYUP_CUSTOM_URL: String = "https://raw.githubusercontent.com/pyupio/safety-db/master/data/"
+        var PYUP_API_URL: String = "https://pyup.io/api/v1/safety/" // Unused
+        var PYUP_CUSTOM_URL: String = "https://raw.githubusercontent.com/pyupio/safety-db/master/data/" // Unused
         var SAFETY_DB_MODE: SafetyDbType = SafetyDbType.Bundled
         var IGNORE_DOCSTRINGS: Boolean = true
         var SNYK_API_KEY: String = ""

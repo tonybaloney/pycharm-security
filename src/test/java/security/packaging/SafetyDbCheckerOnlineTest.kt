@@ -9,12 +9,7 @@ import org.junit.jupiter.api.Test
 class SafetyDbCheckerOnlineTest {
     @Test
     fun `test online resource`(){
-        val checker = SafetyDbChecker("key", "https://pyup.io/aws/safety/pycharm")
+        val checker = SafetyDbChecker()
         assertTrue(checker.hasMatch(PyPackage("requests", "1.0.0", "", listOf<PyRequirement>())))
-    }
-
-    @Test
-    fun `test online resource bad URL`(){
-        assertThrows(PackageCheckerLoadException::class.java) { SafetyDbChecker("key", "https://bad.bad/bad/") }
     }
 }

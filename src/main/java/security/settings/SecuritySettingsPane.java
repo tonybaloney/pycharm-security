@@ -16,7 +16,6 @@ public class SecuritySettingsPane implements ItemListener{
     private JRadioButton disabledRadioButton;
     private JRadioButton safetyDbRadioButton;
     private JRadioButton pyupApiRadioButton;
-    private JTextField apiUrlField;
     private JCheckBox ignoreDocstringCheckbox;
     private JRadioButton snykApiRadioButton;
     private JTextField snykApiTextField;
@@ -48,7 +47,6 @@ public class SecuritySettingsPane implements ItemListener{
 
     public void storeSettings(SecuritySettings settings) {
         settings.setPyupApiKey(apiKeyField.getText());
-        settings.setPyupApiUrl(apiUrlField.getText());
         settings.setSafetyDbMode(getSelectedSafetyDbMode());
         settings.setIgnoreDocstrings(ignoreDocstringCheckbox.isSelected());
         settings.setSnykApiKey(snykApiTextField.getText());
@@ -58,7 +56,6 @@ public class SecuritySettingsPane implements ItemListener{
     public boolean isModified(SecuritySettings settings) {
         return !settings.getPyupApiKey().equals(apiKeyField.getText())
                 || settings.getSafetyDbMode() != getSelectedSafetyDbMode()
-                || !settings.getPyupApiUrl().equals(apiUrlField.getText())
                 || !settings.getSnykApiKey().equals(snykApiTextField.getText())
                 || !settings.getSnykOrgId().equals(snykOrgIdTextField.getText())
                 || settings.getIgnoreDocstrings() != ignoreDocstringCheckbox.isSelected();
@@ -67,7 +64,6 @@ public class SecuritySettingsPane implements ItemListener{
 
     public void setData(SecuritySettings settings) {
         apiKeyField.setText(settings.getPyupApiKey());
-        apiUrlField.setText(settings.getPyupApiUrl());
         snykApiTextField.setText(settings.getSnykApiKey());
         snykOrgIdTextField.setText(settings.getSnykOrgId());
         ignoreDocstringCheckbox.setSelected(settings.getIgnoreDocstrings());
@@ -110,21 +106,18 @@ public class SecuritySettingsPane implements ItemListener{
         if (itemEvent.getSource() == pyupApiRadioButton) { // PyUp API
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 apiKeyField.setEnabled(true);
-                apiUrlField.setEnabled(true);
                 snykOrgIdTextField.setEnabled(false);
                 snykApiTextField.setEnabled(false);
             }
         } else if (itemEvent.getSource() == disabledRadioButton || itemEvent.getSource() == safetyDbRadioButton || itemEvent.getSource() == pyPiVulnerabilityAPIRadioButton) { // Disabled or Bundled
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 apiKeyField.setEnabled(false);
-                apiUrlField.setEnabled(false);
                 snykOrgIdTextField.setEnabled(false);
                 snykApiTextField.setEnabled(false);
             }
         } else if (itemEvent.getSource() == snykApiRadioButton) { // Snyk
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 apiKeyField.setEnabled(false);
-                apiUrlField.setEnabled(false);
                 snykOrgIdTextField.setEnabled(true);
                 snykApiTextField.setEnabled(true);
             }

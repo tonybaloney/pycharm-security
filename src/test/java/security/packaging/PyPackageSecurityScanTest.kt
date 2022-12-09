@@ -170,7 +170,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
             on { name } doReturn "good"
             on { version } doReturn "0.4.0"
         }
-        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord("Test is bad", null, "xyz", listOf("<= 1.0.0"), "<= 1.0.0"), pyPackage = testPackage1)
+        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord(listOf("<= 1.0.0"), "Test is bad", "cve", "xyz", "xyx", false, "/v/123"), pyPackage = testPackage1)
         val message = record.getMessage()
         assertFalse(message.isEmpty())
     }
@@ -181,7 +181,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
             on { name } doReturn "good"
             on { version } doReturn "0.4.0"
         }
-        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord("Test is bad", "CVE-2020-123.3", "xyz", listOf("<= 1.0.0"), "<= 1.0.0"), pyPackage = testPackage1)
+        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord(listOf("<= 1.0.0"), "Test is bad", "cve", "xyz", "xyx", false, "/v/123"), pyPackage = testPackage1)
         val message = record.getMessage()
         assertFalse(message.isEmpty())
     }

@@ -1,5 +1,13 @@
 # Release History
 
+## 1.27.0
+
+* Support for 2022.3
+* "Bundled" package check setting will a live database PyUP.IO's public API. This API is meant for non-commercial projects only, so a message is shown.
+ If you're scanning commercial projects, please use the PyPI API in the settings or register for an account with PyUP.io and enter your API key in settings.
+* Updated to Java 17
+* Updated to newer KTor API client
+
 ## 1.26.0
 
 * Support for 2022.2
