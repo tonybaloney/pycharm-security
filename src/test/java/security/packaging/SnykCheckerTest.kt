@@ -4,6 +4,9 @@ import com.jetbrains.python.packaging.PyPackage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import kotlinx.coroutines.*
+import org.junit.jupiter.api.Disabled
+
 
 internal class SnykCheckerTest {
     private val testPackage = PyPackage("rsa", "3.4.0", null, listOf())
@@ -18,12 +21,13 @@ internal class SnykCheckerTest {
     }
 
     @Test
-    suspend fun `test single match`() {
+    @Disabled("Test API no longer available")
+    fun `test single match`() {
         val checker = SnykChecker("test", "test")
         // Use the mock API
         checker.baseUrl = testUrl
         assertTrue(checker.hasMatch(testPackage))
-        val match = checker.getMatches(testPackage)
+        val match = runBlocking { checker.getMatches(testPackage) }
         assertEquals(match.first().record.id, "SNYK-PYTHON-RSA-40541")
         assertTrue(match.first().getMessage().isNotBlank())
     }

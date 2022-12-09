@@ -63,6 +63,10 @@ patchPluginXml {
       <h2>1.27.0</h2>
       <ul>
         <li>Support for 2022.3</li>
+        <li>"Bundled" package check setting will a live database PyUP.IO's public API. This API is meant for non-commercial projects only, so a message is shown.
+ If you're scanning commercial projects, please use the PyPI API in the settings or register for an account with PyUP.io and enter your API key in settings </li>
+        <li>Updated to Java 17</li>
+        <li>Updated to newer KTor API client</li>
       </ul>
       """
 }

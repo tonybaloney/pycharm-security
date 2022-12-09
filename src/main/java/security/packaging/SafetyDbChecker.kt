@@ -8,8 +8,9 @@ import java.io.Reader
 import java.net.URL
 
 class SafetyDbChecker : BasePackageChecker {
-    private lateinit var database: Map<String?, List<SafetyDbRecord>>
-    private lateinit var lookup: Map<String?, List<String>>
+    private lateinit var index: SafetyDbIndex
+    private lateinit var database: SafetyDbDatabase
+    var baseUrl = "https://pyup.io/aws/safety/pycharm"
 
     class SafetyDbIssue (val record: SafetyDbRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
@@ -22,27 +23,43 @@ class SafetyDbChecker : BasePackageChecker {
     }
 
     data class SafetyDbRecord(
-        val advisory: String,
-        val cve: String?,
-        val id: String,
         val specs: List<String>,
-        val v: String
+        val type: String,
+        val cve: String?,
+        val advisory: String,
+        val id: String,
+        val transitive: Boolean,
+        val more_info_path: String
     )
 
-    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    constructor() {
-        load(
-            this.javaClass.classLoader.getResourceAsStream("safety-db/insecure_full.json").reader(),
-            this.javaClass.classLoader.getResourceAsStream("safety-db/insecure.json").reader())
-    }
+    data class SafetyDbMeta(
+        val advisory: String,
+        val timestamp: Int,
+        val last_updated: String,
+        val base_domain: String?,
+        val attribution: String?
+    )
 
-    constructor(apiKey: String, baseUrl: String) {
+    data class SafetyDbIndex(
+        val meta: SafetyDbMeta?,
+        val vulnerable_packages: Map<String?, List<String>>?
+    )
+    data class SafetyDbDatabase(
+        val meta: SafetyDbMeta?,
+        val vulnerable_packages: Map<String?, List<SafetyDbRecord>>?
+    )
+
+    constructor(apiKey: String? = null) {
         val fullUrl = URL("$baseUrl/insecure_full.json")
         val indexUrl = URL("$baseUrl/insecure.json")
         val fullConnection = fullUrl.openConnection()
         val indexConnection = indexUrl.openConnection()
-        fullConnection.setRequestProperty("X-Api-Key", apiKey)
-        indexConnection.setRequestProperty("X-Api-Key", apiKey)
+        if (!apiKey.isNullOrEmpty()) {
+            fullConnection.setRequestProperty("X-Api-Key", apiKey)
+            indexConnection.setRequestProperty("X-Api-Key", apiKey)
+        }
+        fullConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
+        indexConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
         try {
             val fullReader = fullConnection.getInputStream().reader()
             val indexReader = indexConnection.getInputStream().reader()
@@ -63,16 +80,22 @@ class SafetyDbChecker : BasePackageChecker {
 
     private fun load(databaseReader: Reader, lookupReader: Reader) {
         val gson = GsonBuilder().create()
-        val recordLookupType = object : TypeToken<Map<String?, List<String>>>() {}.type
-        lookup = gson.fromJson(lookupReader, recordLookupType)
+        val recordLookupType = object : TypeToken<SafetyDbIndex>() {}.type
+        index = gson.fromJson(lookupReader, recordLookupType)
+        if (index.vulnerable_packages == null) {
+            throw PackageCheckerLoadException("Could not load data from SafetyDB API")
+        }
 
-        val recordDatabaseType = object : TypeToken<Map<String?, List<SafetyDbRecord>>>() {}.type
+        val recordDatabaseType = object : TypeToken<SafetyDbDatabase>() {}.type
         database = gson.fromJson(databaseReader, recordDatabaseType)
+        if (database.vulnerable_packages == null) {
+            throw PackageCheckerLoadException("Could not load data from SafetyDB API")
+        }
     }
 
     override fun hasMatch(pythonPackage: PyPackage?): Boolean{
         if (pythonPackage==null) return false
-        for (record in lookup[pythonPackage.name.lowercase()] ?: return false){
+        for (record in index.vulnerable_packages?.get(pythonPackage.name.lowercase()) ?: return false){
             val specs = parseVersionSpecs(record) ?: continue
             if (specs.all { it != null && it.matches(pythonPackage.version) })
                 return true
@@ -83,10 +106,14 @@ class SafetyDbChecker : BasePackageChecker {
     override suspend fun getMatches (pythonPackage: PyPackage?): List<SafetyDbIssue> {
         if (pythonPackage==null) return listOf()
         val records: ArrayList<SafetyDbIssue> = ArrayList()
-        for (record in database[pythonPackage.name.lowercase()] ?: error("Package not in database")){
-            val specs = parseVersionSpecs(record.v) ?: continue
-            if (specs.all { it != null && it.matches(pythonPackage.version) })
-                records.add(SafetyDbIssue(record, pythonPackage))
+        for (record in database.vulnerable_packages?.get(pythonPackage.name.lowercase()) ?: error("Package not in database")){
+            for (spec in record.specs) {
+                val specs = parseVersionSpecs(spec) ?: continue
+                if (specs.all { it != null && it.matches(pythonPackage.version) }) {
+                    records.add(SafetyDbIssue(record, pythonPackage))
+                    break
+                }
+            }
         }
         return records.toList()
     }

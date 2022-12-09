@@ -23,6 +23,15 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
     override fun setUp() {
         val testLookupData = """
             {
+            "meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1666399806,
+                "last_updated": "2022-10-22 00:50:06",
+                "base_domain": "https://pyup.io",
+                "attribution": "Licensed under CC-BY-4.0 by pyup.io."
+            },
+            "vulnerable_packages": 
+            {
              "apples": [
                 "<0.6.0"
                 ],
@@ -30,8 +39,18 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
                 "<1.0.0,>=0.5.0"
              ]
             }
+            }
         """.trimIndent()
         val testData = """
+            {
+            "meta": {
+                "advisory": "PyUp.io metadata",
+                "timestamp": 1666399806,
+                "last_updated": "2022-10-22 00:50:06",
+                "base_domain": "https://pyup.io",
+                "attribution": "Licensed under CC-BY-4.0 by pyup.io."
+            },
+            "vulnerable_packages": 
             {
              "apples": [
                  {
@@ -55,6 +74,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
                     "v": "<1.0.0,>=0.5.0"
                 }
                 ]
+            }
             }
         """.trimIndent()
         val lookupReader = StringReader(testLookupData)
@@ -150,7 +170,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
             on { name } doReturn "good"
             on { version } doReturn "0.4.0"
         }
-        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord("Test is bad", null, "xyz", listOf("<= 1.0.0"), "<= 1.0.0"), pyPackage = testPackage1)
+        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord(listOf("<= 1.0.0"), "Test is bad", "cve", "xyz", "xyx", false, "/v/123"), pyPackage = testPackage1)
         val message = record.getMessage()
         assertFalse(message.isEmpty())
     }
@@ -161,7 +181,7 @@ class PyPackageSecurityScanTest: SecurityTestTask() {
             on { name } doReturn "good"
             on { version } doReturn "0.4.0"
         }
-        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord("Test is bad", "CVE-2020-123.3", "xyz", listOf("<= 1.0.0"), "<= 1.0.0"), pyPackage = testPackage1)
+        val record = SafetyDbChecker.SafetyDbIssue(SafetyDbChecker.SafetyDbRecord(listOf("<= 1.0.0"), "Test is bad", "cve", "xyz", "xyx", false, "/v/123"), pyPackage = testPackage1)
         val message = record.getMessage()
         assertFalse(message.isEmpty())
     }
