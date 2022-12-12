@@ -18,4 +18,4 @@ jobs:
           java-version: 11
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: runPluginVerifier
+          arguments: runPluginVerifier -PintellijPublishToken=FAKE_TOKEN -PintellijVersion=2022.3
