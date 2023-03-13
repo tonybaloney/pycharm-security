@@ -1,10 +1,6 @@
 name: "Verify plugin"
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
   schedule:
     - cron: "32 22 * * 1"
 
