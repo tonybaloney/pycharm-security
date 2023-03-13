@@ -10,7 +10,7 @@ import java.net.URL
 class SafetyDbChecker : BasePackageChecker {
     private lateinit var index: SafetyDbIndex
     private lateinit var database: SafetyDbDatabase
-    var baseUrl = "https://pyup.io/aws/safety/pycharm"
+    var baseUrl = "https://pyup.io/aws/safety/pycharm/2.0.0"
 
     class SafetyDbIssue (val record: SafetyDbRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {

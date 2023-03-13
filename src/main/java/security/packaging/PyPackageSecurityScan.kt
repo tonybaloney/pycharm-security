@@ -27,7 +27,7 @@ object PyPackageSecurityScan {
         try {
             when (SecuritySettings.instance.safetyDbMode) {
                 SecuritySettings.SafetyDbType.Disabled -> return false
-                SecuritySettings.SafetyDbType.Bundled -> { checkPackagesInSdks(pythonSdks, project, SafetyDbChecker()); notifyTerms(project) }
+                SecuritySettings.SafetyDbType.Bundled -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
                 SecuritySettings.SafetyDbType.Api -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey))
                 SecuritySettings.SafetyDbType.Custom -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
                 SecuritySettings.SafetyDbType.Snyk -> checkPackagesInSdks(pythonSdks, project, SnykChecker(SecuritySettings.instance.snykApiKey, SecuritySettings.instance.snykOrgId))
@@ -126,14 +126,6 @@ object PyPackageSecurityScan {
                 )
         not.setListener(NotificationListener.URL_OPENING_LISTENER)
         not.notify(project)
-    }
-
-    private fun notifyTerms(project: Project) {
-        NOTIFICATION_GROUP
-            .createNotification("The PyUp.io check is for non-commercial, open source projects only",
-                "This security check is for non-commercial, open source projects only and it uses a delayed vulnerability database. If you are working on a commercial project or if you want to check against a real-time vulnerability database, please configure a different source, or sign up for a PyUp.io subscription.",
-                NotificationType.INFORMATION)
-            .notify(project)
     }
 
     fun getPythonSdks(project: Project): Set<Sdk> {
