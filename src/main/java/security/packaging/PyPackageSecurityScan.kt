@@ -27,7 +27,7 @@ object PyPackageSecurityScan {
         try {
             when (SecuritySettings.instance.safetyDbMode) {
                 SecuritySettings.SafetyDbType.Disabled -> return false
-                SecuritySettings.SafetyDbType.Bundled -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
+                SecuritySettings.SafetyDbType.Bundled -> { checkPackagesInSdks(pythonSdks, project, SafetyDbChecker()); notifyTerms(project) }
                 SecuritySettings.SafetyDbType.Api -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker(SecuritySettings.instance.pyupApiKey))
                 SecuritySettings.SafetyDbType.Custom -> checkPackagesInSdks(pythonSdks, project, SafetyDbChecker())
                 SecuritySettings.SafetyDbType.Snyk -> checkPackagesInSdks(pythonSdks, project, SnykChecker(SecuritySettings.instance.snykApiKey, SecuritySettings.instance.snykOrgId))
@@ -126,6 +126,14 @@ object PyPackageSecurityScan {
                 )
         not.setListener(NotificationListener.URL_OPENING_LISTENER)
         not.notify(project)
+    }
+
+    private fun notifyTerms(project: Project) {
+        NOTIFICATION_GROUP
+            .createNotification("This check uses a free version of the PyUp.io database",
+                "This check uses a free version of the PyUp.io database, vulnerabilities found in the last 30 days may not be reported. If you want to check against the real-time vulnerability database, please sign up for a PyUp.io subscription.",
+                NotificationType.INFORMATION)
+            .notify(project)
     }
 
     fun getPythonSdks(project: Project): Set<Sdk> {
