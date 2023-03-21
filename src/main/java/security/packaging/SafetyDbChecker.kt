@@ -58,6 +58,8 @@ class SafetyDbChecker : BasePackageChecker {
             fullConnection.setRequestProperty("X-Api-Key", apiKey)
             indexConnection.setRequestProperty("X-Api-Key", apiKey)
         }
+        fullConnection.setRequestProperty("schema-version", "2.0.0")
+        indexConnection.setRequestProperty("schema-version", "2.0.0")
         fullConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
         indexConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
         try {
