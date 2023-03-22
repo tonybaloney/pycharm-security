@@ -22,7 +22,7 @@ class SnykChecker (private val apiKey: String, private val orgId: String ): Base
 
     class SnykIssue (val record: SnykRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
-            return "${record.title} (${record.severity} severity) found in ${record.`package`} impacting version ${record.version}. <br/>See <a href='${record.url}'>${record.id}</a> for details"
+            return "${record.title} (${record.severity} severity) found in ${record.`package`} impacting version ${record.version} installed in ${pyPackage.location}. <br/>See <a href='${record.url}'>${record.id}</a> for details"
         }
     }
 

@@ -14,11 +14,14 @@ class SafetyDbChecker : BasePackageChecker {
 
     class SafetyDbIssue (val record: SafetyDbRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
-            return if (record.cve.isNullOrEmpty()){
-                record.advisory
+            var message: String
+            if (record.cve.isNullOrEmpty()){
+                message = record.advisory
             } else {
-                "${record.advisory}<br>See <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=${record.cve}'>${record.cve}</a>"
+                message = "${record.advisory}<br>See <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=${record.cve}'>${record.cve}</a>"
             }
+            message += " Package is installed in ${pyPackage.location}."
+            return message
         }
     }
 

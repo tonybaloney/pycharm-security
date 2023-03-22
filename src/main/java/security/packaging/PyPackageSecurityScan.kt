@@ -119,7 +119,7 @@ object PyPackageSecurityScan {
 
     private fun showFoundIssueWarning(pack: PyPackage?, issue: PackageIssue, project: Project) {
         val not = NOTIFICATION_GROUP
-                .createNotification("Found Vulnerability in $pack package in project '${project.name}'",
+                .createNotification("Found Vulnerability in $pack package in ${project.name}",
                         issue.getMessage(),
                         NotificationType.WARNING
 
