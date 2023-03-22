@@ -58,6 +58,7 @@ patchPluginXml {
     changeNotes = """
       <h2>1.28.0</h2>
       <ul>
+        <li>Include the name of the project in vulnerability alerts and the location of the package to better aid multi-project environments.</li>
         <li>Use new PyUp v2.0.0 API that supports commercial projects.</li>
       </ul>
       """

@@ -2,6 +2,7 @@
 
 ## 1.28.0
 
+* Include the name of the project in vulnerability alerts and the location of the package to better aid multi-project environments.
 * Use new PyUp v2.0.0 API that supports commercial projects.
 
 ## 1.27.0
