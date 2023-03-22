@@ -27,7 +27,7 @@
         </constraints>
         <properties>
           <selected value="true"/>
-          <text value="Use SafetyDB (non-commercial projects only)"/>
+          <text value="Use SafetyDB"/>
         </properties>
       </component>
       <component id="beb14" class="javax.swing.JRadioButton" binding="pyupApiRadioButton" custom-create="true">

@@ -10,7 +10,7 @@ import java.net.URL
 class SafetyDbChecker : BasePackageChecker {
     private lateinit var index: SafetyDbIndex
     private lateinit var database: SafetyDbDatabase
-    var baseUrl = "https://pyup.io/aws/safety/pycharm"
+    var baseUrl = "https://pyup.io/aws/safety/pycharm/2.0.0"
 
     class SafetyDbIssue (val record: SafetyDbRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
@@ -58,6 +58,8 @@ class SafetyDbChecker : BasePackageChecker {
             fullConnection.setRequestProperty("X-Api-Key", apiKey)
             indexConnection.setRequestProperty("X-Api-Key", apiKey)
         }
+        fullConnection.setRequestProperty("schema-version", "2.0.0")
+        indexConnection.setRequestProperty("schema-version", "2.0.0")
         fullConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
         indexConnection.setRequestProperty("User-Agent", "PyCharm Security Extension")
         try {

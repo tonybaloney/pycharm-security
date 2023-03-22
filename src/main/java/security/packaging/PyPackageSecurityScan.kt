@@ -130,8 +130,8 @@ object PyPackageSecurityScan {
 
     private fun notifyTerms(project: Project) {
         NOTIFICATION_GROUP
-            .createNotification("The PyUp.io check is for non-commercial, open source projects only",
-                "This security check is for non-commercial, open source projects only and it uses a delayed vulnerability database. If you are working on a commercial project or if you want to check against a real-time vulnerability database, please configure a different source, or sign up for a PyUp.io subscription.",
+            .createNotification("This check uses a free version of the PyUp.io database",
+                "This check uses a free version of the PyUp.io database, vulnerabilities found in the last 30 days may not be reported. If you want to check against the real-time vulnerability database, please sign up for a PyUp.io subscription.",
                 NotificationType.INFORMATION)
             .notify(project)
     }
