@@ -1,5 +1,9 @@
 # Release History
 
+## 1.28.0
+
+* Use new PyUp v2.0.0 API that supports commercial projects.
+
 ## 1.27.0
 
 * Support for 2022.3
