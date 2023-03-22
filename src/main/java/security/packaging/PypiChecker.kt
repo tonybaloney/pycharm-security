@@ -17,7 +17,7 @@ class PypiChecker : BasePackageChecker() {
 
     class PyPiIssue (val record: VulnerabilityRecord, pyPackage: PyPackage): PackageIssue(pyPackage = pyPackage) {
         override fun getMessage(): String {
-            return "${record.id} found in ${pyPackage.name} impacting version ${pyPackage.version}. <br/>See <a href='${record.link}'>${record.link}</a> for details"
+            return "${record.id} found in ${pyPackage.name} impacting version ${pyPackage.version} installed in ${pyPackage.location}. <br/>See <a href='${record.link}'>${record.link}</a> for details"
         }
     }
 

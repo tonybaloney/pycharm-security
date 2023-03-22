@@ -95,7 +95,7 @@ object PyPackageSecurityScan {
 
     private fun returnError(project: Project){
         NOTIFICATION_GROUP
-                .createNotification("Could not check Python packages",
+                .createNotification("Could not check Python packages of ${project.name}",
                         "Could not verify security of Python packages, unable to locate configured Python Interpreter. Please configure your interpreter.",
                         NotificationType.INFORMATION)
                 .notify(project)
@@ -103,7 +103,7 @@ object PyPackageSecurityScan {
 
     private fun showTotalIssuesWarning(matches: Int, project: Project) {
         NOTIFICATION_GROUP
-                .createNotification("Completed checking packages",
+                .createNotification("Completed checking packages of ${project.name}",
                         "Found $matches potential security issues with your installed packages.",
                         NotificationType.WARNING)
                 .notify(project)
@@ -111,7 +111,7 @@ object PyPackageSecurityScan {
 
     private fun showNoMatchesInformation(project: Project) {
         NOTIFICATION_GROUP
-                .createNotification("Completed checking packages",
+                .createNotification("Completed checking packages of ${project.name}",
                         "Found no known security issues with your installed packages.",
                         NotificationType.INFORMATION)
                 .notify(project)
@@ -119,7 +119,7 @@ object PyPackageSecurityScan {
 
     private fun showFoundIssueWarning(pack: PyPackage?, issue: PackageIssue, project: Project) {
         val not = NOTIFICATION_GROUP
-                .createNotification("Found Security Vulnerability in $pack package",
+                .createNotification("Found Vulnerability in $pack package in ${project.name}",
                         issue.getMessage(),
                         NotificationType.WARNING
 
