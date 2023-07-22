@@ -1,6 +1,6 @@
 package security.packaging
 
-import com.intellij.testFramework.TestActionEvent
+import com.intellij.testFramework.TestActionEvent.createTestEvent
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import junit.framework.TestCase
 import org.junit.jupiter.api.AfterAll
@@ -24,14 +24,14 @@ internal class PackageCheckerActionTest : BasePlatformTestCase() {
     @Test
     fun `test action loaded`() {
         val action = PackageCheckerAction()
-        action.actionPerformed(TestActionEvent())
+        action.actionPerformed(createTestEvent())
         TestCase.assertTrue(true)
     }
 
     @Test
-    fun `test startup task loaded`() {
+    suspend fun `test startup task loaded`() {
         val action = PythonPackageVulnerabilityStartupTask()
-        action.runActivity(this.project)
+        action.execute(this.project)
         TestCase.assertTrue(true)
     }
 }
