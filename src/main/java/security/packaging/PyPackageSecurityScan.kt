@@ -1,6 +1,7 @@
 package security.packaging
 
 import com.google.common.collect.Sets
+import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
@@ -16,7 +17,7 @@ import kotlinx.coroutines.runBlocking
 import security.settings.SecuritySettings
 
 object PyPackageSecurityScan {
-    var NOTIFICATION_GROUP = NotificationGroupManager.getInstance().getNotificationGroup("pythonsecurity.checker")
+    private var NOTIFICATION_GROUP: NotificationGroup? = NotificationGroupManager.getInstance().getNotificationGroup("pythonsecurity.checker")
 
     fun checkPackages(project: Project): Boolean?{
         val pythonSdks = getPythonSdks(project)
@@ -87,53 +88,53 @@ object PyPackageSecurityScan {
 
     private fun backendError(project: Project, message: String?){
         NOTIFICATION_GROUP
-                .createNotification("Could not check Python packages",
+                ?.createNotification("Could not check Python packages",
                         "Could not fetch API to validate records. Check your API details.\n$message",
                         NotificationType.ERROR)
-                .notify(project)
+                ?.notify(project)
     }
 
     private fun returnError(project: Project){
         NOTIFICATION_GROUP
-                .createNotification("Could not check Python packages of ${project.name}",
+                ?.createNotification("Could not check Python packages of ${project.name}",
                         "Could not verify security of Python packages, unable to locate configured Python Interpreter. Please configure your interpreter.",
                         NotificationType.INFORMATION)
-                .notify(project)
+                ?.notify(project)
     }
 
     private fun showTotalIssuesWarning(matches: Int, project: Project) {
         NOTIFICATION_GROUP
-                .createNotification("Completed checking packages of ${project.name}",
+                ?.createNotification("Completed checking packages of ${project.name}",
                         "Found $matches potential security issues with your installed packages.",
                         NotificationType.WARNING)
-                .notify(project)
+                ?.notify(project)
     }
 
     private fun showNoMatchesInformation(project: Project) {
         NOTIFICATION_GROUP
-                .createNotification("Completed checking packages of ${project.name}",
+                ?.createNotification("Completed checking packages of ${project.name}",
                         "Found no known security issues with your installed packages.",
                         NotificationType.INFORMATION)
-                .notify(project)
+                ?.notify(project)
     }
 
     private fun showFoundIssueWarning(pack: PyPackage?, issue: PackageIssue, project: Project) {
         val not = NOTIFICATION_GROUP
-                .createNotification("Found Vulnerability in $pack package in ${project.name}",
+                ?.createNotification("Found Vulnerability in $pack package in ${project.name}",
                         issue.getMessage(),
                         NotificationType.WARNING
 
                 )
-        not.setListener(NotificationListener.URL_OPENING_LISTENER)
-        not.notify(project)
+        not?.setListener(NotificationListener.URL_OPENING_LISTENER)
+        not?.notify(project)
     }
 
     private fun notifyTerms(project: Project) {
         NOTIFICATION_GROUP
-            .createNotification("This check uses a free version of the PyUp.io database",
+            ?.createNotification("This check uses a free version of the PyUp.io database",
                 "This check uses a free version of the PyUp.io database, vulnerabilities found in the last 30 days may not be reported. If you want to check against the real-time vulnerability database, please sign up for a PyUp.io subscription.",
                 NotificationType.INFORMATION)
-            .notify(project)
+            ?.notify(project)
     }
 
     fun getPythonSdks(project: Project): Set<Sdk> {
