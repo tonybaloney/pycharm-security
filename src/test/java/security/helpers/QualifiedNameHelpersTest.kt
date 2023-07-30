@@ -1,7 +1,5 @@
 package security.helpers
 
-import com.intellij.lang.annotation.Annotation
-import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.python.PythonFileType
@@ -15,12 +13,9 @@ import security.SecurityTestTask
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QualifiedNameHelpersTest: SecurityTestTask() {
-    private lateinit var dummyAnnotation: Annotation
-
     @BeforeAll
     override fun setUp() {
         super.setUp()
-        this.dummyAnnotation = Annotation(0, 0, HighlightSeverity.WARNING, "", "")
     }
 
     @AfterAll
