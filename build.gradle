@@ -47,9 +47,15 @@ test {
     dependsOn 'cleanTest'
 }
 
+tasks.withType(Test).configureEach {
+    jvmArgs = [
+            '-Djava.awt.headless=true'
+    ]
+}
+
 intellij {
     type = 'PC'
-    plugins = ['python-ce', 'yaml']
+    plugins = ['python-ce', 'org.jetbrains.plugins.yaml']
     updateSinceUntilBuild = false
     version = project.properties["intellijVersion"] ?: "2023.2"
 }
