@@ -22,7 +22,7 @@
      <li>Scan code in your CI/CD using Docker</li>
     </ul>
     ]]></description>
-    <idea-version since-build="223"/>
+    <idea-version since-build="231"/>
     
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
