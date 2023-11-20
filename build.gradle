@@ -29,8 +29,8 @@ kotlin {
 
 dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:5.1.0"
-    testImplementation 'net.bytebuddy:byte-buddy:1.14.6'
-    testImplementation 'net.bytebuddy:byte-buddy-agent:1.14.6'
+    testImplementation 'net.bytebuddy:byte-buddy:1.14.10'
+    testImplementation 'net.bytebuddy:byte-buddy-agent:1.14.10'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.0'
     // HAck to get build working. Try removing in future
     testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.10.0'
