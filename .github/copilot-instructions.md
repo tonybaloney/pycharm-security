@@ -1,0 +1,175 @@
+# GitHub Copilot Instructions for PyCharm Security Plugin
+
+## Project Overview
+
+This repository contains the **PyCharm Python Security Plugin**, a comprehensive security analysis tool for Python code that helps developers identify and fix common security vulnerabilities. The plugin integrates with PyCharm IDE and is also available as a GitHub Action and Docker container.
+
+## Architecture & Technology Stack
+
+- **Language**: Java 17 + Kotlin for the PyCharm plugin development
+- **Build System**: Gradle with IntelliJ plugin
+- **Framework**: IntelliJ Platform SDK for PyCharm plugin development
+- **Testing**: JUnit 5 with Kotlin test framework
+- **Documentation**: Sphinx with Markdown support
+- **CI/CD**: GitHub Actions with Docker deployment
+
+## Project Structure
+
+```
+src/main/java/security/
+├── Checks.kt                    # Central registry of all security check types
+├── validators/                  # Individual security inspection implementations
+├── fixes/                      # Quick fix implementations for detected issues
+├── helpers/                    # Utility classes and helper functions
+├── packaging/                  # Package vulnerability checking logic
+└── settings/                   # Plugin configuration and settings
+
+src/test/java/security/
+├── validators/                 # Test cases for security inspections
+└── SecurityTestTask.kt         # Base test class for all security tests
+
+doc/
+├── checks/                     # Documentation for each security check
+├── fixes/                      # Documentation for quick fixes
+└── *.md                       # User guides and development docs
+```
+
+## Core Development Patterns
+
+### Creating New Security Validators
+
+1. **Define Check Type**: Add a new `CheckType` in `Checks.kt`:
+   ```kotlin
+   val MyNewCheck = CheckType("ABC100", "Brief description of the security issue")
+   ```
+
+2. **Create Validator Class**: In `src/main/java/security/validators/`:
+   ```kotlin
+   class MyNewValidatorInspection : PyInspection() {
+       override fun visitPyCallExpression(node: PyCallExpression, holder: ProblemsHolder, context: TypeEvalContext) {
+           // Guard clauses to filter relevant calls
+           if (!isTargetFunction(node)) return
+           if (!hasVulnerablePattern(node)) return
+           
+           // Report the issue
+           holder.create(node, Checks.MyNewCheck)
+       }
+   }
+   ```
+
+3. **Register in plugin.xml**: Add the inspection to `src/main/resources/META-INF/plugin.xml`
+
+4. **Add Tests**: Create test class in `src/test/java/security/validators/`:
+   ```kotlin
+   class MyNewValidatorInspectionTest : SecurityTestTask() {
+       @Test
+       fun `test vulnerable pattern detected`() {
+           val code = """
+               vulnerable_function('unsafe_input')
+           """.trimIndent()
+           testCodeCallExpression(code, 1, Checks.MyNewCheck, "test.py", MyNewValidatorInspection())
+       }
+   }
+   ```
+
+5. **Add Documentation**: Create `doc/checks/ABC100.md` with detailed explanation
+
+### Security Check Categories
+
+- **PRxxx**: Process/subprocess security issues
+- **DJGxxx**: Django framework security issues  
+- **FLKxxx**: Flask framework security issues
+- **SSLxxx**: SSL/TLS security issues
+- **SQLxxx**: SQL injection vulnerabilities
+- **PWxxx**: Password/credential security issues
+- **EXxxx**: Code execution vulnerabilities
+- **HLxxx**: Hashing/cryptography issues
+
+### Testing Conventions
+
+- Extend `SecurityTestTask` for all security validator tests
+- Use `testCodeCallExpression()` for testing call expression validators
+- Test both positive (vulnerable) and negative (safe) cases
+- Include edge cases and boundary conditions
+- Use descriptive test method names with backticks for readability
+
+### Quick Fixes
+
+Quick fixes should be implemented in `src/main/java/security/fixes/`:
+- Extend appropriate base classes from IntelliJ Platform
+- Provide safe alternatives to vulnerable code patterns
+- Include comprehensive tests for fix transformations
+
+## Code Style Guidelines
+
+- Use Kotlin for new code where possible
+- Follow IntelliJ Platform development conventions
+- Use guard clauses for early returns in validators
+- Document complex security detection logic
+- Prefer composition over inheritance
+- Use meaningful variable and method names that reflect security context
+
+## Documentation Standards
+
+- Each security check must have detailed documentation in `doc/checks/`
+- Include code examples showing vulnerable and secure patterns
+- Explain the security implications and potential impact
+- Link to relevant security standards (OWASP, CWE, etc.)
+- Update the main documentation index when adding new checks
+
+## Testing Requirements
+
+- All security validators must have comprehensive test coverage
+- Test both detection (vulnerable code) and non-detection (safe code)
+- Include tests for edge cases and false positives
+- Verify quick fixes work correctly and don't introduce new issues
+- Use realistic code examples in tests
+
+## GitHub Action Integration
+
+The plugin includes a GitHub Action component:
+- Dockerfile and action.yml define the CI/CD integration
+- Support for custom inspection profiles
+- Configurable failure conditions and reporting
+- Integration with GitHub's security advisory features
+
+## Plugin Configuration
+
+The plugin supports various vulnerability databases:
+- Bundled SafetyDB for offline scanning
+- PyUp.io API integration (subscription required)
+- Snyk API integration (subscription required)  
+- PyPI vulnerability database
+
+## Development Workflow
+
+1. **Setup**: Import project in IntelliJ IDEA with Kotlin plugin
+2. **Build**: Use `./gradlew build` to compile and test
+3. **Debug**: Use `./gradlew runIde` to test plugin in PyCharm instance
+4. **Test**: Use `./gradlew test` to run test suite
+5. **Verify**: Use `./gradlew verifyPlugin` before publishing
+
+## Common Development Tasks
+
+- **Adding new security check**: Follow the validator creation pattern above
+- **Updating vulnerability database**: Modify files in `src/main/resources/safety-db/`
+- **Improving detection accuracy**: Enhance guard clauses and pattern matching
+- **Adding framework support**: Create new validator categories for frameworks
+- **Documentation updates**: Maintain docs in sync with code changes
+
+## Security Considerations
+
+When developing security validators:
+- Minimize false positives while maintaining comprehensive detection
+- Consider performance impact of complex pattern matching
+- Validate against real-world vulnerable code examples
+- Test with various Python versions and coding styles
+- Consider context-sensitive analysis for better accuracy
+
+## Contribution Guidelines
+
+- Follow existing code patterns and naming conventions
+- Include comprehensive tests for all changes
+- Update documentation for new features or changes
+- Ensure backward compatibility with existing PyCharm versions
+- Test integration with GitHub Action workflow
