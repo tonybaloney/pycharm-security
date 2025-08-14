@@ -46,18 +46,42 @@ doc/
 2. **Create Validator Class**: In `src/main/java/security/validators/`:
    ```kotlin
    class MyNewValidatorInspection : PyInspection() {
-       override fun visitPyCallExpression(node: PyCallExpression, holder: ProblemsHolder, context: TypeEvalContext) {
-           // Guard clauses to filter relevant calls
-           if (!isTargetFunction(node)) return
-           if (!hasVulnerablePattern(node)) return
-           
-           // Report the issue
-           holder.create(node, Checks.MyNewCheck)
+       val check = Checks.MyNewCheck
+       
+       override fun getStaticDescription(): String? {
+           return check.getStaticDescription()
+       }
+       
+       override fun buildVisitor(holder: ProblemsHolder,
+                                 isOnTheFly: Boolean,
+                                 session: LocalInspectionToolSession): PsiElementVisitor = Visitor(holder, session)
+       
+       private class Visitor(holder: ProblemsHolder, session: LocalInspectionToolSession) : SecurityVisitor(holder, session) {
+           override fun visitPyCallExpression(node: PyCallExpression) {
+               if (skipDocstring(node)) return
+               // Guard clauses to filter relevant calls
+               if (!calleeMatches(node, arrayOf("target_function"))) return
+               if (!qualifiedNameStartsWith(node, "target.module.", typeEvalContext)) return
+               if (!hasVulnerablePattern(node)) return
+               
+               // Report the issue
+               holder.registerProblem(node, Checks.MyNewCheck.getDescription())
+           }
        }
    }
    ```
 
-3. **Register in plugin.xml**: Add the inspection to `src/main/resources/META-INF/plugin.xml`
+3. **Register in plugin.xml**: Add the inspection to `src/main/resources/META-INF/plugin.xml`:
+   ```xml
+   <localInspection 
+       language="Python" 
+       enabledByDefault="true" 
+       groupName="Python Security" 
+       hasStaticDescription="true" 
+       displayName="ABC100: Brief description of the security issue." 
+       shortName="MyNewValidatorInspection" 
+       implementationClass="security.validators.MyNewValidatorInspection" />
+   ```
 
 4. **Add Tests**: Create test class in `src/test/java/security/validators/`:
    ```kotlin
@@ -72,26 +96,66 @@ doc/
    }
    ```
 
-5. **Add Documentation**: Create `doc/checks/ABC100.md` with detailed explanation
+5. **Add Documentation**: Create `doc/checks/ABC100.md` with this structure:
+   ```markdown
+   # ABC100
+   
+   Brief description of the security issue and why it's dangerous.
+   
+   ## Example
+   
+   ```python
+   # Vulnerable code example
+   vulnerable_function('unsafe_input')
+   ```
+   
+   ## Fixes
+   
+   Explanation of how to fix the issue and secure alternatives.
+   ```
 
 ### Security Check Categories
 
+- **YMLxxx**: YAML processing security issues
+- **FLKxxx**: Flask framework security issues  
+- **RQxxx**: HTTP request library security issues (requests, httpx)
 - **PRxxx**: Process/subprocess security issues
+- **TMPxxx**: Temporary file security issues
 - **DJGxxx**: Django framework security issues  
-- **FLKxxx**: Flask framework security issues
-- **SSLxxx**: SSL/TLS security issues
-- **SQLxxx**: SQL injection vulnerabilities
+- **HLxxx**: Hashing/cryptography security issues
 - **PWxxx**: Password/credential security issues
+- **JJxxx**: Jinja2 template security issues
 - **EXxxx**: Code execution vulnerabilities
-- **HLxxx**: Hashing/cryptography issues
+- **MKxxx**: Mako template security issues
+- **SQLxxx**: SQL injection vulnerabilities
+- **ASTxxx**: Code structure security issues
+- **TRYxxx**: Exception handling security issues
+- **PARxxx**: Paramiko SSH library security issues
+- **NETxxx**: Network binding security issues
+- **OSxxx**: Operating system command security issues
+- **PICxxx**: Pickle serialization security issues
+- **XMLxxx**: XML processing security issues
+- **SSLxxx**: SSL/TLS security issues
+- **STRxxx**: String formatting security issues
+- **SHxxx**: Shell command security issues
+
+### Helper Functions
+
+The `security.helpers` package provides useful utilities for validators:
+- `calleeMatches(node, arrayOf("function_name"))`: Check if call matches function names
+- `qualifiedNameStartsWith(node, "module.prefix.", typeEvalContext)`: Check module qualification  
+- `skipDocstring(node)`: Skip nodes that are in docstrings
+- `SecurityVisitor`: Base visitor class that extends `PyInspectionVisitor`
 
 ### Testing Conventions
 
 - Extend `SecurityTestTask` for all security validator tests
 - Use `testCodeCallExpression()` for testing call expression validators
+- Use `testCodeAssignmentStatement()` for testing assignment validators  
 - Test both positive (vulnerable) and negative (safe) cases
 - Include edge cases and boundary conditions
 - Use descriptive test method names with backticks for readability
+- Verify exact number of expected violations with `times` parameter
 
 ### Quick Fixes
 
