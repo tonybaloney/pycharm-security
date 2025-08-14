@@ -160,9 +160,27 @@ The `security.helpers` package provides useful utilities for validators:
 ### Quick Fixes
 
 Quick fixes should be implemented in `src/main/java/security/fixes/`:
-- Extend appropriate base classes from IntelliJ Platform
+- Extend `LocalQuickFix`, `IntentionAction`, and optionally `HighPriorityAction`
 - Provide safe alternatives to vulnerable code patterns
+- Use `PyElementGenerator` to create replacement code elements
 - Include comprehensive tests for fix transformations
+- Associate fixes with validators by returning them in `registerProblem()` calls
+
+Example quick fix structure:
+```kotlin
+class MySafeReplacementFixer : LocalQuickFix, IntentionAction {
+    override fun getFamilyName(): String = "Use safe alternative"
+    
+    override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+        val element = descriptor.psiElement as PyCallExpression
+        val generator = PyElementGenerator.getInstance(project)
+        val replacement = generator.createCallExpression(LanguageLevel.getDefault(), "safe_function")
+        element.replace(replacement)
+    }
+    
+    // Additional IntentionAction methods...
+}
+```
 
 ## Code Style Guidelines
 
@@ -217,9 +235,20 @@ The plugin supports various vulnerability databases:
 
 - **Adding new security check**: Follow the validator creation pattern above
 - **Updating vulnerability database**: Modify files in `src/main/resources/safety-db/`
-- **Improving detection accuracy**: Enhance guard clauses and pattern matching
+- **Improving detection accuracy**: Enhance guard clauses and pattern matching in validators
 - **Adding framework support**: Create new validator categories for frameworks
+- **Adding quick fixes**: Implement LocalQuickFix classes in `security.fixes` package
 - **Documentation updates**: Maintain docs in sync with code changes
+- **Testing new validators**: Use SecurityTestTask with mock ProblemsHolder
+- **Debugging plugin**: Use `./gradlew runIde` to launch PyCharm with plugin loaded
+
+## Debugging Tips
+
+- Use `println()` statements in validators during development (remove before commit)
+- Check `typeEvalContext` for type information when needed
+- Test with various Python code patterns to avoid false positives
+- Use PyCharm's "Internal Actions" → "View PSI Structure" to understand code structure
+- Validate plugin.xml syntax with IntelliJ before testing
 
 ## Security Considerations
 
